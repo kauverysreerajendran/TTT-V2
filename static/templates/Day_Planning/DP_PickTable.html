@@ -1,0 +1,1058 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<style>
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .table-responsive {
+      max-height: 600px; /* Increased height for tablets */
+    }
+  }
+
+  .table-responsive {
+    max-height: 400px; /* or any fixed height you want */
+    overflow-y: auto; /* vertical scroll only */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+    margin-bottom: 100px;
+  }
+
+  .table-responsive::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+  /* Make the table header sticky */
+  thead th {
+    position: sticky;
+    top: 0;
+    background-color: white; /* or your table header bg color */
+    z-index: 10; /* ensure it stays above the table rows */
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* optional shadow for better separation */
+  }
+  .content-wrapper {
+    padding-bottom: 120px; /* or whatever height your footer needs */
+  }
+  .table-responsive {
+    margin-bottom: 60px; /* add some free space below table */
+    max-height: 400px; /* or any fixed height you want */
+    overflow-y: auto; /* vertical scroll only */
+  }
+  footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+  }
+</style>
+
+<div class="content-wrapper">
+  <h5 class="text-left mt-0 mb-3">Day Planning / Day Planning Pick Table</h5>
+  <div class="row">
+    <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <!-- Table Section -->
+            <table id="order-listing" class="table">
+              <thead>
+                <tr>
+                  <th>S.No <i class="fa fa-filter" aria-hidden="true"></i></th>
+                  <th>
+                    Date and Time
+                    <i class="fa fa-filter" aria-hidden="true"></i>
+                  </th>
+                  <th>
+                    Model/Stock No
+                    <i class="fa fa-filter" aria-hidden="true"></i>
+                  </th>
+                  <th>
+                    Plating Color
+                    <i class="fa fa-filter" aria-hidden="true"></i>
+                  </th>
+                  <th>
+                    Polish Finish
+                    <i class="fa fa-filter" aria-hidden="true"></i>
+                  </th>
+                  <th>
+                    Version <i class="fa fa-filter" aria-hidden="true"></i>
+                  </th>
+                  <th>
+                    Source - Location
+                    <i class="fa fa-filter" aria-hidden="true"></i>
+                  </th>
+                  <th>
+                    Tray Type Capacity
+                    <i class="fa fa-filter" aria-hidden="true"></i>
+                  </th>
+                  <th>
+                    No of Tray <i class="fa fa-filter" aria-hidden="true"></i>
+                  </th>
+                  <th>
+                    Total Quantity
+                    <i class="fa fa-filter" aria-hidden="true"></i>
+                  </th>
+                  <th>
+                    Process Status
+                    <i class="fa fa-filter" aria-hidden="true"></i>
+                  </th>
+                  <th>
+                    Action <i class="fa fa-filter" aria-hidden="true"></i>
+                  </th>
+                  <th>
+                    Batch Status <i class="fa fa-filter" aria-hidden="true"></i>
+                  </th>
+                  <th>
+                    Current Location
+                    <i class="fa fa-filter" aria-hidden="true"></i>
+                  </th>
+                  <th>
+                    Remarks <i class="fa fa-filter" aria-hidden="true"></i>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Row 1 -->
+                <tr>
+                  <td>1</td>
+                  <td>2025-05-22 10:00 AM</td>
+                  <td>1805</td>
+                  <td>ISP</td>
+                  <td>A - Buffed</td>
+                  <td>A</td>
+                  <td>Nil</td>
+                  <td>Normal 16</td>
+                  <td>10</td>
+                  <td>50</td>
+                  <td>
+                    <div
+                      title="Tray Scan"
+                      class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+                      style="
+                        width: 28px;
+                        height: 28px;
+                        background-color: #6c6c6c; /* or any grey shade you prefer */
+
+                        color: white;
+                        font-weight: bold;
+                      "
+                    >
+                      T
+                    </div>
+                  </td>
+                  <td>
+                    <a href="#" title="Edit">
+                      <img
+                        src="{% static 'assets/icons/edit1.png' %}"
+                        alt="Edit"
+                        style="width: 28px; margin-right: 8px; height: auto"
+                      />
+                    </a>
+                    <a href="#" title="Delete">
+                      <img
+                        src="{% static 'assets/icons/bin.png' %}"
+                        alt="Delete"
+                        style="width: 28px; margin-right: 8px; height: auto"
+                      />
+                    </a>
+                    <a
+                      href="#"
+                      class="text-primary"
+                      style="text-decoration: underline"
+                      >Tray Scan</a
+                    >
+                  </td>
+                  <td>
+                    <div
+                      class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                      style="
+                        border: 2px solid #9c9c9c;
+                        background-color: #d9d9d9;
+                        color: #6c6c6c;
+                        font-size: clamp(0.75rem, 2vw, 0.875rem);
+                        white-space: nowrap;
+                        padding-top: 0.5rem;
+                        padding-bottom: 0.5rem;
+                      "
+                    >
+                      Yet to Start
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                      style="
+                        border: 2px solid #9adeed;
+                        background-color: #d1edf3;
+                        color: #033b5d;
+                        font-size: clamp(0.75rem, 2vw, 0.875rem);
+                        white-space: nowrap;
+                        padding-top: 0.5rem;
+                        padding-bottom: 0.5rem;
+                      "
+                    >
+                      Day Planning
+                    </div>
+                  </td>
+                  <td style="padding: 20px 0 20px 20px">
+                    <a
+                      href="#"
+                      title="VoiceRec"
+                      style="
+                        display: inline-flex;
+                        align-items: center;
+                        height: 28px;
+                      "
+                    >
+                      <img
+                        src="{% static 'assets/icons/rec.png' %}"
+                        alt="VoiceRec"
+                        style="width: 28px; height: 28px"
+                      />
+                    </a>
+                    <a
+                      href="#"
+                      title="Chat"
+                      style="
+                        display: inline-flex;
+                        align-items: center;
+                        height: 28px;
+                        margin-left: 5px;
+                      "
+                    >
+                      <img
+                        src="{% static 'assets/icons/chat1.png' %}"
+                        alt="Chat"
+                        style="width: 28px; height: 28px"
+                      />
+                    </a>
+                  </td>
+                </tr>
+                <!-- Row 2 -->
+                <tr>
+                  <td>2</td>
+                  <td>2025-05-22 10:00 AM</td>
+                  <td>2565</td>
+                  <td>ISP</td>
+                  <td>A - Buffed</td>
+                  <td>A</td>
+                  <td>Nil</td>
+                  <td>Jumbo 14</td>
+                  <td>10</td>
+                  <td>50</td>
+                  <td>
+                    <div
+                      title="Tray Scan"
+                      class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+                      style="
+                        width: 28px;
+                        height: 28px;
+                        background-color: #6c6c6c; /* or any grey shade you prefer */
+
+                        color: white;
+                        font-weight: bold;
+                      "
+                    >
+                      T
+                    </div>
+                  </td>
+                  <td>
+                    <a href="#" title="Edit">
+                      <img
+                        src="{% static 'assets/icons/edit1.png' %}"
+                        alt="Edit"
+                        style="width: 28px; margin-right: 8px; height: auto"
+                      />
+                    </a>
+                    <a href="#" title="Delete">
+                      <img
+                        src="{% static 'assets/icons/bin.png' %}"
+                        alt="Delete"
+                        style="width: 28px; margin-right: 8px; height: auto"
+                      />
+                    </a>
+                    <a
+                      href="#"
+                      class="text-primary"
+                      style="text-decoration: underline"
+                      >Tray Scan</a
+                    >
+                  </td>
+                  <td>
+                    <div
+                      class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                      style="
+                        border: 2px solid #4997ac;
+                        background-color: #d1f2f3;
+                        color: #03425d;
+                        font-size: clamp(0.75rem, 2vw, 0.875rem);
+                        white-space: nowrap;
+                        padding-top: 0.5rem;
+                        padding-bottom: 0.5rem;
+                      "
+                    >
+                      On-Hold
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                      style="
+                        border: 2px solid #9adeed;
+                        background-color: #d1edf3;
+                        color: #033b5d;
+                        font-size: clamp(0.75rem, 2vw, 0.875rem);
+                        white-space: nowrap;
+                        padding-top: 0.5rem;
+                        padding-bottom: 0.5rem;
+                      "
+                    >
+                      Day Planning
+                    </div>
+                  </td>
+                  <td style="padding: 20px 0 20px 20px">
+                    <a
+                      href="#"
+                      title="VoiceRec"
+                      style="
+                        display: inline-flex;
+                        align-items: center;
+                        height: 28px;
+                      "
+                    >
+                      <img
+                        src="{% static 'assets/icons/rec.png' %}"
+                        alt="VoiceRec"
+                        style="width: 28px; height: 28px"
+                      />
+                    </a>
+                    <a
+                      href="#"
+                      title="Chat"
+                      style="
+                        display: inline-flex;
+                        align-items: center;
+                        height: 28px;
+                        margin-left: 5px;
+                      "
+                    >
+                      <img
+                        src="{% static 'assets/icons/chat1.png' %}"
+                        alt="Chat"
+                        style="width: 28px; height: 28px"
+                      />
+                    </a>
+                  </td>
+                </tr>
+
+                <!-- Row 3 -->
+                <tr>
+                  <td>3</td>
+                  <td>2025-05-22 10:00 AM</td>
+                  <td>7346</td>
+                  <td>ISP</td>
+                  <td>A - Buffed</td>
+                  <td>A</td>
+                  <td>Nil</td>
+                  <td>Jumbo 14</td>
+                  <td>10</td>
+                  <td>50</td>
+                  <td>
+                    <div
+                      title="Tray Scan"
+                      class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+                      style="
+                        width: 28px;
+                        height: 28px;
+                        background: linear-gradient(
+                          to right,
+                          #28a745 50%,
+                          #c1c3c6 50%
+                        );
+                        color: white;
+                        font-weight: bold;
+                      "
+                    >
+                      T
+                    </div>
+                  </td>
+                  <td>
+                    <a href="#" title="Edit">
+                      <img
+                        src="{% static 'assets/icons/edit1.png' %}"
+                        alt="Edit"
+                        style="width: 28px; margin-right: 8px; height: auto"
+                      />
+                    </a>
+                    <a href="#" title="Delete">
+                      <img
+                        src="{% static 'assets/icons/bin.png' %}"
+                        alt="Delete"
+                        style="width: 28px; margin-right: 8px; height: auto"
+                      />
+                    </a>
+                    <a
+                      href="#"
+                      class="text-primary"
+                      style="text-decoration: underline"
+                      >Tray Scan</a
+                    >
+                  </td>
+                  <td>
+                    <div
+                      class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                      style="
+                        border: 2px solid #a9ac49;
+                        background-color: #ceec8e;
+                        color: #769206;
+                        font-size: clamp(0.75rem, 2vw, 0.875rem);
+                        white-space: nowrap;
+                        padding-top: 0.5rem;
+                        padding-bottom: 0.5rem;
+                      "
+                    >
+                      Yet to Release
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                      style="
+                        border: 2px solid #9adeed;
+                        background-color: #d1edf3;
+                        color: #033b5d;
+                        font-size: clamp(0.75rem, 2vw, 0.875rem);
+                        white-space: nowrap;
+                        padding-top: 0.5rem;
+                        padding-bottom: 0.5rem;
+                      "
+                    >
+                      Day Planning
+                    </div>
+                  </td>
+                  <td style="padding: 20px 0 20px 20px">
+                    <a
+                      href="#"
+                      title="VoiceRec"
+                      style="
+                        display: inline-flex;
+                        align-items: center;
+                        height: 28px;
+                      "
+                    >
+                      <img
+                        src="{% static 'assets/icons/rec.png' %}"
+                        alt="VoiceRec"
+                        style="width: 28px; height: 28px"
+                      />
+                    </a>
+                    <a
+                      href="#"
+                      title="Chat"
+                      style="
+                        display: inline-flex;
+                        align-items: center;
+                        height: 28px;
+                        margin-left: 5px;
+                      "
+                    >
+                      <img
+                        src="{% static 'assets/icons/chat1.png' %}"
+                        alt="Chat"
+                        style="width: 28px; height: 28px"
+                      />
+                    </a>
+                  </td>
+                </tr>
+
+                <!-- Row 4 -->
+                <tr>
+                  <td>4</td>
+                  <td>2025-05-22 10:00 AM</td>
+                  <td>1965</td>
+                  <td>ISP</td>
+                  <td>A - Buffed</td>
+                  <td>A</td>
+                  <td>Nil</td>
+                  <td>Jumbo 14</td>
+                  <td>10</td>
+                  <td>50</td>
+                  <td>
+                    <div
+                      title="Tray Scan"
+                      class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+                      style="
+                        width: 28px;
+                        height: 28px;
+                        background-color: #28a745; /* or any grey shade you prefer */
+                        color: white;
+                        font-weight: bold;
+                      "
+                    >
+                      T
+                    </div>
+                  </td>
+                  <td>
+                    <a href="#" title="Edit">
+                      <img
+                        src="{% static 'assets/icons/edit1.png' %}"
+                        alt="Edit"
+                        style="width: 28px; margin-right: 8px; height: auto"
+                      />
+                    </a>
+                    <a href="#" title="Delete">
+                      <img
+                        src="{% static 'assets/icons/bin.png' %}"
+                        alt="Delete"
+                        style="width: 28px; margin-right: 8px; height: auto"
+                      />
+                    </a>
+                    <a
+                      href="#"
+                      class="text-primary"
+                      style="text-decoration: underline"
+                      >Tray Scan</a
+                    >
+                  </td>
+                  <td>
+                    <div
+                      class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                      style="
+                        border: 2px solid #49ac51;
+                        background-color: #d1f3d4;
+                        color: #2b5d03;
+                        font-size: clamp(0.75rem, 2vw, 0.875rem);
+                        white-space: nowrap;
+                        padding-top: 0.5rem;
+                        padding-bottom: 0.5rem;
+                      "
+                    >
+                      Released
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                      style="
+                        border: 2px solid #9adeed;
+                        background-color: #d1edf3;
+                        color: #033b5d;
+                        font-size: clamp(0.75rem, 2vw, 0.875rem);
+                        white-space: nowrap;
+                        padding-top: 0.5rem;
+                        padding-bottom: 0.5rem;
+                      "
+                    >
+                      IP Screening
+                    </div>
+                  </td>
+                  <td style="padding: 20px 0 20px 20px">
+                    <a
+                      href="#"
+                      title="VoiceRec"
+                      style="
+                        display: inline-flex;
+                        align-items: center;
+                        height: 28px;
+                      "
+                    >
+                      <img
+                        src="{% static 'assets/icons/rec.png' %}"
+                        alt="VoiceRec"
+                        style="width: 28px; height: 28px"
+                      />
+                    </a>
+                    <a
+                      href="#"
+                      title="Chat"
+                      style="
+                        display: inline-flex;
+                        align-items: center;
+                        height: 28px;
+                        margin-left: 5px;
+                      "
+                    >
+                      <img
+                        src="{% static 'assets/icons/chat1.png' %}"
+                        alt="Chat"
+                        style="width: 28px; height: 28px"
+                      />
+                    </a>
+                  </td>
+                </tr>
+
+                <!-- to delete -->
+                <!-- Row 5 -->
+                <tr>
+                  <td>5</td>
+                  <td>2025-05-22 10:00 AM</td>
+                  <td>1805</td>
+                  <td>ISP</td>
+                  <td>A - Buffed</td>
+                  <td>A</td>
+                  <td>Nil</td>
+                  <td>Normal 16</td>
+                  <td>10</td>
+                  <td>50</td>
+                  <td>
+                    <div
+                      title="Tray Scan"
+                      class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+                      style="
+                        width: 28px;
+                        height: 28px;
+                        background-color: #6c6c6c; /* or any grey shade you prefer */
+
+                        color: white;
+                        font-weight: bold;
+                      "
+                    >
+                      T
+                    </div>
+                  </td>
+                  <td>
+                    <a href="#" title="Edit">
+                      <img
+                        src="{% static 'assets/icons/edit1.png' %}"
+                        alt="Edit"
+                        style="width: 28px; margin-right: 8px; height: auto"
+                      />
+                    </a>
+                    <a href="#" title="Delete">
+                      <img
+                        src="{% static 'assets/icons/bin.png' %}"
+                        alt="Delete"
+                        style="width: 28px; margin-right: 8px; height: auto"
+                      />
+                    </a>
+                    <a
+                      href="#"
+                      class="text-primary"
+                      style="text-decoration: underline"
+                      >Tray Scan</a
+                    >
+                  </td>
+                  <td>
+                    <div
+                      class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                      style="
+                        border: 2px solid #9c9c9c;
+                        background-color: #d9d9d9;
+                        color: #6c6c6c;
+                        font-size: clamp(0.75rem, 2vw, 0.875rem);
+                        white-space: nowrap;
+                        padding-top: 0.5rem;
+                        padding-bottom: 0.5rem;
+                      "
+                    >
+                      Yet to Start
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                      style="
+                        border: 2px solid #9adeed;
+                        background-color: #d1edf3;
+                        color: #033b5d;
+                        font-size: clamp(0.75rem, 2vw, 0.875rem);
+                        white-space: nowrap;
+                        padding-top: 0.5rem;
+                        padding-bottom: 0.5rem;
+                      "
+                    >
+                      Day Planning
+                    </div>
+                  </td>
+                  <td style="padding: 20px 0 20px 20px">
+                    <a
+                      href="#"
+                      title="VoiceRec"
+                      style="
+                        display: inline-flex;
+                        align-items: center;
+                        height: 28px;
+                      "
+                    >
+                      <img
+                        src="{% static 'assets/icons/rec.png' %}"
+                        alt="VoiceRec"
+                        style="width: 28px; height: 28px"
+                      />
+                    </a>
+                    <a
+                      href="#"
+                      title="Chat"
+                      style="
+                        display: inline-flex;
+                        align-items: center;
+                        height: 28px;
+                        margin-left: 5px;
+                      "
+                    >
+                      <img
+                        src="{% static 'assets/icons/chat1.png' %}"
+                        alt="Chat"
+                        style="width: 28px; height: 28px"
+                      />
+                    </a>
+                  </td>
+                </tr>
+                <!-- Row 6 -->
+                <tr>
+                  <td>6</td>
+                  <td>2025-05-22 10:00 AM</td>
+                  <td>2565</td>
+                  <td>ISP</td>
+                  <td>A - Buffed</td>
+                  <td>A</td>
+                  <td>Nil</td>
+                  <td>Jumbo 14</td>
+                  <td>10</td>
+                  <td>50</td>
+                  <td>
+                    <div
+                      title="Tray Scan"
+                      class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+                      style="
+                        width: 28px;
+                        height: 28px;
+                        background-color: #6c6c6c; /* or any grey shade you prefer */
+
+                        color: white;
+                        font-weight: bold;
+                      "
+                    >
+                      T
+                    </div>
+                  </td>
+                  <td>
+                    <a href="#" title="Edit">
+                      <img
+                        src="{% static 'assets/icons/edit1.png' %}"
+                        alt="Edit"
+                        style="width: 28px; margin-right: 8px; height: auto"
+                      />
+                    </a>
+                    <a href="#" title="Delete">
+                      <img
+                        src="{% static 'assets/icons/bin.png' %}"
+                        alt="Delete"
+                        style="width: 28px; margin-right: 8px; height: auto"
+                      />
+                    </a>
+                    <a
+                      href="#"
+                      class="text-primary"
+                      style="text-decoration: underline"
+                      >Tray Scan</a
+                    >
+                  </td>
+                  <td>
+                    <div
+                      class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                      style="
+                        border: 2px solid #4997ac;
+                        background-color: #d1f2f3;
+                        color: #03425d;
+                        font-size: clamp(0.75rem, 2vw, 0.875rem);
+                        white-space: nowrap;
+                        padding-top: 0.5rem;
+                        padding-bottom: 0.5rem;
+                      "
+                    >
+                      On-Hold
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                      style="
+                        border: 2px solid #9adeed;
+                        background-color: #d1edf3;
+                        color: #033b5d;
+                        font-size: clamp(0.75rem, 2vw, 0.875rem);
+                        white-space: nowrap;
+                        padding-top: 0.5rem;
+                        padding-bottom: 0.5rem;
+                      "
+                    >
+                      Day Planning
+                    </div>
+                  </td>
+                  <td style="padding: 20px 0 20px 20px">
+                    <a
+                      href="#"
+                      title="VoiceRec"
+                      style="
+                        display: inline-flex;
+                        align-items: center;
+                        height: 28px;
+                      "
+                    >
+                      <img
+                        src="{% static 'assets/icons/rec.png' %}"
+                        alt="VoiceRec"
+                        style="width: 28px; height: 28px"
+                      />
+                    </a>
+                    <a
+                      href="#"
+                      title="Chat"
+                      style="
+                        display: inline-flex;
+                        align-items: center;
+                        height: 28px;
+                        margin-left: 5px;
+                      "
+                    >
+                      <img
+                        src="{% static 'assets/icons/chat1.png' %}"
+                        alt="Chat"
+                        style="width: 28px; height: 28px"
+                      />
+                    </a>
+                  </td>
+                </tr>
+
+                <!-- Row 7 -->
+                <tr>
+                  <td>7</td>
+                  <td>2025-05-22 10:00 AM</td>
+                  <td>7346</td>
+                  <td>ISP</td>
+                  <td>A - Buffed</td>
+                  <td>A</td>
+                  <td>Nil</td>
+                  <td>Jumbo 14</td>
+                  <td>10</td>
+                  <td>50</td>
+                  <td>
+                    <div
+                      title="Tray Scan"
+                      class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+                      style="
+                        width: 28px;
+                        height: 28px;
+                        background: linear-gradient(
+                          to right,
+                          #28a745 50%,
+                          #c1c3c6 50%
+                        );
+                        color: white;
+                        font-weight: bold;
+                      "
+                    >
+                      T
+                    </div>
+                  </td>
+                  <td>
+                    <a href="#" title="Edit">
+                      <img
+                        src="{% static 'assets/icons/edit1.png' %}"
+                        alt="Edit"
+                        style="width: 28px; margin-right: 8px; height: auto"
+                      />
+                    </a>
+                    <a href="#" title="Delete">
+                      <img
+                        src="{% static 'assets/icons/bin.png' %}"
+                        alt="Delete"
+                        style="width: 28px; margin-right: 8px; height: auto"
+                      />
+                    </a>
+                    <a
+                      href="#"
+                      class="text-primary"
+                      style="text-decoration: underline"
+                      >Tray Scan</a
+                    >
+                  </td>
+                  <td>
+                    <div
+                      class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                      style="
+                        border: 2px solid #a9ac49;
+                        background-color: #ceec8e;
+                        color: #769206;
+                        font-size: clamp(0.75rem, 2vw, 0.875rem);
+                        white-space: nowrap;
+                        padding-top: 0.5rem;
+                        padding-bottom: 0.5rem;
+                      "
+                    >
+                      Yet to Release
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                      style="
+                        border: 2px solid #9adeed;
+                        background-color: #d1edf3;
+                        color: #033b5d;
+                        font-size: clamp(0.75rem, 2vw, 0.875rem);
+                        white-space: nowrap;
+                        padding-top: 0.5rem;
+                        padding-bottom: 0.5rem;
+                      "
+                    >
+                      Day Planning
+                    </div>
+                  </td>
+                  <td style="padding: 20px 0 20px 20px">
+                    <a
+                      href="#"
+                      title="VoiceRec"
+                      style="
+                        display: inline-flex;
+                        align-items: center;
+                        height: 28px;
+                      "
+                    >
+                      <img
+                        src="{% static 'assets/icons/rec.png' %}"
+                        alt="VoiceRec"
+                        style="width: 28px; height: 28px"
+                      />
+                    </a>
+                    <a
+                      href="#"
+                      title="Chat"
+                      style="
+                        display: inline-flex;
+                        align-items: center;
+                        height: 28px;
+                        margin-left: 5px;
+                      "
+                    >
+                      <img
+                        src="{% static 'assets/icons/chat1.png' %}"
+                        alt="Chat"
+                        style="width: 28px; height: 28px"
+                      />
+                    </a>
+                  </td>
+                </tr>
+
+                <!-- Row 8 -->
+                <tr>
+                  <td>8</td>
+                  <td>2025-05-22 10:00 AM</td>
+                  <td>1965</td>
+                  <td>ISP</td>
+                  <td>A - Buffed</td>
+                  <td>A</td>
+                  <td>Nil</td>
+                  <td>Jumbo 14</td>
+                  <td>10</td>
+                  <td>50</td>
+                  <td>
+                    <div
+                      title="Tray Scan"
+                      class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+                      style="
+                        width: 28px;
+                        height: 28px;
+                        background-color: #28a745; /* or any grey shade you prefer */
+                        color: white;
+                        font-weight: bold;
+                      "
+                    >
+                      T
+                    </div>
+                  </td>
+                  <td>
+                    <a href="#" title="Edit">
+                      <img
+                        src="{% static 'assets/icons/edit1.png' %}"
+                        alt="Edit"
+                        style="width: 28px; margin-right: 8px; height: auto"
+                      />
+                    </a>
+                    <a href="#" title="Delete">
+                      <img
+                        src="{% static 'assets/icons/bin.png' %}"
+                        alt="Delete"
+                        style="width: 28px; margin-right: 8px; height: auto"
+                      />
+                    </a>
+                    <a
+                      href="#"
+                      class="text-primary"
+                      style="text-decoration: underline"
+                      >Tray Scan</a
+                    >
+                  </td>
+                  <td>
+                    <div
+                      class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                      style="
+                        border: 2px solid #49ac51;
+                        background-color: #d1f3d4;
+                        color: #2b5d03;
+                        font-size: clamp(0.75rem, 2vw, 0.875rem);
+                        white-space: nowrap;
+                        padding-top: 0.5rem;
+                        padding-bottom: 0.5rem;
+                      "
+                    >
+                      Released
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                      style="
+                        border: 2px solid #9adeed;
+                        background-color: #d1edf3;
+                        color: #033b5d;
+                        font-size: clamp(0.75rem, 2vw, 0.875rem);
+                        white-space: nowrap;
+                        padding-top: 0.5rem;
+                        padding-bottom: 0.5rem;
+                      "
+                    >
+                      IP Screening
+                    </div>
+                  </td>
+                  <td style="padding: 20px 0 20px 20px">
+                    <a
+                      href="#"
+                      title="VoiceRec"
+                      style="
+                        display: inline-flex;
+                        align-items: center;
+                        height: 28px;
+                      "
+                    >
+                      <img
+                        src="{% static 'assets/icons/rec.png' %}"
+                        alt="VoiceRec"
+                        style="width: 28px; height: 28px"
+                      />
+                    </a>
+                    <a
+                      href="#"
+                      title="Chat"
+                      style="
+                        display: inline-flex;
+                        align-items: center;
+                        height: 28px;
+                        margin-left: 5px;
+                      "
+                    >
+                      <img
+                        src="{% static 'assets/icons/chat1.png' %}"
+                        alt="Chat"
+                        style="width: 28px; height: 28px"
+                      />
+                    </a>
+                  </td>
+                </tr>
+                <!-- Add more rows as needed -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
