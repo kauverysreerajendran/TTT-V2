@@ -1,0 +1,789 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<style>
+  .playpause-toggle:checked ~ .play-icon {
+    display: none !important;
+  }
+  .playpause-toggle:checked ~ .pause-icon {
+    display: inline !important;
+  }
+  .content-wrapper {
+    transition: opacity 0.3s ease;
+    padding-bottom: 20px !important; /* Reduce space above footer */
+  }
+
+  /* When modal is active, dim the content */
+  .tray-scan-modal.active ~ .content-wrapper {
+    opacity: 0.3;
+    pointer-events: none; /* Optional: disable interaction */
+  }
+  span {
+    font-weight: bold;
+    color: #2a2a2a;
+  }
+
+  h6 {
+    color: grey;
+    margin-top: 6px; /* moves it down a bit */
+    font-weight: normal; /* optional: make font lighter if needed */
+  }
+
+  /* New top header container: flex left aligned, no interference with existing styles */
+  .modal-top-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 12px;
+  }
+
+  /* TrayScanDetails 3-column grid with scroll */
+  #trayScanDetails.table-grid {
+    display: grid !important; /* override any existing grid or flex */
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 10px !important;
+    max-height: 300px !important;
+    overflow-y: auto !important;
+    padding-right: 10px; /* prevent scrollbar overlay */
+    margin-top: 10px;
+  }
+
+  /* Styling individual grid cells, only inside trayScanDetails */
+  #trayScanDetails.table-grid > div {
+    background: #f7f7f7;
+    padding: 8px 12px;
+    border-radius: 30px;
+    font-size: 12px;
+    border: 1px solid #ddd;
+    margin: 0; /* reset any margin from <p> or others */
+  }
+
+  /* Sticky header row: first 3 divs inside trayScanDetails */
+  #trayScanDetails.table-grid > div:nth-child(-n + 3) {
+    background-color: #e0e0e0;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    align-items: center;
+  }
+
+  /* Override only when modal is open */
+  .tray-scan-modal.open {
+    width: 600px; /* your desired expanded width */
+    margin-right: 20px;
+  }
+
+  /* Keep it hidden with negative offset matching default width */
+  .tray-scan-modal {
+    right: -500px; /* must match the new width above to stay hidden properly */
+  }
+
+  #trayScanModal {
+    border-radius: 12px;
+    max-height: 90vh;
+    top: 40px; /* Moves the entire modal down from the top of the viewport */
+    height: calc(100% - 40px); /* Keeps height correct */
+  }
+
+  #trayScanDetails {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding-top: 10px;
+  }
+
+  /* Make each <p> act like a table cell */
+  #trayScanDetails p {
+    margin: 0;
+    padding: 4px 8px;
+    background: #f7f7f7;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+
+  .highlighted-tray-scan {
+    background-color: #88c4e3 !important;
+  }
+  .tray-scan-modal {
+    position: fixed;
+    top: 0;
+    right: -400px; /* Hidden by default */
+    width: 400px;
+    height: 100%;
+    background: white;
+    box-shadow: -3px 0 10px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    transition: right 0.3s ease;
+    z-index: 9999;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+
+  .tray-scan-modal.open {
+    right: 0; /* Slide in */
+  }
+
+  .tray-scan-modal-content {
+    position: relative;
+    height: 100%;
+  }
+
+  .tray-scan-close {
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .highlighted-tray-scan {
+    background-color: #cceeff !important;
+  }
+  .pagination-wrapper {
+    position: fixed;
+
+    top: 530px;
+    right: 20px;
+    background: transparent;
+    z-index: 999;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .table-responsive {
+      max-height: 800px;
+    }
+  }
+
+  .table-responsive {
+    max-height: 250px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    margin-bottom: 20px;
+  }
+
+  .table-responsive::-webkit-scrollbar {
+    display: none;
+  }
+
+  thead th {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 10;
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+  }
+
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* hide scroll for full screen */
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .content-wrapper {
+    flex: 1;
+    overflow-y: auto; /* enable scroll only for content section */
+    padding-bottom: 70px;
+  }
+
+  footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+  }
+
+  /* Reduce table height for web view (desktop only) */
+  @media (min-width: 1025px) {
+    .table-responsive {
+      max-height: 300px; /* reduced height for large screens */
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .table-responsive {
+      max-height: 600px; /* Increased height for tablets */
+    }
+  }
+
+  /* Make the table header sticky */
+  thead th {
+    position: sticky;
+    top: 0;
+    background-color: white; /* or your table header bg color */
+    z-index: 10; /* ensure it stays above the table rows */
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* optional shadow for better separation */
+  }
+
+  .table-responsive {
+    margin-bottom: 10px; /* add some free space below table */
+    max-height: 400px; /* or any fixed height you want */
+    overflow-y: auto; /* vertical scroll only */
+  }
+  .card-body {
+    width: 100%;
+    overflow-x: auto;
+    max-height: 2000px;
+  }
+</style>
+
+<div class="content-wrapper">
+  <h5 class="text-left mt-0 mb-3">
+    Day Planning / Day Planning Completed Table
+  </h5>
+  <div class="row">
+    <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <!-- Table Section -->
+            <div class="table-responsive">
+              <table id="order-listing" class="table">
+                <thead>
+                  <tr>
+                    <th>
+                      S.No <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Date and Time
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Model/Stock No
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Plating Color
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Polish Finish
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Version <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Source - Location
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Tray Type Capacity
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      No of Tray <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Total Quantity
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Process Status
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Action <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Batch Status
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Current Location
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Remarks <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Row 1 - Highlighted -->
+                  <tr class="highlighted-tray-scan">
+                    <td>1</td>
+                    <td>2025-05-22 10:00 AM</td>
+                    <td>1805</td>
+                    <td>ISP</td>
+                    <td>A - Buffed</td>
+                    <td>A</td>
+                    <td>Nil</td>
+                    <td>Normal 16</td>
+                    <td>10</td>
+                    <td>50</td>
+                    <td>
+                      <div
+                        title="Tray Scan"
+                        class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+                        style="
+                          width: 28px;
+                          height: 28px;
+                          background-color: #0c8249;
+                          color: white;
+                          font-weight: bold;
+                          padding-top: 1px;
+                          padding-right: 1px;
+                        "
+                      >
+                        T
+                      </div>
+                    </td>
+                    <td>
+                      <a href="#" title="Edit">
+                        <img
+                          src="{% static 'assets/icons/edit1.png' %}"
+                          alt="Edit"
+                          style="width: 28px; margin-right: 8px; height: auto"
+                        />
+                      </a>
+                      <a href="#" title="Delete">
+                        <img
+                          src="{% static 'assets/icons/bin.png' %}"
+                          alt="Delete"
+                          style="width: 28px; margin-right: 8px; height: auto"
+                        />
+                      </a>
+                    </td>
+                    <td>
+                      <div
+                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                        style="
+                          border: 2px solid #0d5d17;
+                          background-color: #c5f9c2;
+                          color: #2f801b;
+                          font-size: clamp(0.75rem, 2vw, 0.875rem);
+                          white-space: nowrap;
+                          padding-top: 0.5rem;
+                          padding-bottom: 0.5rem;
+                        "
+                      >
+                        Released
+                      </div>
+                    </td>
+                    <td>
+                      <div
+                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                        style="
+                          border: 2px solid #9adeed;
+                          background-color: #d1edf3;
+                          color: #033b5d;
+                          font-size: clamp(0.75rem, 2vw, 0.875rem);
+                          white-space: nowrap;
+                          padding-top: 0.5rem;
+                          padding-bottom: 0.5rem;
+                        "
+                      >
+                        Day Planning
+                      </div>
+                    </td>
+                    <td style="padding: 20px 0 20px 20px">
+                      <!-- Play/Pause toggle (pure CSS) -->
+                      <label
+                        style="
+                          cursor: pointer;
+                          margin-left: 5px;
+                          display: inline-flex;
+                          align-items: center;
+                        "
+                      >
+                        <input
+                          type="checkbox"
+                          class="playpause-toggle"
+                          style="display: none"
+                        />
+                        <img
+                          src="{% static 'assets/icons/play1.png' %}"
+                          alt="Play"
+                          class="play-icon"
+                          style="width: 30px; height: 30px"
+                        />
+                        <img
+                          src="{% static 'assets/icons/pause.png' %}"
+                          alt="Pause"
+                          class="pause-icon"
+                          style="width: 30px; height: 30px; display: none"
+                        />
+                      </label>
+                    </td>
+                  </tr>
+
+                  <!-- Row 3 -->
+                  <tr>
+                    <td>2</td>
+                    <td>2025-05-22 10:00 AM</td>
+                    <td>7346</td>
+                    <td>ISP</td>
+                    <td>A - Buffed</td>
+                    <td>A</td>
+                    <td>Nil</td>
+                    <td>Jumbo 14</td>
+                    <td>10</td>
+                    <td>50</td>
+                    <td>
+                      <div
+                        title="Tray Scan"
+                        class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+                        style="
+                          width: 28px;
+                          height: 28px;
+                          background-color: #0c8249;
+                          color: white;
+                          font-weight: bold;
+                          padding-top: 1px;
+                          padding-right: 1px;
+                        "
+                      >
+                        T
+                      </div>
+                    </td>
+                    <td>
+                      <a href="#" title="Edit">
+                        <img
+                          src="{% static 'assets/icons/edit1.png' %}"
+                          alt="Edit"
+                          style="width: 28px; margin-right: 8px; height: auto"
+                        />
+                      </a>
+                      <a href="#" title="Delete">
+                        <img
+                          src="{% static 'assets/icons/bin.png' %}"
+                          alt="Delete"
+                          style="width: 28px; margin-right: 8px; height: auto"
+                        />
+                      </a>
+                    </td>
+                    <td>
+                      <div
+                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                        style="
+                          border: 2px solid #d2d454;
+                          background-color: #f0f5b7;
+                          color: #4d5204;
+                          font-size: clamp(0.75rem, 2vw, 0.875rem);
+                          white-space: nowrap;
+                          padding-top: 0.5rem;
+                          padding-bottom: 0.5rem;
+                        "
+                      >
+                        Yet to Release
+                      </div>
+                    </td>
+                    <td>
+                      <div
+                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                        style="
+                          border: 2px solid #9adeed;
+                          background-color: #d1edf3;
+                          color: #033b5d;
+                          font-size: clamp(0.75rem, 2vw, 0.875rem);
+                          white-space: nowrap;
+                          padding-top: 0.5rem;
+                          padding-bottom: 0.5rem;
+                        "
+                      >
+                        Day Planning
+                      </div>
+                    </td>
+                    <td style="padding: 20px 0 20px 20px">
+                      <!-- Play/Pause toggle (pure CSS) -->
+                      <label
+                        style="
+                          cursor: pointer;
+                          margin-left: 5px;
+                          display: inline-flex;
+                          align-items: center;
+                        "
+                      >
+                        <input
+                          type="checkbox"
+                          class="playpause-toggle"
+                          style="display: none"
+                        />
+                        <img
+                          src="{% static 'assets/icons/play1.png' %}"
+                          alt="Play"
+                          class="play-icon"
+                          style="width: 30px; height: 30px"
+                        />
+                        <img
+                          src="{% static 'assets/icons/pause.png' %}"
+                          alt="Pause"
+                          class="pause-icon"
+                          style="width: 30px; height: 30px; display: none"
+                        />
+                      </label>
+                      <a
+                        href="#"
+                        title="Chat"
+                        style="
+                          display: inline-flex;
+                          align-items: center;
+                          height: 35px;
+                          margin-left: 5px;
+                        "
+                      >
+                        <img
+                          src="{% static 'assets/icons/read.png' %}"
+                          alt="Chat"
+                          style="width: 30px; height: 30px; object-fit: contain"
+                        />
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <!-- Tray Scan (hyperlink) - Right side modal -->
+              <div
+                id="trayScanModal"
+                class="tray-scan-modal active"
+                id="trayScanModal"
+              >
+                <div class="tray-scan-modal-content">
+                  <span id="closeTrayScanModal" class="tray-scan-close"
+                    >&times;</span
+                  >
+
+                  <!-- Existing centered h3 title -->
+                  <h5 style="text-align: center">
+                    Day Planning - Tray Info Table (Before the Scan)
+                  </h5>
+
+                  <!-- trayScanDetails will be a scrollable 3-column grid with headers and unlimited rows -->
+                  <div id="trayScanDetails" class="table-grid">
+                    <!-- Headers -->
+                    <div>S.no</div>
+                    <div>Tray ID</div>
+                    <div>Tray Qty</div>
+
+                    <!-- Example rows (replace with dynamic content) -->
+                  </div>
+                  <!-- ✅ NEW BUTTONS SECTION -->
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: center;
+                      gap: 10px;
+                      margin-top: 20px;
+                    "
+                  >
+                    <button
+                      style="
+                        padding: 8px 16px;
+                        background: #007bff;
+                        color: white;
+                        border: none;
+                        border-radius: 30px;
+                      "
+                    >
+                      Draft
+                    </button>
+                    <button
+                      style="
+                        padding: 8px 16px;
+                        background: #28a745;
+                        color: white;
+                        border: none;
+                        border-radius: 30px;
+                      "
+                    >
+                      Submit
+                    </button>
+                    <button
+                      style="
+                        padding: 8px 16px;
+                        background: #dc3545;
+                        color: white;
+                        border: none;
+                        border-radius: 30px;
+                      "
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Pagination Section -->
+
+            <div class="pagination-wrapper">
+              <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-end mb-0">
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                  </li>
+                  <li class="page-item"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script for Sorting the Table for each rows -->
+  {% block script %}
+  <script nonce="{{ csp_nonce }}">
+    document.addEventListener("DOMContentLoaded", function () {
+      const table = document.getElementById("order-listing");
+      if (!table) {
+        console.warn("Table with ID 'order-listing' not found.");
+        return;
+      }
+
+      const headers = table.querySelectorAll("thead th");
+      const tbody = table.querySelector("tbody");
+
+      let sortDirection = {};
+
+      headers.forEach((header, index) => {
+        header.style.cursor = "pointer";
+
+        header.addEventListener("click", function () {
+          const rows = Array.from(tbody.querySelectorAll("tr"));
+          const dir = sortDirection[index] === "asc" ? "desc" : "asc";
+          sortDirection[index] = dir;
+
+          rows.sort((a, b) => {
+            const cellA = a.children[index].textContent.trim();
+            const cellB = b.children[index].textContent.trim();
+            const valA = isNaN(cellA) ? cellA : parseFloat(cellA);
+            const valB = isNaN(cellB) ? cellB : parseFloat(cellB);
+
+            if (valA < valB) return dir === "asc" ? -1 : 1;
+            if (valA > valB) return dir === "asc" ? 1 : -1;
+            return 0;
+          });
+
+          tbody.innerHTML = "";
+          rows.forEach((row) => tbody.appendChild(row));
+        });
+      });
+    });
+  </script>
+
+  <!-- Script for Tray Scan - Modal Popup -->
+  <script nonce="{{ csp_nonce }}">
+    document.addEventListener("DOMContentLoaded", () => {
+      const trayScanLinks = document.querySelectorAll(".tray-scan-btn");
+      const modal = document.getElementById("trayScanModal");
+      const closeBtn = document.getElementById("closeTrayScanModal");
+      const detailsDiv = document.getElementById("trayScanDetails");
+
+      trayScanLinks.forEach((link) => {
+        link.addEventListener("click", (event) => {
+          event.preventDefault();
+
+          const row = event.target.closest("tr");
+          if (!row) return;
+
+          // ✅ Highlight the clicked row
+          document.querySelectorAll("tbody tr").forEach((row) => {
+            row.classList.remove("highlighted-tray-scan");
+          });
+          row.classList.add("highlighted-tray-scan");
+
+          // Clear previous content and insert only the table header and sample rows
+          detailsDiv.innerHTML = `
+  <div>S.no</div>
+  <div>Tray ID</div>
+  <div>Tray Qty</div>
+
+  <div>1 (Top Tray)</div>
+<div>Tray001</div>
+<div style="display: flex; align-items: center; gap: 4px; width: 50px; margin-right: 35px;">
+  <div>
+    10
+  </div>
+  <div style="margin-left: 30px; display: flex; gap: 4px;">
+    <img src="/static/assets/icons/edit2.png" alt="Edit" style="width: 20px; height: 20px; cursor: pointer;" />
+    <img src="/static/assets/icons/bin.png" alt="Delete" style="width: 20px; height: 20px; cursor: pointer;" />
+  </div>
+</div>
+
+
+
+
+  <div>3</div>
+  <div>Tray003</div>
+  <div>15</div>
+
+ 
+`;
+
+          modal.classList.add("open");
+        });
+      });
+
+      closeBtn.addEventListener("click", () => {
+        modal.classList.remove("open");
+      });
+
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) {
+          modal.classList.remove("open");
+        }
+      });
+    });
+  </script>
+
+  <!-- ...existing code... -->
+
+  <!-- Load SweetAlert2 first -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script nonce="{{ csp_nonce }}">
+    document.addEventListener("DOMContentLoaded", function () {
+      const table = document.getElementById("order-listing");
+      if (!table) return;
+
+      table.addEventListener("click", function (e) {
+        const target = e.target;
+        if (
+          target.tagName === "IMG" &&
+          target.getAttribute("alt") === "Delete" &&
+          target.src.includes("bin.png")
+        ) {
+          e.preventDefault();
+          Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to delete this row?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              const row = target.closest("tr");
+              if (row) row.remove();
+              Swal.fire("Deleted!", "The row has been deleted.", "success");
+            }
+          });
+        }
+      });
+    });
+  </script>
+  <!-- ...existing code... -->
+
+  {% endblock %} {% endblock content %}
+</div>

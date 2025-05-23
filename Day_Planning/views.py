@@ -20,3 +20,8 @@ class IndexView(APIView):
 class DPPickTableView(APIView):
     def get(self, request):
         return render(request, 'Day_Planning/DP_PickTable.html')
+    
+    
+class DPCompletedTableView(APIView):
+    def get(self, request):
+        return render(request, 'Day_Planning/DP_Completed_Table.html')
