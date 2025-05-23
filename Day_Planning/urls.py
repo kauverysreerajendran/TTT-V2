@@ -1,10 +1,8 @@
-# Day_Planning/urls.py
-
 from django.urls import path
-from . import views
+from .views import *
 
 urlpatterns = [
-    path('', views.index, name='day_planning_home'),
-    path('pick-table/', views.dp_pick_table, name='dp_pick_table'),
-
+    path('BulkUpload/',BulkUpload.as_view(),name="BulkUpload"),
+    path('', IndexView.as_view(), name='day_planning_home'),
+    path('pick-table/', DPPickTableView.as_view(), name='dp_pick_table'),
 ]
