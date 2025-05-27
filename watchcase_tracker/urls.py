@@ -23,10 +23,14 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     
-    path('home/', TemplateView.as_view(template_name="index.html"), name="home"),  # Add this line
+    path('',include('modelmasterapp.urls')),
+    path('dashboard/', TemplateView.as_view(template_name="index.html"), name="root"),
+    path('home/', TemplateView.as_view(template_name="index.html"), name="home"),
     path('admin/', admin.site.urls),
-    path('modelmaster/',include('modelmasterapp.urls')),
     path('adminportal/',include('adminportal.urls')),
+    path('dayplanning/',include('DayPlanning.urls')),
+    path('recovery/', include('DP_Recovery.urls')),  # <-- Add this line
+
 
 
 ]

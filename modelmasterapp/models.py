@@ -114,6 +114,8 @@ class ModelMasterCreation(models.Model):
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, blank=True)  # Allow null values
     Moved_to_D_Picker = models.BooleanField(default=False, help_text="Moved to D Picker")
     Onhold_picking = models.BooleanField(default=False, help_text="On Hold Picking")
+    Draft_Saved=models.BooleanField(default=False,help_text="Draft Save")
+    dp_pick_remarks=models.CharField(max_length=100,null=True, blank=True)
     
     def save(self, *args, **kwargs):
         
@@ -123,15 +125,13 @@ class ModelMasterCreation(models.Model):
         
         # Fetch related data from ModelMaster
         model_data = self.model_stock_no
-        self.polish_finish = model_data.polish_finish.polish_type if model_data.polish_finish else ''
+        self.polish_finish = model_data.polish_finish
         self.ep_bath_type = model_data.ep_bath_type
-        self.tray_type = model_data.tray_type.tray_type_name if model_data.tray_type else ''
-        self.vendor_internal = model_data.vendor_internal.vendor_name if model_data.vendor_internal else ''
+        self.tray_type = model_data.tray_type
         self.tray_capacity = model_data.tray_capacity
+        self.vendor_internal = model_data.vendor_internal
         self.brand = model_data.brand
         self.gender = model_data.gender
-
-
 
         super().save(*args, **kwargs)
         self.images.set(model_data.images.all())
@@ -195,7 +195,24 @@ class TrayId(models.Model):
     def __str__(self):
         return f"{self.tray_id} - {self.lot_id} - {self.tray_quantity}"
 
+class DraftTrayId(models.Model):
+    """
+    TrayId Model
+    Represents a tray identifier in the Titan Track and Traceability system.
+   
+    """
+    lot_id = models.CharField(max_length=50, null=True, blank=True, help_text="Lot ID")
+    tray_id = models.CharField(max_length=100, unique=True, help_text="Tray ID")
+    tray_quantity = models.IntegerField(null=True, blank=True, help_text="Quantity in the tray")
+    batch_id = models.ForeignKey(ModelMasterCreation, on_delete=models.CASCADE,blank=True,null=True)
+    date = models.DateTimeField(default=timezone.now)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     
+ 
+ 
+    def __str__(self):
+        return f"{self.tray_id} - {self.tray_quantity}"
+  
 #unique_id history model
 
 class UniqueIDHistory(models.Model):

@@ -1,0 +1,503 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<style>
+ #order-listing thead th {
+  height: 38px !important; /* Increase as needed */
+  background: #028084 !important; /* existing bg */
+  color: #e5fcff !important;      /* existing color */
+  vertical-align: middle !important;
+  
+}
+  .content-wrapper > h5 {
+  margin-top: -35px !important;
+  margin-bottom: 5px !important;
+  font-size: 18px;
+  font-weight: 700;
+}
+  /* Table heading font size */
+  #order-listing th {
+    font-size: 14px !important;
+    font-weight: 600;
+  }
+/* Table data font size */
+  #order-listing td {
+    font-size: 12px !important;
+    font-weight: 400;
+  }
+  /* Add this to your <style> block */
+  .pagination-wrapper {
+    background: #fff;
+    padding: 8px 0 0 0;
+    position: relative;
+    z-index: 2;
+  }
+  /* Table and play/pause toggle styles */
+  #order-listing {
+    border-collapse: collapse;
+  }
+  #order-listing th,
+  #order-listing td {
+    border-right: 1px solid #d1d1d1;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+  }
+  #order-listing th:last-child,
+  #order-listing td:last-child {
+    border-right: none;
+  }
+  #order-listing tr,
+  #order-listing td,
+  #order-listing th {
+    height: 20px !important;
+    padding: 4px 8px !important;
+  }
+  .table-responsive {
+    max-height: 100%;
+    overflow-y: auto;
+    margin-bottom: 20px;
+  }
+
+  /* Allow tooltip to overflow outside the cell */
+  #order-listing td[style*="position: relative"] {
+    overflow: visible !important;
+  }
+
+  /* Ensure tooltip is always on top */
+  .model-image-tooltip {
+    z-index: 99999 !important;
+  }
+
+  /* Make sure the parent cell allows overflow */
+  #order-listing td[style*="position: relative"] {
+    overflow: visible !important;
+    position: relative;
+  }
+  thead th {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 10;
+  }
+  .playpause-toggle:checked ~ .play-icon {
+    display: none !important;
+  }
+  .playpause-toggle:checked ~ .pause-icon {
+    display: inline !important;
+  }
+  .play-icon,
+  .pause-icon {
+    width: 20px;
+    height: 20px;
+  }
+</style>
+
+<div class="content-wrapper">
+  <h5 class="text-left mt-0 mb-3" style="font-size: 16px; font-weight: 700">
+    Recovery Completed Table
+  </h5>
+  <div class="row">
+    <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table id="order-listing" class="table">
+              <thead>
+                <tr>
+                  <th>S.No</th>
+                  <th>Date and Time</th>
+                  <th>Model/Stock No</th>
+                  <th>Plating Color</th>
+                  <th>Polish Finish</th>
+                  <th>Version</th>
+                  <th>Source - Location</th>
+                  <th>Tray Type Capacity</th>
+                  <th>No of Tray</th>
+                  <th>Total Quantity</th>
+                  <th>Process Status</th>
+                  <th>Action</th>
+                  <th>Batch Status</th>
+                  <th>Current Location</th>
+                  <th>Remarks</th>
+                </tr>
+              </thead>
+                          <tbody>
+              {% for row in master_data %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ row.date_time|date:"Y-m-d H:i A" }}</td>
+                  <td style="position: relative">
+                    <span class="model-hover-trigger" style="cursor: pointer">
+                      {{ row.model_stock_no__model_no }}
+                      <!-- You can add your image tooltip logic here if you have images -->
+                    </span>
+                  </td>
+                  <td>{{ row.plating_color }}</td>
+                  <td>{{ row.polish_finish }}</td>
+                  <td>{{ row.version__version_name }}</td>
+                  <td>{{ row.vendor_location }}</td>
+                  <td>
+                    {% if row.tray_type %}{{ row.tray_type }}{% else %}Nil{% endif %}
+                    {% if row.tray_capacity %} {{ row.tray_capacity }}{% endif %}
+                  </td>
+                  <td>{{ row.no_of_trays }}</td>
+                  <td>
+                    {{ row.total_batch_quantity }}
+                  </td>
+                  <td>
+                    <div
+                      style="background: {% if row.Moved_to_D_Picker %}#0c8249{% else %}#c3c2c2{% endif %}; color: white; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                      T
+                    </div>
+                  </td>
+                  <td>
+                    <span style="opacity:0.5; pointer-events:none; display:inline-block;">
+                      <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit Disabled" style="width: 20px; margin-right: 8px; height: auto; filter: grayscale(1) opacity(0.5);" />
+                    </span>
+                    <span style="opacity:0.5; pointer-events:none; display:inline-block;">
+                      <img src="{% static 'assets/icons/bin.png' %}" alt="Delete Disabled" style="width: 20px; height: auto; filter: grayscale(1) opacity(0.5);" />
+                    </span>
+                  </td>
+                  <td>
+                    <div
+                      style="border: 1px solid {% if row.Moved_to_D_Picker %}#0d5d17{% else %}#d2d454{% endif %}; background: {% if row.Moved_to_D_Picker %}#c5f9c2{% else %}#f0f5b7{% endif %}; color: {% if row.Moved_to_D_Picker %}#2f801b{% else %}#4d5204{% endif %}; font-size: 12px; padding: 6px 12px; border-radius: 20px; display: inline-block;">
+                      {% if row.Moved_to_D_Picker %}Yet to Release{% else %}Yet to Release{% endif %}
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      style="border: 1px solid #9adeed; background: #d1edf3; color: #033b5d; font-size: 12px; padding: 6px 12px; border-radius: 20px; display: inline-block;">
+                      Day Planning
+                    </div>
+                  </td>
+                  <td style="padding: 8px 0 8px 8px">
+                    <label style="cursor: pointer; display: inline-flex; align-items: center;">
+                      <input type="checkbox" class="playpause-toggle" style="display: none" />
+                      <img src="{% static 'assets/icons/play1.png' %}" alt="Play" class="play-icon" />
+                      <img src="{% static 'assets/icons/pause.png' %}" alt="Pause" class="pause-icon" style="display: none" />
+                    </label>
+                  </td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="15" class="text-center">No records found.</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+            </table>
+          </div>
+          <!-- Pagination Section -->
+          <div class="pagination-wrapper" style="margin-top: 8px">
+            <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-end mb-0"></ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script nonce="{{ csp_nonce }}">
+    // Simple pagination (same as before)
+    document.addEventListener("DOMContentLoaded", function () {
+      const table = document.getElementById("order-listing");
+      if (!table) return;
+      const tbody = table.querySelector("tbody");
+      const rows = Array.from(tbody.querySelectorAll("tr"));
+      const rowsPerPage = 10;
+      let currentPage = 1;
+      function renderTable(page) {
+        tbody.innerHTML = "";
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        rows.slice(start, end).forEach((row) => tbody.appendChild(row));
+        renderPagination(page);
+      }
+      function renderPagination(page) {
+        let totalPages = Math.ceil(rows.length / rowsPerPage);
+        const pagination = document.querySelector(".pagination");
+        if (!pagination) return;
+        pagination.innerHTML = "";
+        // Previous
+        const prev = document.createElement("li");
+        prev.className = "page-item" + (page === 1 ? " disabled" : "");
+        prev.innerHTML = `<a class="page-link" href="#">Previous</a>`;
+        prev.onclick = function (e) {
+          e.preventDefault();
+          if (page > 1) renderTable(page - 1);
+        };
+        pagination.appendChild(prev);
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+          const li = document.createElement("li");
+          li.className = "page-item" + (i === page ? " active" : "");
+          li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+          li.onclick = function (e) {
+            e.preventDefault();
+            renderTable(i);
+          };
+          pagination.appendChild(li);
+        }
+        // Next
+        const next = document.createElement("li");
+        next.className = "page-item" + (page === totalPages ? " disabled" : "");
+        next.innerHTML = `<a class="page-link" href="#">Next</a>`;
+        next.onclick = function (e) {
+          e.preventDefault();
+          if (page < totalPages) renderTable(page + 1);
+        };
+        pagination.appendChild(next);
+      }
+      renderTable(currentPage);
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Script for Bin confirmation alert -->
+  <script nonce="{{ csp_nonce }}">
+    document.body.addEventListener("click", function (e) {
+      if (
+        e.target.tagName === "IMG" &&
+        e.target.getAttribute("alt") === "Delete" &&
+        e.target.src.includes("bin.png") &&
+        e.target.closest("table#order-listing")
+      ) {
+        e.preventDefault();
+        e.stopPropagation();
+        Swal.fire({
+          title: "Are you sure?",
+          text: "Do you want to delete this row?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes",
+          cancelButtonText: "No",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const row = e.target.closest("tr");
+            if (row) row.remove();
+            Swal.fire("Deleted!", "The row has been deleted.", "success");
+          }
+        });
+      }
+    });
+  </script>
+  <!-- Edit to enable editable input box for "Total Qty" row data -->
+  <script nonce="{{ csp_nonce }}">
+    document.addEventListener("DOMContentLoaded", function () {
+      document.body.addEventListener("click", function (e) {
+        if (
+          e.target.tagName === "IMG" &&
+          e.target.getAttribute("alt") === "Edit" &&
+          e.target.src.includes("edit1.png") &&
+          e.target.closest("table#order-listing")
+        ) {
+          e.preventDefault();
+          const row = e.target.closest("tr");
+          if (!row) return;
+          const qtyCell = row.children[9];
+          if (!qtyCell) return;
+          if (qtyCell.querySelector("input")) return;
+          const currentValue = qtyCell.textContent.trim();
+          qtyCell.innerHTML = `<input type="number" min="0" style="width:60px; padding:2px 4px; font-size:inherit;" value="${currentValue}" />`;
+          const input = qtyCell.querySelector("input");
+          input.focus();
+          input.select();
+          input.addEventListener("blur", function () {
+            qtyCell.textContent = input.value;
+          });
+          input.addEventListener("keydown", function (ev) {
+            if (ev.key === "Enter") {
+              input.blur();
+            }
+          });
+        }
+      });
+    });
+  </script>
+
+  <!-- Script for Model / Stock No - Image Mouse Hover -->
+  <script nonce="{{ csp_nonce }}">
+    document.addEventListener("DOMContentLoaded", function () {
+      document
+        .querySelectorAll(".model-hover-trigger")
+        .forEach(function (trigger) {
+          const tooltip = trigger.querySelector(".model-image-tooltip");
+          let currentIndex = 0;
+          let tooltipPinned = false;
+          const images = Array.from(
+            tooltip.querySelectorAll(".img-gallery img")
+          );
+
+          function showImages(start) {
+            images.forEach((img, i) => {
+              img.style.display =
+                i >= start && i < start + 3 ? "block" : "none";
+            });
+          }
+          showImages(currentIndex);
+
+          function adjustTooltipPosition() {
+            // Reset to default
+            tooltip.style.left = "50%";
+            tooltip.style.top = "110%";
+            tooltip.style.right = "";
+            tooltip.style.bottom = "";
+            tooltip.style.transform = "translateX(-50%)";
+            tooltip.style.maxWidth = "350px";
+            tooltip.style.maxHeight = "300px";
+            tooltip.style.overflow = "auto";
+
+            // Get bounding rectangles
+            const tooltipRect = tooltip.getBoundingClientRect();
+            const triggerRect = trigger.getBoundingClientRect();
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+
+            // Horizontal adjustment
+            if (tooltipRect.right > viewportWidth) {
+              tooltip.style.left = "auto";
+              tooltip.style.right = "0";
+              tooltip.style.transform = "none";
+            } else if (tooltipRect.left < 0) {
+              tooltip.style.left = "0";
+              tooltip.style.transform = "none";
+            }
+
+            // Vertical adjustment
+            if (tooltipRect.bottom > viewportHeight) {
+              tooltip.style.top = "auto";
+              tooltip.style.bottom = "110%";
+            } else if (tooltipRect.top < 0) {
+              tooltip.style.top = "0";
+              tooltip.style.bottom = "auto";
+            }
+          }
+
+          trigger.addEventListener("mouseenter", function () {
+            if (!tooltipPinned) {
+              tooltip.style.opacity = "1";
+              tooltip.style.pointerEvents = "auto";
+              setTimeout(adjustTooltipPosition, 10);
+            }
+          });
+          trigger.addEventListener("mousemove", function () {
+            if (!tooltipPinned) adjustTooltipPosition();
+          });
+          trigger.addEventListener("mouseleave", function () {
+            if (!tooltipPinned) {
+              tooltip.style.opacity = "0";
+              tooltip.style.pointerEvents = "none";
+            }
+          });
+          tooltip.addEventListener("mouseenter", function () {
+            if (!tooltipPinned) {
+              tooltip.style.opacity = "1";
+              tooltip.style.pointerEvents = "auto";
+            }
+          });
+          tooltip.addEventListener("mouseleave", function () {
+            if (!tooltipPinned) {
+              tooltip.style.opacity = "0";
+              tooltip.style.pointerEvents = "none";
+            }
+          });
+
+          // Pin tooltip on click
+          trigger.addEventListener("click", function (e) {
+            e.preventDefault();
+            tooltipPinned = true;
+            tooltip.style.opacity = "1";
+            tooltip.style.pointerEvents = "auto";
+            adjustTooltipPosition();
+          });
+
+          // Unpin tooltip if user clicks outside
+          document.addEventListener("mousedown", function (e) {
+            if (!trigger.contains(e.target) && !tooltip.contains(e.target)) {
+              tooltipPinned = false;
+              tooltip.style.opacity = "0";
+              tooltip.style.pointerEvents = "none";
+            }
+          });
+
+          tooltip
+            .querySelector(".img-scroll-left")
+            .addEventListener("click", function (e) {
+              e.stopPropagation();
+              if (currentIndex > 0) {
+                currentIndex--;
+                showImages(currentIndex);
+              }
+            });
+          tooltip
+            .querySelector(".img-scroll-right")
+            .addEventListener("click", function (e) {
+              e.stopPropagation();
+              if (currentIndex < images.length - 3) {
+                currentIndex++;
+                showImages(currentIndex);
+              }
+            });
+
+          // Add click event to images for modal slider
+          images.forEach(function (img, idx) {
+            img.style.cursor = "pointer";
+            img.addEventListener("click", function (e) {
+              e.stopPropagation();
+              openImageSlider(
+                images.map((i) => i.src),
+                idx
+              );
+            });
+          });
+        });
+
+      // Modal slider functions (unchanged)
+      const modal = document.getElementById("imageSliderModal");
+      const closeModal = document.getElementById("closeImageSliderModal");
+      const slidesContainer = modal.querySelector(".slides");
+      let sliderImages = [];
+      let currentSlide = 0;
+
+      function openImageSlider(srcArray, startIdx) {
+        sliderImages = srcArray;
+        slidesContainer.innerHTML = "";
+        sliderImages.forEach((src) => {
+          const slide = document.createElement("div");
+          slide.className = "slide";
+          const img = document.createElement("img");
+          img.src = src;
+          slide.appendChild(img);
+          slidesContainer.appendChild(slide);
+        });
+        currentSlide = startIdx;
+        showSlide(currentSlide);
+        modal.classList.add("open");
+      }
+
+      function showSlide(n) {
+        const slides = slidesContainer.querySelectorAll(".slide");
+        if (!slides.length) return;
+        currentSlide = (n + slides.length) % slides.length;
+        slides.forEach((slide, idx) => {
+          slide.classList.toggle("active", idx === currentSlide);
+        });
+      }
+
+      modal.querySelector("#prevBtn").addEventListener("click", function (e) {
+        e.stopPropagation();
+        showSlide(currentSlide - 1);
+      });
+      modal.querySelector("#nextBtn").addEventListener("click", function (e) {
+        e.stopPropagation();
+        showSlide(currentSlide + 1);
+      });
+      closeModal.addEventListener("click", function () {
+        modal.classList.remove("open");
+      });
+      modal.addEventListener("click", function (e) {
+        if (e.target === modal) modal.classList.remove("open");
+      });
+    });
+  </script>
+  {% endblock %}
+</div>

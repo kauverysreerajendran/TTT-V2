@@ -109,6 +109,7 @@ class BaseAPIView(APIView):
 
         return Response(context, status=status.HTTP_200_OK)
     
+from django.contrib.auth import authenticate, login
 
 class LoginAPIView(APIView):
     renderer_classes = [TemplateHTMLRenderer, JSONRenderer]
@@ -123,6 +124,9 @@ class LoginAPIView(APIView):
 
         user = authenticate(request, username=username, password=password)
         if user is not None:
+            # ✅ Set session!
+            login(request, user)  # <-- This is required for session authentication
+
             # If the request is from a browser (HTML form), redirect to index
             if request.accepted_renderer.format == 'html':
                 return redirect('index')  # Adjust path if needed
