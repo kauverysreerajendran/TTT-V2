@@ -1,68 +1,64 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 <style>
-
-    /* Center and style the tray scan table title */
   .tray-scan-modal h5 {
-    text-align: center !important;
-    margin: 0 auto 8px auto !important;
-    font-size: 1.15rem !important;
-    font-weight: 700 !important;
-    
-    width: 100%;
-    display: block;
-  }
-    #trayScanDetails.table-grid > div.tray-validation-status-header {
-    background-color: #e0f7fa !important;
-    font-weight: bold !important;
-    color: #028084 !important;
-  }
-  #trayScanDetails.table-grid > div.tray-validation-status-cell {
-    background-color: #f1fcff !important;
-    font-weight: bold !important;
-    color: #028084 !important;
-  }
- #order-listing thead th {
+  text-align: center !important;
+  margin: 0 auto 8px auto !important;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  width: 100%;
+  display: block;
+}
+#trayScanDetails.table-grid > div.tray-validation-status-header {
+  background-color: #e0f7fa !important;
+  font-weight: bold !important;
+  color: #028084 !important;
+}
+#trayScanDetails.table-grid > div.tray-validation-status-cell {
+  background-color: #f1fcff !important;
+  font-weight: bold !important;
+  color: #028084 !important;
+}
+#order-listing thead th {
   height: 38px !important; /* Increase as needed */
   background: #028084 !important; /* existing bg */
-  color: #e5fcff !important;      /* existing color */
+  color: #e5fcff !important; /* existing color */
   vertical-align: middle !important;
-  
 }
-    /* --- DP_PickTable: Match DP_Completed_Table style --- */
-  #order-listing {
-    border-collapse: collapse;
-  }
-  #order-listing th,
-  #order-listing td {
-    border-right: 1px solid #d1d1d1;
-    border-bottom: 1px solid #e0e0e0;
-    font-size: 12px;
-  }
-  #order-listing th:last-child,
-  #order-listing td:last-child {
-    border-right: none;
-  }
-  #order-listing tr,
-  #order-listing td,
-  #order-listing th {
-    height: 20px !important;
-    padding: 4px 8px !important;
-  }
+/* --- DP_PickTable: Match DP_Completed_Table style --- */
+#order-listing {
+  border-collapse: collapse;
+}
+#order-listing th,
+#order-listing td {
+  border-right: 1px solid #d1d1d1;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 12px;
+}
+#order-listing th:last-child,
+#order-listing td:last-child {
+  border-right: none;
+}
+#order-listing tr,
+#order-listing td,
+#order-listing th {
+  height: 20px !important;
+  padding: 4px 8px !important;
+}
 
-  .pagination-wrapper {
-    background: #fff;
-    padding: 8px 0 0 0;
-    position: relative;
-    z-index: 2;
-  }
-  /* Tooltip for model images */
+.pagination-wrapper {
+  background: #fff;
+  padding: 8px 0 0 0;
+  position: relative;
+  z-index: 2;
+}
+/* Tooltip for model images */
 .model-image-tooltip {
   position: absolute;
   z-index: 99999;
   background: #fff;
   border: 1px solid #ccc;
   border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
   padding: 10px;
   min-width: 220px;
   max-width: 350px;
@@ -107,25 +103,25 @@
   cursor: pointer;
 }
 
-    /* Reduce row height for .row class */
-  .row {
-    --bs-gutter-x: 30px;
-    --bs-gutter-y: 0;
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: calc(-1 * var(--bs-gutter-y));
-    margin-right: calc(-0.5 * var(--bs-gutter-x));
-    margin-left: calc(-0.5 * var(--bs-gutter-x));
-    min-height: 10px;         /* Add this line to reduce minimum row height */
-    padding-top: 2px;         /* Optional: reduce vertical padding */
-    padding-bottom: 2px;      /* Optional: reduce vertical padding */
-    overflow-y: auto !important;
-    overflow-x: auto !important;
-    scrollbar-width: thin; /* For Firefox */
-    -ms-overflow-style: auto; /* For IE/Edge */
-  }
-  .table-responsive::-webkit-scrollbar {
-  display: none;              /* Chrome, Safari, Opera */
+/* Reduce row height for .row class */
+.row {
+  --bs-gutter-x: 30px;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(-1 * var(--bs-gutter-y));
+  margin-right: calc(-0.5 * var(--bs-gutter-x));
+  margin-left: calc(-0.5 * var(--bs-gutter-x));
+  min-height: 10px; /* Add this line to reduce minimum row height */
+  padding-top: 2px; /* Optional: reduce vertical padding */
+  padding-bottom: 2px; /* Optional: reduce vertical padding */
+  overflow-y: auto !important;
+  overflow-x: auto !important;
+  scrollbar-width: thin; /* For Firefox */
+  -ms-overflow-style: auto; /* For IE/Edge */
+}
+.table-responsive::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 /* Move the main title a little up and make it responsive */
 .content-wrapper > h5 {
@@ -156,7 +152,6 @@
   transition: background 0.3s;
 }
 
-
 /* Floating alert style */
 .dp-float-alert {
   position: fixed;
@@ -169,7 +164,7 @@
   border-radius: 30px;
   font-size: 1rem;
   z-index: 99999;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s;
@@ -178,11 +173,10 @@
   opacity: 1;
   pointer-events: auto;
 }
-  .disabled-remark {
+.disabled-remark {
   cursor: not-allowed !important;
   opacity: 0.5 !important;
   pointer-events: none !important; /* <-- Add this line to fully disable hover/click */
-
 }
 /* Center all action icons in their cell */
 #order-listing td {
@@ -211,31 +205,79 @@
   width: 600px;
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   padding: 20px;
   z-index: 10000;
   transition: right 0.3s ease;
 }
-.image-slider-modal.open { display: block; }
+.image-slider-modal.open {
+  display: block;
+}
 .modal-close {
-  position: absolute; top: 10px; right: 10px; font-size: 24px; cursor: pointer; color: #666;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
 }
-.slider { position: relative; overflow: hidden; height: 350px; }
-.slides { display: flex; transition: transform 0.5s ease; width: 100%; }
-.slide { flex: 0 0 100%; box-sizing: border-box; display: none; }
-.slide.active { display: block; }
-.slide img { width: 100%; height: 350px; object-fit: cover; display: block; }
-.prev, .next {
-  position: absolute; top: 50%; transform: translateY(-50%);
-  background: rgba(0,0,0,0.5); border: none; color: #fff; padding: 8px;
-  cursor: pointer; border-radius: 50%; user-select: none;
+.slider {
+  position: relative;
+  overflow: hidden;
+  height: 350px;
 }
-.prev { left: 10px; }
-.next { right: 10px; }
+.slides {
+  display: flex;
+  transition: transform 0.5s ease;
+  width: 100%;
+}
+.slide {
+  flex: 0 0 100%;
+  box-sizing: border-box;
+  display: none;
+}
+.slide.active {
+  display: block;
+}
+.slide img {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  display: block;
+}
+.prev,
+.next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: #fff;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 50%;
+  user-select: none;
+}
+.prev {
+  left: 10px;
+}
+.next {
+  right: 10px;
+}
 @media (max-width: 767px) {
-  .image-slider-modal { width: 100%; right: 0; top: 0; border-radius: 0; padding: 10px; }
-  .slider { height: 250px; }
-  .slide img { height: 250px; }
+  .image-slider-modal {
+    width: 100%;
+    right: 0;
+    top: 0;
+    border-radius: 0;
+    padding: 10px;
+  }
+  .slider {
+    height: 250px;
+  }
+  .slide img {
+    height: 250px;
+  }
 }
 
 /* Make sure borders are continuous for the whole table */
@@ -253,235 +295,226 @@
 #order-listing td:last-child {
   border-right: none;
 }
-  /* Overall Table Shrink */
-    #order-listing tr,
-  #order-listing td,
-  #order-listing th {
-    height: 20px !important;
-    padding-top: 2px !important;
-    padding-bottom: 2px !important;
-    padding-left: 6px !important;
-    padding-right: 6px !important;
-    
-  }
-    /* Table heading font size */
-  #order-listing th {
-    font-size: 13px !important;
-    font-weight: 500;
-  }
-  
-  /* Table data font size */
-  #order-listing td {
-    font-size: 12px !important;
-    font-weight: 400;
-  }
-  .content-wrapper {
-    transition: opacity 0.3s ease;
-      padding-bottom: 70px !important; /* Reduce space above footer */
+/* Overall Table Shrink */
+#order-listing tr,
+#order-listing td,
+#order-listing th {
+  height: 20px !important;
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+  padding-left: 6px !important;
+  padding-right: 6px !important;
+}
+/* Table heading font size */
+#order-listing th {
+  font-size: 13px !important;
+  font-weight: 500;
+}
 
-  }
+/* Table data font size */
+#order-listing td {
+  font-size: 12px !important;
+  font-weight: 400;
+}
+.content-wrapper {
+  transition: opacity 0.3s ease;
+  padding-bottom: 70px !important; /* Reduce space above footer */
+}
 
-  /* When modal is active, dim the content */
-  .tray-scan-modal.active ~ .content-wrapper {
-    opacity: 0.3;
-    pointer-events: none; /* Optional: disable interaction */
-  }
-  span {
-    font-weight: bold;
-    color: #2a2a2a;
-  }
+/* When modal is active, dim the content */
+.tray-scan-modal.active ~ .content-wrapper {
+  opacity: 0.3;
+  pointer-events: none; /* Optional: disable interaction */
+}
+span {
+  font-weight: bold;
+  color: #2a2a2a;
+}
 
-  h6 {
-    color: grey;
-    margin-top: 6px; /* moves it down a bit */
-    font-weight: normal; /* optional: make font lighter if needed */
-  }
+h6 {
+  color: grey;
+  margin-top: 6px; /* moves it down a bit */
+  font-weight: normal; /* optional: make font lighter if needed */
+}
 
-  /* New top header container: flex left aligned, no interference with existing styles */
-  .modal-top-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 12px;
-  }
+/* New top header container: flex left aligned, no interference with existing styles */
+.modal-top-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 12px;
+}
 
-  /* TrayScanDetails 3-column grid with scroll */
-  #trayScanDetails.table-grid {
-    display: grid !important; /* override any existing grid or flex */
-    grid-template-columns: repeat(4, 1fr) !important; /* Table column max limit */
-    gap: 0px !important;
-    max-height: 300px !important;
-    overflow-y: auto !important;
-    padding-right: 10px; /* prevent scrollbar overlay */
-    margin-top: 10px;
-  }
+/* TrayScanDetails 3-column grid with scroll */
+#trayScanDetails.table-grid {
+  display: grid !important; /* override any existing grid or flex */
+  grid-template-columns: repeat(4, 1fr) !important; /* Table column max limit */
+  gap: 0px !important;
+  max-height: 300px !important;
+  overflow-y: auto !important;
+  padding-right: 10px; /* prevent scrollbar overlay */
+  margin-top: 10px;
+}
 
-  /* Styling individual grid cells, only inside trayScanDetails */
-  #trayScanDetails.table-grid > div {
-    background: #f7f7f7;
-    padding: 8px 12px;
-    
-    font-size: 12px;
-    border: 1px solid #ddd;
-    margin: 0; /* reset any margin from <p> or others */
-  }
+/* Styling individual grid cells, only inside trayScanDetails */
+#trayScanDetails.table-grid > div {
+  background: #f7f7f7;
+  padding: 8px 12px;
 
-  /* Sticky header row: first 3 divs inside trayScanDetails */
-  #trayScanDetails.table-grid > div:nth-child(-n + 3) {
-    background-color: #e0e0e0;
-    font-weight: 600;
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    align-items: center;
-  }
+  font-size: 12px;
+  border: 1px solid #ddd;
+  margin: 0; /* reset any margin from <p> or others */
+}
 
-  /* Override only when modal is open */
-  .tray-scan-modal.open {
-    width: 600px; /* your desired expanded width */
-    margin-right: 20px;
-  }
+/* Sticky header row: first 3 divs inside trayScanDetails */
+#trayScanDetails.table-grid > div:nth-child(-n + 3) {
+  background-color: #e0e0e0;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  align-items: center;
+}
 
-  /* Keep it hidden with negative offset matching default width */
-  .tray-scan-modal {
-    right: -500px; /* must match the new width above to stay hidden properly */
-  }
+/* Override only when modal is open */
+.tray-scan-modal.open {
+  width: 600px; /* your desired expanded width */
+  margin-right: 20px;
+}
 
-  #trayScanModal {
-    border-radius: 12px;
-    max-height: 90vh;
-    top: 40px; /* Moves the entire modal down from the top of the viewport */
-    height: calc(100% - 40px); /* Keeps height correct */
-  }
+/* Keep it hidden with negative offset matching default width */
+.tray-scan-modal {
+  right: -500px; /* must match the new width above to stay hidden properly */
+}
 
-  #trayScanDetails {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    padding-top: 10px;
-  }
+#trayScanModal {
+  border-radius: 12px;
+  max-height: 90vh;
+  top: 40px; /* Moves the entire modal down from the top of the viewport */
+  height: calc(100% - 40px); /* Keeps height correct */
+}
 
-  /* Make each <p> act like a table cell */
-  #trayScanDetails p {
-    margin: 0;
-    padding: 4px 8px;
-    background: #f7f7f7;
-    border-radius: 6px;
-    font-size: 14px;
-  }
+#trayScanDetails {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding-top: 10px;
+}
 
-    .highlighted-tray-scan {
-    background: #e6f7ff !important;
-    transition: background 0.3s;
-  }
-  .tray-scan-modal {
-    position: fixed;
-    top: 0;
-    right: -400px; /* Hidden by default */
-    width: 400px;
-    height: 100%;
-    background: white;
-    box-shadow: -3px 0 10px rgba(0, 0, 0, 0.2);
-    overflow-y: auto;
-    transition: right 0.3s ease;
-    z-index: 9999;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
+/* Make each <p> act like a table cell */
+#trayScanDetails p {
+  margin: 0;
+  padding: 4px 8px;
+  background: #f7f7f7;
+  border-radius: 6px;
+  font-size: 14px;
+}
 
-  .tray-scan-modal.open {
-    right: 0; /* Slide in */
-  }
+.highlighted-tray-scan {
+  background: #e6f7ff !important;
+  transition: background 0.3s;
+}
+.tray-scan-modal {
+  position: fixed;
+  top: 0;
+  right: -400px; /* Hidden by default */
+  width: 400px;
+  height: 100%;
+  background: white;
+  box-shadow: -3px 0 10px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  transition: right 0.3s ease;
+  z-index: 9999;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
 
-  .tray-scan-modal-content {
-    position: relative;
-    height: 100%;
-  }
+.tray-scan-modal.open {
+  right: 0; /* Slide in */
+}
 
-  .tray-scan-close {
-    position: absolute;
-    top: -10px;
-    right: 10px;
-    font-size: 24px;
-    font-weight: bold;
-    cursor: pointer;
-  }
+.tray-scan-modal-content {
+  position: relative;
+  height: 100%;
+}
 
+.tray-scan-close {
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-    /* Ensure table is scrollable if data exceeds visible area */
+/* Ensure table is scrollable if data exceeds visible area */
+.table-responsive {
+  max-height: 250px;
+  overflow-y: auto !important;
+  overflow-x: auto !important;
+  scrollbar-width: thin;
+  -ms-overflow-style: auto;
+  margin-bottom: 4px;
+}
+
+.table-responsive::-webkit-scrollbar {
+  display: block;
+  height: 8px;
+  width: 8px;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* hide scroll for full screen */
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content-wrapper {
+  flex: 1;
+  overflow-y: auto; /* enable scroll only for content section */
+  padding-bottom: 20px;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+}
+
+/* Reduce table height for web view (desktop only) */
+@media (min-width: 1025px) {
   .table-responsive {
-    max-height: 250px;
-    overflow-y: auto !important;
-    overflow-x: auto !important;
-    scrollbar-width: thin;
-    -ms-overflow-style: auto;
-    margin-bottom: 4px;
+    max-height: 300px; /* reduced height for large screens */
   }
-  
-  .table-responsive::-webkit-scrollbar {
-    display: block;
-    height: 8px;
-    width: 8px;
-  }
+}
 
-  html,
-  body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: hidden; /* hide scroll for full screen */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .table-responsive {
+    max-height: 600px; /* Increased height for tablets */
   }
+}
 
-  body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
+/* Make the table header sticky */
+thead th {
+  position: sticky;
+  top: 0;
+  background-color: white; /* or your table header bg color */
+  z-index: 10; /* ensure it stays above the table rows */
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* optional shadow for better separation */
+}
 
-  .content-wrapper {
-    flex: 1;
-    overflow-y: auto; /* enable scroll only for content section */
-    padding-bottom: 20px;
-  }
-
-  footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 40px;
-  }
-
-  /* Reduce table height for web view (desktop only) */
-  @media (min-width: 1025px) {
-    .table-responsive {
-      max-height: 300px; /* reduced height for large screens */
-    }
-  }
-
-  @media (min-width: 768px) and (max-width: 1024px) {
-    .table-responsive {
-      max-height: 600px; /* Increased height for tablets */
-    }
-  }
-
-  /* Make the table header sticky */
-  thead th {
-    position: sticky;
-    top: 0;
-    background-color: white; /* or your table header bg color */
-    z-index: 10; /* ensure it stays above the table rows */
-    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* optional shadow for better separation */
-  }
-
-  .card-body {
-    width: 100%;
-    overflow-x: auto;
-    max-height: none !important; /* Remove unnecessary vertical space */
-  }
 </style>
-
 <div class="content-wrapper">
   <h5 class="text-left mt-0 mb-3">Day Planning / Day Planning Pick Table</h5>
   <div class="row">

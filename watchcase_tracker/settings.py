@@ -46,6 +46,9 @@ INSTALLED_APPS = [
     'adminportal',
     'DayPlanning',
     'DP_Recovery',
+    'JigLoading',
+    'Inprocess_Inspection',
+    
     
 ]
 

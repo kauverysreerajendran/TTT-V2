@@ -29,7 +29,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('adminportal/',include('adminportal.urls')),
     path('dayplanning/',include('DayPlanning.urls')),
-    path('recovery/', include('DP_Recovery.urls')),  # <-- Add this line
+    path('recovery/', include('DP_Recovery.urls')),
+    path('jigloading/', include('JigLoading.urls')),
+    path('inprocessinspection/', include('Inprocess_Inspection.urls')),
 
 
 
