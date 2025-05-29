@@ -174,17 +174,30 @@
                   <i class="ti-settings text-primary"></i>
                   Settings
                 </a>
+<!-- Swap User -->
+<a class="dropdown-item" id="swapUserBtn" style="position: relative;">
+  <i class="ti-user text-primary"></i> Swap User
+
+  <!-- Mini sub option -->
+  <div id="swapUserSubMenu"
+    style="display: none; position: absolute; right: 100%; top: 0; min-width: 170px; background: #fff; border: 1px solid #ddd; border-radius: 6px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); z-index: 9999; text-align: center; padding: 5px;">
+    <a href="#" id="addAccountBtn"
+      style="display: block; min-width: 100px; background: #fff; text-align: center; padding: 6px 0 14px 0; margin: 0 auto; font-weight: 500; position: relative; top: -6px;"> Add Account</a>
+    
+  </div>
+</a>
+
                 <a class="dropdown-item">
                   <i class="ti-power-off text-primary"></i>
                   Logout
                 </a>
               </div>
             </li>
-            <li class="nav-item nav-settings d-none d-lg-flex">
+           <!--  <li class="nav-item nav-settings d-none d-lg-flex">
               <a class="nav-link" href="#">
                 <i class="icon-ellipsis"></i>
               </a>
-            </li>
+            </li> -->
           </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
           data-toggle="offcanvas">
@@ -464,9 +477,33 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'inprocess_inspection_main' %}">IP Main</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'inprocess_inspection_complete' %}">IP Completed</a>
+      </li>
+      
     </ul>
   </div>
 </li>
+
+
+ <!-- Jig Unloading Menu -->
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="jig-loading">
+              <i class="ti-truck menu-icon"></i>
+              <span class="menu-title">Jig Unloading</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="tables">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'Jig_Unloading_MainTable' %}">JUL Main Table</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">JUL Completed Table</a>
+                </li>
+              </ul>
+            </div>
+          </li>
 
         </ul>
       </nav>
@@ -827,6 +864,53 @@
   <script nonce="{{ csp_nonce }}" src="{% static 'assets/js/dashboard.js' %}"></script>
   <script nonce="{{ csp_nonce }}" src="{% static 'assets/js/Chart.roundedBarCharts.js' %}"></script>
   <!-- End custom js for this page-->
+
+
+
+ <!-- Modal for Add Account (reuse your previous modal) -->
+<div class="modal fade" id="swapUserModal" tabindex="-1" role="dialog" aria-labelledby="swapUserModalLabel" aria-hidden="true" style="display:none; background:rgba(0,0,0,0.35); position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:1050;">
+  <div class="modal-dialog" role="document" style="margin-top:10%;">
+    <div class="modal-content" style="border-radius:10px;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="swapUserModalLabel">Add New User</h5>
+        <button type="button" class="close" id="closeSwapUserModal" aria-label="Close" style="border:none; background:none; font-size:1.5rem;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="form-control mb-2" placeholder="Enter new user ID or name">
+        <button class="btn btn-primary w-100">Swap</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Script to handle Add User -->
+<script nonce="{{ csp_nonce }}">
+// Show/hide mini sub option on hover/click
+const swapUserBtn = document.getElementById('swapUserBtn');
+const swapUserSubMenu = document.getElementById('swapUserSubMenu');
+swapUserBtn.onmouseenter = function() {
+  swapUserSubMenu.style.display = 'block';
+};
+swapUserBtn.onmouseleave = function() {
+  swapUserSubMenu.style.display = 'none';
+};
+// Show modal when "Add Account" is clicked
+document.getElementById('addAccountBtn').onclick = function(e) {
+  e.preventDefault();
+  document.getElementById('swapUserModal').style.display = 'block';
+  swapUserSubMenu.style.display = 'none';
+};
+// Hide modal
+document.getElementById('closeSwapUserModal').onclick = function() {
+  document.getElementById('swapUserModal').style.display = 'none';
+};
+// Hide modal when clicking outside modal-content
+document.getElementById('swapUserModal').onclick = function(e) {
+  if (e.target === this) this.style.display = 'none';
+};
+</script>
 
 </body>
 

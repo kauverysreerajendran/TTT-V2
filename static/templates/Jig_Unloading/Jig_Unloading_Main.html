@@ -1,6 +1,12 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 
 <style>
+
+    #unloadModal table,
+    #unloadModal th,
+    #unloadModal td {
+      font-size: 13px !important;
+    }
     
 /* Ensure scan.png is always fully visible and vertically centered */
 #order-listing td img[alt="Scan"] {
@@ -676,7 +682,7 @@ thead th {
 </div>
 
 <div class="content-wrapper">
-  <h5 class="text-left mt-0 mb-3">Inprocess Inspection Main Table</h5>
+  <h5 class="text-left mt-0 mb-3">Jig Unloading Main Table</h5>
   <div class="row">
     <div class="col-12 grid-margin stretch-card">
       <div class="card">
@@ -697,9 +703,10 @@ thead th {
                     <th>Source-Location <i class="fa fa-filter" aria-hidden="true"></i></th>
                     <th>Jig Type - Capacity <i class="fa fa-filter" aria-hidden="true"></i></th>
                     <th>Bath Type <i class="fa fa-filter" aria-hidden="true"></i></th>
-                    <th>Jig LOT Qty <i class="fa fa-filter" aria-hidden="true"></i></th>
+                    <th>LOT Qty <i class="fa fa-filter" aria-hidden="true"></i></th>
                     <th>Bath No <i class="fa fa-filter" aria-hidden="true"></i></th>
-                    <th>IP Info <i class="fa fa-filter" aria-hidden="true"></i></th>
+                    <th>Tray Type - Capacity <i class="fa fa-filter" aria-hidden="true"></i></th>
+                    <th>No of Trays <i class="fa fa-filter" aria-hidden="true"></i></th>
                     <th>Process Status <i class="fa fa-filter" aria-hidden="true"></i></th>
                     <th>Action <i class="fa fa-filter" aria-hidden="true"></i></th>
                     <th>Batch Status <i class="fa fa-filter" aria-hidden="true"></i></th>
@@ -710,7 +717,9 @@ thead th {
                 <tbody>
 <!-- Static Data Rows -->
     <tr class="highlighted-tray-scan">
-    <td>1</td>
+    <td>1
+        <input type="checkbox" class="row-checkbox" style="vertical-align:middle; margin-left:4px;" />
+  </td>
     <td>JD001</td>
     <td>2025-05-28 10:15 AM</td>
     <td class="model-stock-no-cell" data-images='["/static/assets/images/imagePlaceholder.png"]' data-model-no="MSN-1005" data-remark="Sample remark for MSN-1005">
@@ -738,60 +747,35 @@ thead th {
                 <span style="font-weight:normal; margin-left:6px;">C</span>
               </td>
     <td>Nil</td>
-    <td>Normal - 16</td>
+    <td>120 - Jig</td>
     <td>Semi Bright</td>
     <td>75</td>
        <!-- Bath No - Dropdown -->
-        <td>
-  <div style="position:relative; display:flex; align-items:center;">
-    <select style="max-height:110px; overflow-y:auto; width:80px;" size="1" onchange="this.blur()">
-      <option value="B001">B001</option>
-      <option value="B002">B002</option>
-      <option value="B003">B003</option>
-      <option value="B004">B004</option>
-      <option value="B005">B005</option>
-    </select>
-    <img src="{% static 'assets/icons/scan.png' %}" alt="Scan"
-         style="opacity:0.4; margin-left:4px; height:14px; width:14px; object-fit:contain;" />
-  </div>
-</td>
+                <td>
+          B001
+        </td>
 
    
-       <!-- ... IP Info <td>... -->
-               <!-- Example for one row -->
-        <td>
-          <div style="display: flex; align-items: center; justify-content: center; position: relative;">
-            <img
-              src="{% static 'assets/icons/viewRemarks.png' %}"
-              alt="View Remarks"
-              style="width:22px; height:22px; object-fit:contain; cursor:pointer;"
-              title="View Remarks"
-              class="view-remarks-icon"
-              data-remark=""
-              data-tooltip-id="remarks-tooltip-1"
-            />
-            <div class="remarks-tooltip"
-              data-tooltip-id="remarks-tooltip-1"
-              style="display:none; position:absolute; top:120%; left:50%; transform:translateX(-50%); min-width:180px; max-width:320px; background:#fff; border:1px solid #ccc; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.18); padding:10px 14px; font-size:13px; color:#222; z-index:9999; white-space:pre-line;">
-            </div>
-          </div>
+       <!-- ... Tray Type - Capacity table value... -->
+              
+                <td>
+          <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#2ecc71;vertical-align:middle;margin-right:6px;"></span>
+          Normal-16
         </td>
-<!-- ...existing code... -->
+<!-- ...No of Tray -->
+ <td>10</td>
 <!-- Process Status column: move T icon here -->
 <td>
   <div style="display: flex; gap: 6px; align-items: center; justify-content: center;">
     <div title="Tray Scan"
       class="d-flex align-items-center justify-content-center rounded-circle ms-1"
       style="width: 20px; height: 20px; background-color: #0c8249; color: white; font-weight: 500; line-height: 20px; text-align: center; padding-top: 1px; padding-right: 1px;">
-      B
+      UL
     </div>
-    <div title="Rework"
-      class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-      style="width: 20px; height: 20px; background-color: #0c8249; color: white; font-weight: 500; line-height: 20px; text-align: center;">
-      R
-    </div>
+   
   </div>
 </td>
+
        <td>
       <a href="#" class="edit-qty-btn" data-batch-id="1">
         <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit" style="width: 20px; margin-right: 8px; height: auto"/>
@@ -802,49 +786,10 @@ thead th {
       
       <a href="#" class="text-primary tray-scan-btn remarks-modal-trigger" style="text-decoration: underline"
         data-batch-id="1" data-model-no="MSN-1001" data-no-of-trays="4" data-tray-capacity="24"
-        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Remarks</a>
+        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Unload</a>
     </td>
     
-    <!-- Modal for Remarks (no inline styles, uses classes above) -->
-<div class="modal fade" id="remarksModal" tabindex="-1" role="dialog" aria-labelledby="remarksModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header p-0" style="border-bottom:none;">
-        <img src="{% static 'assets/images/loginBG3.jpg' %}" alt="Banner" style="width:100%;height:90px;object-fit:cover;border-radius:8px 8px 0 0;">
-        <button type="button" class="close position-absolute end-0 top-0 m-2" data-bs-dismiss="modal" aria-label="Close" style="z-index:2;">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body pt-2">
-        <h5 class="modal-title text-center mb-3" id="remarksModalLabel" style="color:#028084;font-weight:700;">Add Jig Remark</h5>
-        <form id="remarksModalForm" autocomplete="off">
-          <div class="mb-3 row align-items-center ms-30">
-<label class="col-5 col-form-label text-end" style="margin-left:-35px; font-weight:bold;">Jig Position:</label>
-            <div class="col-7 d-flex gap-3">
-              <label class="form-check-label me-2"><input type="radio" class="form-check-input" name="jig_position" value="Top" required> Top</label>
-              <label class="form-check-label me-2"><input type="radio" class="form-check-input" name="jig_position" value="Middle"> Middle</label>
-              <label class="form-check-label"><input type="radio" class="form-check-input" name="jig_position" value="Bottom"> Bottom</label>
-            </div>
-          </div>
-          <div class="mb-3 row align-items-center ms-30">
-           
-                       <div class="mb-3 row align-items-center">
-            <label class="col-5 col-form-label text-end fw-bold" style="margin-left:-1px;">Enter Remarks:</label>              <div class="col-7 position-relative">
-                <input type="text" name="remarks" maxlength="50" required class="form-control pe-5" placeholder="Enter remarks (max 50 chars)" style="padding-right: 70px;" />
-                <span id="remarksCharCount" class="position-absolute end-0 top-50 translate-middle-y text-muted small me-2" style="pointer-events:none; font-size:12px;">0/50</span>
-              </div>
-            </div>
-                  <div class="row">
-          <div class="col-12 d-flex justify-content-center gap-3">
-            <button type="submit" class="btn btn-primary px-4">Save</button>
-            <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Cancel</button>
-          </div>
-        </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+ 
     
     <td>
       <div class="d-inline-block px-3 fw-semibold text-center rounded-pill"
@@ -860,7 +805,7 @@ thead th {
     </td>
    
     <td>
-      <a href="#" title="Add Remark" class="remark-tooltip-trigger" style="display: inline-flex; align-items: center; height: 20px; margin-left: 5px; position: relative; cursor: pointer;">
+    <a href="#" title="Add Remark" class="remark-tooltip-trigger" style="display: inline-flex; align-items: center; height: 20px; margin-left: 5px; position: relative; cursor: pointer;">
   <img src="{% static 'assets/icons/chat1.png' %}" alt="Chat" style="width: 20px; height: 20px"/>
   <img src="{% static 'assets/icons/play1.png' %}" alt="View" class="toggle-play-pause" style="width: 20px; height: 20px; margin-left: 4px; cursor:pointer;"/>
   <div class="remark-tooltip"
@@ -880,7 +825,9 @@ thead th {
   <!-- to delete static rows -->
  <!-- Static Data Rows -->
     <tr class="highlighted-tray-scan">
-    <td>1</td>
+     <td>1
+        <input type="checkbox" class="row-checkbox" style="vertical-align:middle; margin-left:4px;" />
+  </td>
     <td>JD001</td>
     <td>2025-05-28 10:15 AM</td>
     <td class="model-stock-no-cell" data-images='["/static/assets/images/imagePlaceholder.png"]' data-model-no="MSN-1005" data-remark="Sample remark for MSN-1005">
@@ -904,58 +851,33 @@ thead th {
     <td>A - Buffed</td>
     <td>A</td>
     <td>Nil</td>
-    <td>Normal - 16</td>
+    <td>120 - Jig</td>
     <td>Semi Bright</td>
     <td>75</td>
        <!-- Bath No - Dropdown -->
-        <td>
-  <div style="position:relative; display:flex; align-items:center;">
-    <select style="max-height:110px; overflow-y:auto; width:80px;" size="1" onchange="this.blur()">
-      <option value="B001">B001</option>
-      <option value="B002">B002</option>
-      <option value="B003">B003</option>
-      <option value="B004">B004</option>
-      <option value="B005">B005</option>
-    </select>
-    <img src="{% static 'assets/icons/scan.png' %}" alt="Scan"
-         style="opacity:0.4; margin-left:4px; height:14px; width:14px; object-fit:contain;" />
-  </div>
+       <td>
+  B002
 </td>
 
    
-       <!-- ... IP Info <td>... -->
-               <!-- Example for one row -->
-        <td>
-          <div style="display: flex; align-items: center; justify-content: center; position: relative;">
-            <img
-              src="{% static 'assets/icons/viewRemarks.png' %}"
-              alt="View Remarks"
-              style="width:22px; height:22px; object-fit:contain; cursor:pointer;"
-              title="View Remarks"
-              class="view-remarks-icon"
-              data-remark=""
-              data-tooltip-id="remarks-tooltip-1"
-            />
-            <div class="remarks-tooltip"
-              data-tooltip-id="remarks-tooltip-1"
-              style="display:none; position:absolute; top:120%; left:50%; transform:translateX(-50%); min-width:180px; max-width:320px; background:#fff; border:1px solid #ccc; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.18); padding:10px 14px; font-size:13px; color:#222; z-index:9999; white-space:pre-line;">
-            </div>
-          </div>
-        </td>
-<!-- ...existing code... -->
+       <!-- ... Tray Type - Capacity table value -->
+
+           <td>
+      <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#e74c3c;vertical-align:middle;margin-right:6px;"></span>
+      Jumbo-12
+    </td>
+             
+<!-- ...No of Tray -->
+ <td>10</td>
 <!-- Process Status column: move T icon here -->
 <td>
   <div style="display: flex; gap: 6px; align-items: center; justify-content: center;">
     <div title="Tray Scan"
       class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-      style="width: 20px; height: 20px; background: linear-gradient(to right, #0c8249 50%, #d3d3d3 50%); color: white;  font-weight: 500; line-height: 20px; text-align: center; padding-top: 1px; padding-right: 1px;">
-      B
+      style="width: 20px; height: 20px; background: linear-gradient(to right, #0c8249 50%, #d3d3d3 50%); color: white; font-weight: 500; line-height: 20px; text-align: center; padding-top: 1px; padding-right: 1px;">
+      UL
     </div>
-    <div title="Rework"
-      class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-      style="width: 20px; height: 20px; background-color: #d3d3d3; color: white; font-weight: 500; line-height: 20px; text-align: center;">
-      R
-    </div>
+    
   </div>
 </td>
        <td>
@@ -968,49 +890,9 @@ thead th {
       
       <a href="#" class="text-primary tray-scan-btn remarks-modal-trigger" style="text-decoration: underline"
         data-batch-id="1" data-model-no="MSN-1001" data-no-of-trays="4" data-tray-capacity="24"
-        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Remarks</a>
+        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Unload</a>
     </td>
     
-    <!-- Modal for Remarks (no inline styles, uses classes above) -->
-<div class="modal fade" id="remarksModal" tabindex="-1" role="dialog" aria-labelledby="remarksModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header p-0" style="border-bottom:none;">
-        <img src="{% static 'assets/images/loginBG3.jpg' %}" alt="Banner" style="width:100%;height:90px;object-fit:cover;border-radius:8px 8px 0 0;">
-        <button type="button" class="close position-absolute end-0 top-0 m-2" data-bs-dismiss="modal" aria-label="Close" style="z-index:2;">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body pt-2">
-        <h5 class="modal-title text-center mb-3" id="remarksModalLabel" style="color:#028084;font-weight:700;">Add Jig Remark</h5>
-        <form id="remarksModalForm" autocomplete="off">
-          <div class="mb-3 row align-items-center ms-30">
-<label class="col-5 col-form-label text-end" style="margin-left:-35px; font-weight:bold;">Jig Position:</label>
-            <div class="col-7 d-flex gap-3">
-              <label class="form-check-label me-2"><input type="radio" class="form-check-input" name="jig_position" value="Top" required> Top</label>
-              <label class="form-check-label me-2"><input type="radio" class="form-check-input" name="jig_position" value="Middle"> Middle</label>
-              <label class="form-check-label"><input type="radio" class="form-check-input" name="jig_position" value="Bottom"> Bottom</label>
-            </div>
-          </div>
-          <div class="mb-3 row align-items-center ms-30">
-           
-                       <div class="mb-3 row align-items-center">
-            <label class="col-5 col-form-label text-end fw-bold" style="margin-left:-1px;">Enter Remarks:</label>              <div class="col-7 position-relative">
-                <input type="text" name="remarks" maxlength="50" required class="form-control pe-5" placeholder="Enter remarks (max 50 chars)" style="padding-right: 70px;" />
-                <span id="remarksCharCount" class="position-absolute end-0 top-50 translate-middle-y text-muted small me-2" style="pointer-events:none; font-size:12px;">0/50</span>
-              </div>
-            </div>
-                  <div class="row">
-          <div class="col-12 d-flex justify-content-center gap-3">
-            <button type="submit" class="btn btn-primary px-4">Save</button>
-            <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Cancel</button>
-          </div>
-        </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
     
     <td>
       <div class="d-inline-block px-3 fw-semibold text-center rounded-pill"
@@ -1046,7 +928,9 @@ thead th {
   </tr>
   <!-- Static Data Rows -->
     <tr class="highlighted-tray-scan">
-    <td>1</td>
+     <td>1
+        <input type="checkbox" class="row-checkbox" style="vertical-align:middle; margin-left:4px;" />
+  </td>
     <td>JD001</td>
     <td>2025-05-28 10:15 AM</td>
     <td class="model-stock-no-cell" data-images='["/static/assets/images/imagePlaceholder.png"]' data-model-no="MSN-1005" data-remark="Sample remark for MSN-1005">
@@ -1070,58 +954,34 @@ thead th {
     <td>A - Buffed</td>
     <td>A</td>
     <td>Nil</td>
-    <td>Normal - 16</td>
+    <td>120 - Jig</td>
     <td>Semi Bright</td>
     <td>75</td>
-       <!-- Bath No - Dropdown -->
+       <!-- Bath No  -->
         <td>
-  <div style="position:relative; display:flex; align-items:center;">
-    <select style="max-height:110px; overflow-y:auto; width:80px;" size="1" onchange="this.blur()">
-      <option value="B001">B001</option>
-      <option value="B002">B002</option>
-      <option value="B003">B003</option>
-      <option value="B004">B004</option>
-      <option value="B005">B005</option>
-    </select>
-    <img src="{% static 'assets/icons/scan.png' %}" alt="Scan"
-         style="opacity:0.4; margin-left:4px; height:14px; width:14px; object-fit:contain;" />
-  </div>
+  B003
 </td>
+        
 
    
-       <!-- ... IP Info <td>... -->
-               <!-- Example for one row -->
-        <td>
-          <div style="display: flex; align-items: center; justify-content: center; position: relative;">
-            <img
-              src="{% static 'assets/icons/viewRemarks.png' %}"
-              alt="View Remarks"
-              style="width:22px; height:22px; object-fit:contain; cursor:pointer;"
-              title="View Remarks"
-              class="view-remarks-icon"
-              data-remark=""
-              data-tooltip-id="remarks-tooltip-1"
-            />
-            <div class="remarks-tooltip"
-              data-tooltip-id="remarks-tooltip-1"
-              style="display:none; position:absolute; top:120%; left:50%; transform:translateX(-50%); min-width:180px; max-width:320px; background:#fff; border:1px solid #ccc; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.18); padding:10px 14px; font-size:13px; color:#222; z-index:9999; white-space:pre-line;">
-            </div>
-          </div>
-        </td>
-<!-- ...existing code... -->
+       <!-- ...Tray Type Capacity. -->
+
+           <td>
+      <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#2ecc71;vertical-align:middle;margin-right:6px;"></span>
+      Normal-16
+    </td>
+              
+<!-- ...No of Tray -->
+ <td>10</td>
 <!-- Process Status column: move T icon here -->
 <td>
   <div style="display: flex; gap: 6px; align-items: center; justify-content: center;">
     <div title="Tray Scan"
       class="d-flex align-items-center justify-content-center rounded-circle ms-1"
       style="width: 20px; height: 20px; background-color: #d3d3d3; color: white; font-weight: 500; line-height: 20px; text-align: center; padding-top: 1px; padding-right: 1px;">
-      B
+      UL
     </div>
-    <div title="Rework"
-      class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-      style="width: 20px; height: 20px; background-color: #d3d3d3; color: white; font-weight: 500; line-height: 20px; text-align: center;">
-      R
-    </div>
+   
   </div>
 </td>
        <td>
@@ -1134,49 +994,10 @@ thead th {
       
       <a href="#" class="text-primary tray-scan-btn remarks-modal-trigger" style="text-decoration: underline"
         data-batch-id="1" data-model-no="MSN-1001" data-no-of-trays="4" data-tray-capacity="24"
-        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Remarks</a>
+        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Unload</a>
     </td>
     
-    <!-- Modal for Remarks (no inline styles, uses classes above) -->
-<div class="modal fade" id="remarksModal" tabindex="-1" role="dialog" aria-labelledby="remarksModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header p-0" style="border-bottom:none;">
-        <img src="{% static 'assets/images/loginBG3.jpg' %}" alt="Banner" style="width:100%;height:90px;object-fit:cover;border-radius:8px 8px 0 0;">
-        <button type="button" class="close position-absolute end-0 top-0 m-2" data-bs-dismiss="modal" aria-label="Close" style="z-index:2;">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body pt-2">
-        <h5 class="modal-title text-center mb-3" id="remarksModalLabel" style="color:#028084;font-weight:700;">Add Jig Remark</h5>
-        <form id="remarksModalForm" autocomplete="off">
-          <div class="mb-3 row align-items-center ms-30">
-<label class="col-5 col-form-label text-end" style="margin-left:-35px; font-weight:bold;">Jig Position:</label>
-            <div class="col-7 d-flex gap-3">
-              <label class="form-check-label me-2"><input type="radio" class="form-check-input" name="jig_position" value="Top" required> Top</label>
-              <label class="form-check-label me-2"><input type="radio" class="form-check-input" name="jig_position" value="Middle"> Middle</label>
-              <label class="form-check-label"><input type="radio" class="form-check-input" name="jig_position" value="Bottom"> Bottom</label>
-            </div>
-          </div>
-          <div class="mb-3 row align-items-center ms-30">
-           
-                       <div class="mb-3 row align-items-center">
-            <label class="col-5 col-form-label text-end fw-bold" style="margin-left:-1px;">Enter Remarks:</label>              <div class="col-7 position-relative">
-                <input type="text" name="remarks" maxlength="50" required class="form-control pe-5" placeholder="Enter remarks (max 50 chars)" style="padding-right: 70px;" />
-                <span id="remarksCharCount" class="position-absolute end-0 top-50 translate-middle-y text-muted small me-2" style="pointer-events:none; font-size:12px;">0/50</span>
-              </div>
-            </div>
-                  <div class="row">
-          <div class="col-12 d-flex justify-content-center gap-3">
-            <button type="submit" class="btn btn-primary px-4">Save</button>
-            <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Cancel</button>
-          </div>
-        </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+   
     
     <td>
       <div class="d-inline-block px-3 fw-semibold text-center rounded-pill"
@@ -1212,7 +1033,9 @@ thead th {
   </tr>
   <!-- Static Data Rows -->
     <tr class="highlighted-tray-scan">
-    <td>1</td>
+     <td>1
+        <input type="checkbox" class="row-checkbox" style="vertical-align:middle; margin-left:4px;" />
+  </td>
     <td>JD001</td>
     <td>2025-05-28 10:15 AM</td>
     <td class="model-stock-no-cell" data-images='["/static/assets/images/imagePlaceholder.png"]' data-model-no="MSN-1005" data-remark="Sample remark for MSN-1005">
@@ -1236,58 +1059,28 @@ thead th {
     <td>A - Buffed</td>
     <td>A</td>
     <td>Nil</td>
-    <td>Normal - 16</td>
+    <td>120 - Jig</td>
     <td>Semi Bright</td>
     <td>75</td>
-       <!-- Bath No - Dropdown -->
-        <td>
-  <div style="position:relative; display:flex; align-items:center;">
-    <select style="max-height:110px; overflow-y:auto; width:80px;" size="1" onchange="this.blur()">
-      <option value="B001">B001</option>
-      <option value="B002">B002</option>
-      <option value="B003">B003</option>
-      <option value="B004">B004</option>
-      <option value="B005">B005</option>
-    </select>
-    <img src="{% static 'assets/icons/scan.png' %}" alt="Scan"
-         style="opacity:0.4; margin-left:4px; height:14px; width:14px; object-fit:contain;" />
-  </div>
-</td>
-
+       <!-- Bath No -->
+       <td>B001</td>
    
-       <!-- ... IP Info <td>... -->
-               <!-- Example for one row -->
-        <td>
-          <div style="display: flex; align-items: center; justify-content: center; position: relative;">
-            <img
-              src="{% static 'assets/icons/viewRemarks.png' %}"
-              alt="View Remarks"
-              style="width:22px; height:22px; object-fit:contain; cursor:pointer;"
-              title="View Remarks"
-              class="view-remarks-icon"
-              data-remark=""
-              data-tooltip-id="remarks-tooltip-1"
-            />
-            <div class="remarks-tooltip"
-              data-tooltip-id="remarks-tooltip-1"
-              style="display:none; position:absolute; top:120%; left:50%; transform:translateX(-50%); min-width:180px; max-width:320px; background:#fff; border:1px solid #ccc; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.18); padding:10px 14px; font-size:13px; color:#222; z-index:9999; white-space:pre-line;">
-            </div>
-          </div>
-        </td>
-<!-- ...existing code... -->
+       <!-- ... Tray Type Capacity -->
+                           <td>
+              <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#e74c3c;vertical-align:middle;margin-right:6px;"></span>
+              Jumbo-12
+            </td>
+<!-- ...No of Tray -->
+ <td>10</td>
 <!-- Process Status column: move T icon here -->
 <td>
   <div style="display: flex; gap: 6px; align-items: center; justify-content: center;">
     <div title="Tray Scan"
       class="d-flex align-items-center justify-content-center rounded-circle ms-1"
       style="width: 20px; height: 20px; background-color: #0c8249; color: white; font-weight: 500; line-height: 20px; text-align: center; padding-top: 1px; padding-right: 1px;">
-      B
+      UL
     </div>
-    <div title="Rework"
-      class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-      style="width: 20px; height: 20px; background-color: #0c8249; color: white; font-weight: 500; line-height: 20px; text-align: center;">
-      R
-    </div>
+    
   </div>
 </td>
        <td>
@@ -1300,49 +1093,10 @@ thead th {
       
       <a href="#" class="text-primary tray-scan-btn remarks-modal-trigger" style="text-decoration: underline"
         data-batch-id="1" data-model-no="MSN-1001" data-no-of-trays="4" data-tray-capacity="24"
-        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Remarks</a>
+        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Unload</a>
     </td>
     
-    <!-- Modal for Remarks (no inline styles, uses classes above) -->
-<div class="modal fade" id="remarksModal" tabindex="-1" role="dialog" aria-labelledby="remarksModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header p-0" style="border-bottom:none;">
-        <img src="{% static 'assets/images/loginBG3.jpg' %}" alt="Banner" style="width:100%;height:90px;object-fit:cover;border-radius:8px 8px 0 0;">
-        <button type="button" class="close position-absolute end-0 top-0 m-2" data-bs-dismiss="modal" aria-label="Close" style="z-index:2;">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body pt-2">
-        <h5 class="modal-title text-center mb-3" id="remarksModalLabel" style="color:#028084;font-weight:700;">Add Jig Remark</h5>
-        <form id="remarksModalForm" autocomplete="off">
-          <div class="mb-3 row align-items-center ms-30">
-<label class="col-5 col-form-label text-end" style="margin-left:-35px; font-weight:bold;">Jig Position:</label>
-            <div class="col-7 d-flex gap-3">
-              <label class="form-check-label me-2"><input type="radio" class="form-check-input" name="jig_position" value="Top" required> Top</label>
-              <label class="form-check-label me-2"><input type="radio" class="form-check-input" name="jig_position" value="Middle"> Middle</label>
-              <label class="form-check-label"><input type="radio" class="form-check-input" name="jig_position" value="Bottom"> Bottom</label>
-            </div>
-          </div>
-          <div class="mb-3 row align-items-center ms-30">
-           
-                       <div class="mb-3 row align-items-center">
-            <label class="col-5 col-form-label text-end fw-bold" style="margin-left:-1px;">Enter Remarks:</label>              <div class="col-7 position-relative">
-                <input type="text" name="remarks" maxlength="50" required class="form-control pe-5" placeholder="Enter remarks (max 50 chars)" style="padding-right: 70px;" />
-                <span id="remarksCharCount" class="position-absolute end-0 top-50 translate-middle-y text-muted small me-2" style="pointer-events:none; font-size:12px;">0/50</span>
-              </div>
-            </div>
-                  <div class="row">
-          <div class="col-12 d-flex justify-content-center gap-3">
-            <button type="submit" class="btn btn-primary px-4">Save</button>
-            <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Cancel</button>
-          </div>
-        </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+    
     
     <td>
       <div class="d-inline-block px-3 fw-semibold text-center rounded-pill"
@@ -1358,335 +1112,208 @@ thead th {
     </td>
    
     <td>
-      <a href="#" title="Add Remark" class="remark-tooltip-trigger" style="display: inline-flex; align-items: center; height: 20px; margin-left: 5px; position: relative; cursor: pointer;">
-  <img src="{% static 'assets/icons/chat1.png' %}" alt="Chat" style="width: 20px; height: 20px"/>
-  <img src="{% static 'assets/icons/play1.png' %}" alt="View" class="toggle-play-pause" style="width: 20px; height: 20px; margin-left: 4px; cursor:pointer;"/>
-  <div class="remark-tooltip"
-    style="position: absolute; top: 110%; left: 50%; transform: translateX(-50%); width: 300px; background: #fff; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: 15px; z-index: 1000;">
-    <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid #fff;"></div>
-    <textarea placeholder="Type your remark..." style="width: 85%; height: 40px; resize: vertical; border: 1px solid #ccc; padding: 5px; border-radius: 4px; font-family: Arial, sans-serif; font-size: 14px;"></textarea>
-    <div style="text-align: right; margin-top: -35px">
-      <button type="button" style="background-color: #007bff; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 14px;">
-        <i class="fa fa-send"></i>
-      </button>
-    </div>
-  </div>
-</a>
-    </td>
-  </tr>
-  <!-- Static Data Rows -->
-    <tr class="highlighted-tray-scan">
-    <td>1</td>
-    <td>JD001</td>
-    <td>2025-05-28 10:15 AM</td>
-    <td class="model-stock-no-cell" data-images='["/static/assets/images/imagePlaceholder.png"]' data-model-no="MSN-1005" data-remark="Sample remark for MSN-1005">
-      <span class="model-stock-no-text" style="cursor:pointer;">
-        <!-- 5 colored circles -->
-        <span class="model-circle" style="background:#e74c3c;"></span>
-        <span class="model-circle" style="background:#f1c40f;"></span>
-        <span class="model-circle" style="background:#2ecc71;"></span>
-        <span class="model-circle" style="background:#3498db;"></span>
-        <span class="model-circle" style="background:#9b59b6; margin-right:0;"></span>
-        <!-- 6th: expand menu icon -->
-        <span class="expand-model-remark" style="display:inline-block;width:18px;height:18px;vertical-align:middle;cursor:pointer;" title="Expand">
-          <svg width="18" height="18" viewBox="0 0 18 18">
-            <circle cx="9" cy="9" r="8" fill="#bbb"/>
-            <polygon points="6,7 12,7 9,12" fill="#fff"/>
-          </svg>
-        </span>
-      </span>
-    </td>
-    <td>ISP</td>
-    <td>A - Buffed</td>
-    <td>A</td>
-    <td>Nil</td>
-    <td>Normal - 16</td>
-    <td>Semi Bright</td>
-    <td>75</td>
-       <!-- Bath No - Dropdown -->
-        <td>
-  <div style="position:relative; display:flex; align-items:center;">
-    <select style="max-height:110px; overflow-y:auto; width:80px;" size="1" onchange="this.blur()">
-      <option value="B001">B001</option>
-      <option value="B002">B002</option>
-      <option value="B003">B003</option>
-      <option value="B004">B004</option>
-      <option value="B005">B005</option>
-    </select>
-    <img src="{% static 'assets/icons/scan.png' %}" alt="Scan"
-         style="opacity:0.4; margin-left:4px; height:14px; width:14px; object-fit:contain;" />
-  </div>
-</td>
-
-   
-       <!-- ... IP Info <td>... -->
-               <!-- Example for one row -->
-        <td>
-          <div style="display: flex; align-items: center; justify-content: center; position: relative;">
-            <img
-              src="{% static 'assets/icons/viewRemarks.png' %}"
-              alt="View Remarks"
-              style="width:22px; height:22px; object-fit:contain; cursor:pointer;"
-              title="View Remarks"
-              class="view-remarks-icon"
-              data-remark=""
-              data-tooltip-id="remarks-tooltip-1"
-            />
-            <div class="remarks-tooltip"
-              data-tooltip-id="remarks-tooltip-1"
-              style="display:none; position:absolute; top:120%; left:50%; transform:translateX(-50%); min-width:180px; max-width:320px; background:#fff; border:1px solid #ccc; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.18); padding:10px 14px; font-size:13px; color:#222; z-index:9999; white-space:pre-line;">
-            </div>
-          </div>
-        </td>
-<!-- ...existing code... -->
-<!-- Process Status column: move T icon here -->
-<td>
-  <div style="display: flex; gap: 6px; align-items: center; justify-content: center;">
-    <div title="Tray Scan"
-      class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-      style="width: 20px; height: 20px; background-color: #0c8249; color: white; font-weight: 500; line-height: 20px; text-align: center; padding-top: 1px; padding-right: 1px;">
-      B
-    </div>
-    <div title="Rework"
-      class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-      style="width: 20px; height: 20px; background-color: #0c8249; color: white; font-weight: 500; line-height: 20px; text-align: center;">
-      R
-    </div>
-  </div>
-</td>
-       <td>
-      <a href="#" class="edit-qty-btn" data-batch-id="1">
-        <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit" style="width: 20px; margin-right: 8px; height: auto"/>
-      </a>
-      <a href="#" title="Delete">
-        <img src="{% static 'assets/icons/bin.png' %}" alt="Delete" style="width: 20px; margin-right: 8px; height: auto; cursor:pointer;"/>
-      </a>
-      
-      <a href="#" class="text-primary tray-scan-btn remarks-modal-trigger" style="text-decoration: underline"
-        data-batch-id="1" data-model-no="MSN-1001" data-no-of-trays="4" data-tray-capacity="24"
-        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Remarks</a>
-    </td>
-    
-    <!-- Modal for Remarks (no inline styles, uses classes above) -->
-<div class="modal fade" id="remarksModal" tabindex="-1" role="dialog" aria-labelledby="remarksModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header p-0" style="border-bottom:none;">
-        <img src="{% static 'assets/images/loginBG3.jpg' %}" alt="Banner" style="width:100%;height:90px;object-fit:cover;border-radius:8px 8px 0 0;">
-        <button type="button" class="close position-absolute end-0 top-0 m-2" data-bs-dismiss="modal" aria-label="Close" style="z-index:2;">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body pt-2">
-        <h5 class="modal-title text-center mb-3" id="remarksModalLabel" style="color:#028084;font-weight:700;">Add Jig Remark</h5>
-        <form id="remarksModalForm" autocomplete="off">
-          <div class="mb-3 row align-items-center ms-30">
-<label class="col-5 col-form-label text-end" style="margin-left:-35px; font-weight:bold;">Jig Position:</label>
-            <div class="col-7 d-flex gap-3">
-              <label class="form-check-label me-2"><input type="radio" class="form-check-input" name="jig_position" value="Top" required> Top</label>
-              <label class="form-check-label me-2"><input type="radio" class="form-check-input" name="jig_position" value="Middle"> Middle</label>
-              <label class="form-check-label"><input type="radio" class="form-check-input" name="jig_position" value="Bottom"> Bottom</label>
-            </div>
-          </div>
-          <div class="mb-3 row align-items-center ms-30">
-           
-                       <div class="mb-3 row align-items-center">
-            <label class="col-5 col-form-label text-end fw-bold" style="margin-left:-1px;">Enter Remarks:</label>              <div class="col-7 position-relative">
-                <input type="text" name="remarks" maxlength="50" required class="form-control pe-5" placeholder="Enter remarks (max 50 chars)" style="padding-right: 70px;" />
-                <span id="remarksCharCount" class="position-absolute end-0 top-50 translate-middle-y text-muted small me-2" style="pointer-events:none; font-size:12px;">0/50</span>
-              </div>
-            </div>
-                  <div class="row">
-          <div class="col-12 d-flex justify-content-center gap-3">
-            <button type="submit" class="btn btn-primary px-4">Save</button>
-            <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Cancel</button>
-          </div>
-        </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-    
-    <td>
-      <div class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-        style="border: 2px solid #0d5d17; background-color: #c5f9c2; color: #2f801b; font-size: 12px; white-space: nowrap; padding: 6px;">
-        Yet To Release
-      </div>
-    </td>
-    <td>
-      <div class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-        style="border: 1px solid #9adeed; background-color: #d1edf3; color: #033b5d; font-size: 12px; white-space: nowrap; padding: 6px;">
-        Day Planning
-      </div>
-    </td>
-   
-    <td>
-    <a href="#" title="Add Remark" class="remark-tooltip-trigger" style="display: inline-flex; align-items: center; height: 20px; margin-left: 5px; position: relative; cursor: pointer;">
-  <img src="{% static 'assets/icons/chat1.png' %}" alt="Chat" style="width: 20px; height: 20px"/>
-  <img src="{% static 'assets/icons/play1.png' %}" alt="View" class="toggle-play-pause" style="width: 20px; height: 20px; margin-left: 4px; cursor:pointer;"/>
-  <div class="remark-tooltip"
-    style="position: absolute; top: 110%; left: 50%; transform: translateX(-50%); width: 300px; background: #fff; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: 15px; z-index: 1000;">
-    <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid #fff;"></div>
-    <textarea placeholder="Type your remark..." style="width: 85%; height: 40px; resize: vertical; border: 1px solid #ccc; padding: 5px; border-radius: 4px; font-family: Arial, sans-serif; font-size: 14px;"></textarea>
-    <div style="text-align: right; margin-top: -35px">
-      <button type="button" style="background-color: #007bff; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 14px;">
-        <i class="fa fa-send"></i>
-      </button>
-    </div>
-  </div>
-</a>
-    </td>
-  </tr>
-  <!-- Static Data Rows -->
-    <tr class="highlighted-tray-scan">
-    <td>1</td>
-    <td>JD001</td>
-    <td>2025-05-28 10:15 AM</td>
-    <td class="model-stock-no-cell" data-images='["/static/assets/images/imagePlaceholder.png"]' data-model-no="MSN-1005" data-remark="Sample remark for MSN-1005">
-      <span class="model-stock-no-text" style="cursor:pointer;">
-        <!-- 5 colored circles -->
-        <span class="model-circle" style="background:#e74c3c;"></span>
-        <span class="model-circle" style="background:#f1c40f;"></span>
-        <span class="model-circle" style="background:#2ecc71;"></span>
-        <span class="model-circle" style="background:#3498db;"></span>
-        <span class="model-circle" style="background:#9b59b6; margin-right:0;"></span>
-        <!-- 6th: expand menu icon -->
-        <span class="expand-model-remark" style="display:inline-block;width:18px;height:18px;vertical-align:middle;cursor:pointer;" title="Expand">
-          <svg width="18" height="18" viewBox="0 0 18 18">
-            <circle cx="9" cy="9" r="8" fill="#bbb"/>
-            <polygon points="6,7 12,7 9,12" fill="#fff"/>
-          </svg>
-        </span>
-      </span>
-    </td>
-    <td>ISP</td>
-    <td>A - Buffed</td>
-    <td>A</td>
-    <td>Nil</td>
-    <td>Normal - 16</td>
-    <td>Semi Bright</td>
-    <td>75</td>
-       <!-- Bath No - Dropdown -->
-        <td>
-  <div style="position:relative; display:flex; align-items:center;">
-    <select style="max-height:110px; overflow-y:auto; width:80px;" size="1" onchange="this.blur()">
-      <option value="B001">B001</option>
-      <option value="B002">B002</option>
-      <option value="B003">B003</option>
-      <option value="B004">B004</option>
-      <option value="B005">B005</option>
-    </select>
-    <img src="{% static 'assets/icons/scan.png' %}" alt="Scan"
-         style="opacity:0.4; margin-left:4px; height:14px; width:14px; object-fit:contain;" />
-  </div>
-</td>
-
-   
-       <!-- ... IP Info <td>... -->
-               <!-- Example for one row -->
-        <td>
-          <div style="display: flex; align-items: center; justify-content: center; position: relative;">
-            <img
-              src="{% static 'assets/icons/viewRemarks.png' %}"
-              alt="View Remarks"
-              style="width:22px; height:22px; object-fit:contain; cursor:pointer;"
-              title="View Remarks"
-              class="view-remarks-icon"
-              data-remark=""
-              data-tooltip-id="remarks-tooltip-1"
-            />
-            <div class="remarks-tooltip"
-              data-tooltip-id="remarks-tooltip-1"
-              style="display:none; position:absolute; top:120%; left:50%; transform:translateX(-50%); min-width:180px; max-width:320px; background:#fff; border:1px solid #ccc; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,0.18); padding:10px 14px; font-size:13px; color:#222; z-index:9999; white-space:pre-line;">
-            </div>
-          </div>
-        </td>
-<!-- ...existing code... -->
-<!-- Process Status column: move T icon here -->
-<td>
-  <div style="display: flex; gap: 6px; align-items: center; justify-content: center;">
-    <div title="Tray Scan"
-      class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-      style="width: 20px; height: 20px; background-color: #0c8249; color: white; font-weight: 500; line-height: 20px; text-align: center; padding-top: 1px; padding-right: 1px;">
-      B
-    </div>
-    <div title="Rework"
-      class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-      style="width: 20px; height: 20px; background-color: #0c8249; color: white; font-weight: 500; line-height: 20px; text-align: center;">
-      R
-    </div>
-  </div>
-</td>
-       <td>
-      <a href="#" class="edit-qty-btn" data-batch-id="1">
-        <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit" style="width: 20px; margin-right: 8px; height: auto"/>
-      </a>
-      <a href="#" title="Delete">
-        <img src="{% static 'assets/icons/bin.png' %}" alt="Delete" style="width: 20px; margin-right: 8px; height: auto; cursor:pointer;"/>
-      </a>
-      
-      <a href="#" class="text-primary tray-scan-btn remarks-modal-trigger" style="text-decoration: underline"
-        data-batch-id="1" data-model-no="MSN-1001" data-no-of-trays="4" data-tray-capacity="24"
-        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Remarks</a>
-    </td>
-    
-    <!-- Modal for Remarks (no inline styles, uses classes above) -->
-<div class="modal fade" id="remarksModal" tabindex="-1" role="dialog" aria-labelledby="remarksModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header p-0" style="border-bottom:none;">
-        <img src="{% static 'assets/images/loginBG3.jpg' %}" alt="Banner" style="width:100%;height:90px;object-fit:cover;border-radius:8px 8px 0 0;">
-        <button type="button" class="close position-absolute end-0 top-0 m-2" data-bs-dismiss="modal" aria-label="Close" style="z-index:2;">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body pt-2">
-        <h5 class="modal-title text-center mb-3" id="remarksModalLabel" style="color:#028084;font-weight:700;">Add Jig Remark</h5>
-        <form id="remarksModalForm" autocomplete="off">
-          <div class="mb-3 row align-items-center ms-30">
-<label class="col-5 col-form-label text-end" style="margin-left:-35px; font-weight:bold;">Jig Position:</label>
-            <div class="col-7 d-flex gap-3">
-              <label class="form-check-label me-2"><input type="radio" class="form-check-input" name="jig_position" value="Top" required> Top</label>
-              <label class="form-check-label me-2"><input type="radio" class="form-check-input" name="jig_position" value="Middle"> Middle</label>
-              <label class="form-check-label"><input type="radio" class="form-check-input" name="jig_position" value="Bottom"> Bottom</label>
-            </div>
-          </div>
-          <div class="mb-3 row align-items-center ms-30">
-           
-                       <div class="mb-3 row align-items-center">
-            <label class="col-5 col-form-label text-end fw-bold" style="margin-left:-1px;">Enter Remarks:</label>              <div class="col-7 position-relative">
-                <input type="text" name="remarks" maxlength="50" required class="form-control pe-5" placeholder="Enter remarks (max 50 chars)" style="padding-right: 70px;" />
-                <span id="remarksCharCount" class="position-absolute end-0 top-50 translate-middle-y text-muted small me-2" style="pointer-events:none; font-size:12px;">0/50</span>
-              </div>
-            </div>
-                  <div class="row">
-          <div class="col-12 d-flex justify-content-center gap-3">
-            <button type="submit" class="btn btn-primary px-4">Save</button>
-            <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Cancel</button>
-          </div>
-        </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-    
-    <td>
-      <div class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-        style="border: 2px solid #0d5d17; background-color: #c5f9c2; color: #2f801b; font-size: 12px; white-space: nowrap; padding: 6px;">
-        Yet To Release
-      </div>
-    </td>
-    <td>
-      <div class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-        style="border: 1px solid #9adeed; background-color: #d1edf3; color: #033b5d; font-size: 12px; white-space: nowrap; padding: 6px;">
-        Day Planning
-      </div>
-    </td>
-   
-    <td>
    <a href="#" title="Add Remark" class="remark-tooltip-trigger" style="display: inline-flex; align-items: center; height: 20px; margin-left: 5px; position: relative; cursor: pointer;">
+  <img src="{% static 'assets/icons/chat1.png' %}" alt="Chat" style="width: 20px; height: 20px"/>
+  <img src="{% static 'assets/icons/play1.png' %}" alt="View" class="toggle-play-pause" style="width: 20px; height: 20px; margin-left: 4px; cursor:pointer;"/>
+  <div class="remark-tooltip"
+    style="position: absolute; top: 110%; left: 50%; transform: translateX(-50%); width: 300px; background: #fff; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: 15px; z-index: 1000;">
+    <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid #fff;"></div>
+    <textarea placeholder="Type your remark..." style="width: 85%; height: 40px; resize: vertical; border: 1px solid #ccc; padding: 5px; border-radius: 4px; font-family: Arial, sans-serif; font-size: 14px;"></textarea>
+    <div style="text-align: right; margin-top: -35px">
+      <button type="button" style="background-color: #007bff; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 14px;">
+        <i class="fa fa-send"></i>
+      </button>
+    </div>
+  </div>
+</a>
+    </td>
+  </tr>
+  <!-- Static Data Rows -->
+    <tr class="highlighted-tray-scan">
+     <td>1
+        <input type="checkbox" class="row-checkbox" style="vertical-align:middle; margin-left:4px;" />
+  </td>
+    <td>JD001</td>
+    <td>2025-05-28 10:15 AM</td>
+    <td class="model-stock-no-cell" data-images='["/static/assets/images/imagePlaceholder.png"]' data-model-no="MSN-1005" data-remark="Sample remark for MSN-1005">
+      <span class="model-stock-no-text" style="cursor:pointer;">
+        <!-- 5 colored circles -->
+        <span class="model-circle" style="background:#e74c3c;"></span>
+        <span class="model-circle" style="background:#f1c40f;"></span>
+        <span class="model-circle" style="background:#2ecc71;"></span>
+        <span class="model-circle" style="background:#3498db;"></span>
+        <span class="model-circle" style="background:#9b59b6; margin-right:0;"></span>
+        <!-- 6th: expand menu icon -->
+        <span class="expand-model-remark" style="display:inline-block;width:18px;height:18px;vertical-align:middle;cursor:pointer;" title="Expand">
+          <svg width="18" height="18" viewBox="0 0 18 18">
+            <circle cx="9" cy="9" r="8" fill="#bbb"/>
+            <polygon points="6,7 12,7 9,12" fill="#fff"/>
+          </svg>
+        </span>
+      </span>
+    </td>
+    <td>ISP</td>
+    <td>A - Buffed</td>
+    <td>A</td>
+    <td>Nil</td>
+    <td>120 - Jig</td>
+    <td>Semi Bright</td>
+    <td>75</td>
+       <!-- Bath No  -->
+        <td>
+  B005
+</td>
+       
+   
+       <!-- ... Tray Type Capacity table value -->
+              
+                <td>
+          <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#e74c3c;vertical-align:middle;margin-right:6px;"></span>
+          Jumbo-12
+        </td>
+<!-- ...No of Tray -->
+ <td>10</td>
+<!-- Process Status column: move T icon here -->
+<td>
+  <div style="display: flex; gap: 6px; align-items: center; justify-content: center;">
+    <div title="Tray Scan"
+      class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+      style="width: 20px; height: 20px; background-color: #0c8249; color: white; font-weight: 500; line-height: 20px; text-align: center; padding-top: 1px; padding-right: 1px;">
+      UL
+    </div>
+    
+  </div>
+</td>
+       <td>
+      <a href="#" class="edit-qty-btn" data-batch-id="1">
+        <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit" style="width: 20px; margin-right: 8px; height: auto"/>
+      </a>
+      <a href="#" title="Delete">
+        <img src="{% static 'assets/icons/bin.png' %}" alt="Delete" style="width: 20px; margin-right: 8px; height: auto; cursor:pointer;"/>
+      </a>
+      
+      <a href="#" class="text-primary tray-scan-btn remarks-modal-trigger" style="text-decoration: underline"
+        data-batch-id="1" data-model-no="MSN-1001" data-no-of-trays="4" data-tray-capacity="24"
+        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Unload</a>
+    </td>
+    
+   
+    
+    <td>
+      <div class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+        style="border: 2px solid #0d5d17; background-color: #c5f9c2; color: #2f801b; font-size: 12px; white-space: nowrap; padding: 6px;">
+        Yet To Release
+      </div>
+    </td>
+    <td>
+      <div class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+        style="border: 1px solid #9adeed; background-color: #d1edf3; color: #033b5d; font-size: 12px; white-space: nowrap; padding: 6px;">
+        Day Planning
+      </div>
+    </td>
+   
+    <td>
+     <a href="#" title="Add Remark" class="remark-tooltip-trigger" style="display: inline-flex; align-items: center; height: 20px; margin-left: 5px; position: relative; cursor: pointer;">
+  <img src="{% static 'assets/icons/chat1.png' %}" alt="Chat" style="width: 20px; height: 20px"/>
+  <img src="{% static 'assets/icons/play1.png' %}" alt="View" class="toggle-play-pause" style="width: 20px; height: 20px; margin-left: 4px; cursor:pointer;"/>
+  <div class="remark-tooltip"
+    style="position: absolute; top: 110%; left: 50%; transform: translateX(-50%); width: 300px; background: #fff; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: 15px; z-index: 1000;">
+    <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid #fff;"></div>
+    <textarea placeholder="Type your remark..." style="width: 85%; height: 40px; resize: vertical; border: 1px solid #ccc; padding: 5px; border-radius: 4px; font-family: Arial, sans-serif; font-size: 14px;"></textarea>
+    <div style="text-align: right; margin-top: -35px">
+      <button type="button" style="background-color: #007bff; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 14px;">
+        <i class="fa fa-send"></i>
+      </button>
+    </div>
+  </div>
+</a>
+    </td>
+  </tr>
+  <!-- Static Data Rows -->
+    <tr class="highlighted-tray-scan">
+     <td>1
+        <input type="checkbox" class="row-checkbox" style="vertical-align:middle; margin-left:4px;" />
+  </td>
+    <td>JD001</td>
+    <td>2025-05-28 10:15 AM</td>
+    <td class="model-stock-no-cell" data-images='["/static/assets/images/imagePlaceholder.png"]' data-model-no="MSN-1005" data-remark="Sample remark for MSN-1005">
+      <span class="model-stock-no-text" style="cursor:pointer;">
+        <!-- 5 colored circles -->
+        <span class="model-circle" style="background:#e74c3c;"></span>
+        <span class="model-circle" style="background:#f1c40f;"></span>
+        <span class="model-circle" style="background:#2ecc71;"></span>
+        <span class="model-circle" style="background:#3498db;"></span>
+        <span class="model-circle" style="background:#9b59b6; margin-right:0;"></span>
+        <!-- 6th: expand menu icon -->
+        <span class="expand-model-remark" style="display:inline-block;width:18px;height:18px;vertical-align:middle;cursor:pointer;" title="Expand">
+          <svg width="18" height="18" viewBox="0 0 18 18">
+            <circle cx="9" cy="9" r="8" fill="#bbb"/>
+            <polygon points="6,7 12,7 9,12" fill="#fff"/>
+          </svg>
+        </span>
+      </span>
+    </td>
+    <td>ISP</td>
+    <td>A - Buffed</td>
+    <td>A</td>
+    <td>Nil</td>
+    <td>120 - Jig</td>
+    <td>Semi Bright</td>
+    <td>75</td>
+       <!-- Bath No -->
+      <td>
+  B006
+</td>
+   
+       <!-- ... Tray Type Capacity table value -->
+                <td>
+          <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#2ecc71;vertical-align:middle;margin-right:6px;"></span>
+          Normal-16
+        </td>
+              
+<!-- ...No of Tray -->
+ <td>10</td>
+<!-- Process Status column: move T icon here -->
+<td>
+  <div style="display: flex; gap: 6px; align-items: center; justify-content: center;">
+    <div title="Tray Scan"
+      class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+      style="width: 20px; height: 20px; background-color: #0c8249; color: white; font-weight: 500; line-height: 20px; text-align: center; padding-top: 1px; padding-right: 1px;">
+      UL
+    </div>
+    
+  </div>
+</td>
+       <td>
+      <a href="#" class="edit-qty-btn" data-batch-id="1">
+        <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit" style="width: 20px; margin-right: 8px; height: auto"/>
+      </a>
+      <a href="#" title="Delete">
+        <img src="{% static 'assets/icons/bin.png' %}" alt="Delete" style="width: 20px; margin-right: 8px; height: auto; cursor:pointer;"/>
+      </a>
+      
+      <a href="#" class="text-primary tray-scan-btn remarks-modal-trigger" style="text-decoration: underline"
+        data-batch-id="1" data-model-no="MSN-1001" data-no-of-trays="4" data-tray-capacity="24"
+        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Unload</a>
+    </td>
+    
+
+    
+    <td>
+      <div class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+        style="border: 2px solid #0d5d17; background-color: #c5f9c2; color: #2f801b; font-size: 12px; white-space: nowrap; padding: 6px;">
+        Yet To Release
+      </div>
+    </td>
+    <td>
+      <div class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+        style="border: 1px solid #9adeed; background-color: #d1edf3; color: #033b5d; font-size: 12px; white-space: nowrap; padding: 6px;">
+        Day Planning
+      </div>
+    </td>
+   
+    <td>
+     <a href="#" title="Add Remark" class="remark-tooltip-trigger" style="display: inline-flex; align-items: center; height: 20px; margin-left: 5px; position: relative; cursor: pointer;">
   <img src="{% static 'assets/icons/chat1.png' %}" alt="Chat" style="width: 20px; height: 20px"/>
   <img src="{% static 'assets/icons/play1.png' %}" alt="View" class="toggle-play-pause" style="width: 20px; height: 20px; margin-left: 4px; cursor:pointer;"/>
   <div class="remark-tooltip"
@@ -3177,7 +2804,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
-<!-- Script for Play/Pause in "remarks" -->
+<!-- Script for Play/Pause Audio Remark -->
  <script nonce="{{ csp_nonce }}">
 document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll('.toggle-play-pause').forEach(function(img) {
@@ -3191,6 +2818,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 </script>
+
 
 <!-- Script for remarks child window -->
  
@@ -3215,6 +2843,124 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 </script>
-// ...existing code...
+
+<!-- Script for "Unload" hyperlink in "Tray Scan" modal to display modal popup -->
+ 
+<script nonce="{{ csp_nonce }}">
+document.addEventListener("DOMContentLoaded", function () {
+  // Modal HTML (only add once)
+  if (!document.getElementById('unloadModal')) {
+    const modal = document.createElement('div');
+    modal.id = 'unloadModal';
+    modal.style = `
+      display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:20000;
+      background:rgba(0,0,0,0.25); align-items:center; justify-content:center;
+    `;
+    modal.innerHTML = `
+      <div style="
+        background:#fff; border-radius:12px; max-width:520px; width:96vw; max-height:80vh; padding:24px 18px 18px 18px;
+        box-shadow:0 8px 32px rgba(0,0,0,0.18); position:relative; display:flex; flex-direction:column;
+      ">
+        <span id="unloadModalClose" style="position:absolute;top:10px;right:18px;font-size:22px;cursor:pointer;color:#888;">&times;</span>
+        <h5 style="margin:0 0 16px 0; text-align:center; font-weight:700;">Unload Models</h5>
+        <div style="overflow-y:auto; max-height:48vh;">
+          <table style="width:100%; border-collapse:collapse; min-width:400px;">
+            <thead>
+              <tr style="background:#f7f7f7;">
+                <th style="padding:8px 6px; border-bottom:1px solid #ddd;">Image</th>
+                <th style="padding:8px 6px; border-bottom:1px solid #ddd;">Model Number</th>
+                <th style="padding:8px 6px; border-bottom:1px solid #ddd;">Qty</th>
+                <th style="padding:8px 6px; border-bottom:1px solid #ddd;">Operation</th>
+              </tr>
+            </thead>
+            <tbody id="unloadModalTableBody">
+              <!-- Rows will be injected here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+
+  // Demo data (replace with your dynamic data)
+  function getUnloadRows() {
+    return [
+      {
+        image: "/static/assets/images/imagePlaceholder.png",
+        model: "1805",
+        qty: 10
+      },
+      {
+        image: "/static/assets/images/imagePlaceholder.png",
+        model: "1806",
+        qty: 8
+      },
+      {
+        image: "/static/assets/images/imagePlaceholder.png",
+        model: "1807",
+        qty: 12
+      }
+    ];
+  }
+
+  // Show modal and populate table
+  function showUnloadModal() {
+    const modal = document.getElementById('unloadModal');
+    const tbody = document.getElementById('unloadModalTableBody');
+    if (!modal || !tbody) return;
+    // Clear previous rows
+    tbody.innerHTML = '';
+    // Get data (replace with AJAX if needed)
+    const rows = getUnloadRows();
+    rows.forEach(row => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td style="padding:6px 4px; text-align:center;">
+          <img src="${row.image}" alt="Model" style="width:38px; height:38px; object-fit:contain; border-radius:6px; border:1px solid #eee;"/>
+        </td>
+        <td style="padding:6px 4px; text-align:center; font-weight:600; color:#028084;">${row.model}</td>
+        <td style="padding:6px 4px; text-align:center;">
+          <input type="number" min="1" value="${row.qty}" style="width:60px; text-align:center; border-radius:4px; border:1px solid #ccc;"/>
+        </td>
+        <td style="padding:6px 4px; text-align:center;">
+          <button class="unload-row-btn" style="background:#028084; color:#fff; border:none; border-radius:5px; padding:5px 14px; font-size:13px; cursor:pointer;">Unload</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+    modal.style.display = 'flex';
+  }
+
+  // Close modal
+  document.getElementById('unloadModalClose').onclick = function() {
+    document.getElementById('unloadModal').style.display = 'none';
+  };
+  document.getElementById('unloadModal').onclick = function(e) {
+    if (e.target === this) this.style.display = 'none';
+  };
+
+  // Attach click handler to all "Unload" links/buttons
+  document.querySelectorAll('.tray-scan-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      // Only show our modal, not the old one
+      showUnloadModal();
+      e.stopPropagation();
+      e.preventDefault();
+    });
+  });
+
+  // Optional: handle Unload button in table
+  document.body.addEventListener('click', function(e) {
+    if (e.target.classList.contains('unload-row-btn')) {
+      e.target.textContent = "Unloaded!";
+      e.target.disabled = true;
+      e.target.style.background = "#2ecc71";
+      // You can add your AJAX here
+    }
+  });
+});
+</script>
+
   {% endblock %} {% endblock content %}
 </div>

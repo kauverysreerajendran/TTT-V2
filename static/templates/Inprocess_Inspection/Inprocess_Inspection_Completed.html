@@ -676,7 +676,7 @@ thead th {
 </div>
 
 <div class="content-wrapper">
-  <h5 class="text-left mt-0 mb-3">Inprocess Inspection Main Table</h5>
+  <h5 class="text-left mt-0 mb-3">Inprocess Inspection Completed Table</h5>
   <div class="row">
     <div class="col-12 grid-margin stretch-card">
       <div class="card">
@@ -741,21 +741,8 @@ thead th {
     <td>Normal - 16</td>
     <td>Semi Bright</td>
     <td>75</td>
-       <!-- Bath No - Dropdown -->
-        <td>
-  <div style="position:relative; display:flex; align-items:center;">
-    <select style="max-height:110px; overflow-y:auto; width:80px;" size="1" onchange="this.blur()">
-      <option value="B001">B001</option>
-      <option value="B002">B002</option>
-      <option value="B003">B003</option>
-      <option value="B004">B004</option>
-      <option value="B005">B005</option>
-    </select>
-    <img src="{% static 'assets/icons/scan.png' %}" alt="Scan"
-         style="opacity:0.4; margin-left:4px; height:14px; width:14px; object-fit:contain;" />
-  </div>
-</td>
-
+       <!-- Bath No -->
+     <td>B001</td>
    
        <!-- ... IP Info <td>... -->
                <!-- Example for one row -->
@@ -800,9 +787,7 @@ thead th {
         <img src="{% static 'assets/icons/bin.png' %}" alt="Delete" style="width: 20px; margin-right: 8px; height: auto; cursor:pointer;"/>
       </a>
       
-      <a href="#" class="text-primary tray-scan-btn remarks-modal-trigger" style="text-decoration: underline"
-        data-batch-id="1" data-model-no="MSN-1001" data-no-of-trays="4" data-tray-capacity="24"
-        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Remarks</a>
+       
     </td>
     
     <!-- Modal for Remarks (no inline styles, uses classes above) -->
@@ -907,20 +892,9 @@ thead th {
     <td>Normal - 16</td>
     <td>Semi Bright</td>
     <td>75</td>
-       <!-- Bath No - Dropdown -->
-        <td>
-  <div style="position:relative; display:flex; align-items:center;">
-    <select style="max-height:110px; overflow-y:auto; width:80px;" size="1" onchange="this.blur()">
-      <option value="B001">B001</option>
-      <option value="B002">B002</option>
-      <option value="B003">B003</option>
-      <option value="B004">B004</option>
-      <option value="B005">B005</option>
-    </select>
-    <img src="{% static 'assets/icons/scan.png' %}" alt="Scan"
-         style="opacity:0.4; margin-left:4px; height:14px; width:14px; object-fit:contain;" />
-  </div>
-</td>
+       <!-- Bath No  -->
+        <td>B002</td>
+      
 
    
        <!-- ... IP Info <td>... -->
@@ -948,12 +922,12 @@ thead th {
   <div style="display: flex; gap: 6px; align-items: center; justify-content: center;">
     <div title="Tray Scan"
       class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-      style="width: 20px; height: 20px; background: linear-gradient(to right, #0c8249 50%, #d3d3d3 50%); color: white;  font-weight: 500; line-height: 20px; text-align: center; padding-top: 1px; padding-right: 1px;">
+      style="width: 20px; height: 20px; background-color: #0c8249; color: white; font-weight: 500; line-height: 20px; text-align: center; padding-top: 1px; padding-right: 1px;">
       B
     </div>
     <div title="Rework"
       class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-      style="width: 20px; height: 20px; background-color: #d3d3d3; color: white; font-weight: 500; line-height: 20px; text-align: center;">
+      style="width: 20px; height: 20px; background-color: #0c8249; color: white; font-weight: 500; line-height: 20px; text-align: center;">
       R
     </div>
   </div>
@@ -966,9 +940,7 @@ thead th {
         <img src="{% static 'assets/icons/bin.png' %}" alt="Delete" style="width: 20px; margin-right: 8px; height: auto; cursor:pointer;"/>
       </a>
       
-      <a href="#" class="text-primary tray-scan-btn remarks-modal-trigger" style="text-decoration: underline"
-        data-batch-id="1" data-model-no="MSN-1001" data-no-of-trays="4" data-tray-capacity="24"
-        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Remarks</a>
+      
     </td>
     
     <!-- Modal for Remarks (no inline styles, uses classes above) -->
@@ -1073,21 +1045,9 @@ thead th {
     <td>Normal - 16</td>
     <td>Semi Bright</td>
     <td>75</td>
-       <!-- Bath No - Dropdown -->
-        <td>
-  <div style="position:relative; display:flex; align-items:center;">
-    <select style="max-height:110px; overflow-y:auto; width:80px;" size="1" onchange="this.blur()">
-      <option value="B001">B001</option>
-      <option value="B002">B002</option>
-      <option value="B003">B003</option>
-      <option value="B004">B004</option>
-      <option value="B005">B005</option>
-    </select>
-    <img src="{% static 'assets/icons/scan.png' %}" alt="Scan"
-         style="opacity:0.4; margin-left:4px; height:14px; width:14px; object-fit:contain;" />
-  </div>
-</td>
-
+       <!-- Bath No -->
+        <td>B001</td>
+      
    
        <!-- ... IP Info <td>... -->
                <!-- Example for one row -->
@@ -1114,12 +1074,12 @@ thead th {
   <div style="display: flex; gap: 6px; align-items: center; justify-content: center;">
     <div title="Tray Scan"
       class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-      style="width: 20px; height: 20px; background-color: #d3d3d3; color: white; font-weight: 500; line-height: 20px; text-align: center; padding-top: 1px; padding-right: 1px;">
+      style="width: 20px; height: 20px; background-color: #0c8249; color: white; font-weight: 500; line-height: 20px; text-align: center; padding-top: 1px; padding-right: 1px;">
       B
     </div>
     <div title="Rework"
       class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-      style="width: 20px; height: 20px; background-color: #d3d3d3; color: white; font-weight: 500; line-height: 20px; text-align: center;">
+      style="width: 20px; height: 20px; background-color: #0c8249; color: white; font-weight: 500; line-height: 20px; text-align: center;">
       R
     </div>
   </div>
@@ -1132,9 +1092,7 @@ thead th {
         <img src="{% static 'assets/icons/bin.png' %}" alt="Delete" style="width: 20px; margin-right: 8px; height: auto; cursor:pointer;"/>
       </a>
       
-      <a href="#" class="text-primary tray-scan-btn remarks-modal-trigger" style="text-decoration: underline"
-        data-batch-id="1" data-model-no="MSN-1001" data-no-of-trays="4" data-tray-capacity="24"
-        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Remarks</a>
+      
     </td>
     
     <!-- Modal for Remarks (no inline styles, uses classes above) -->
@@ -1239,20 +1197,9 @@ thead th {
     <td>Normal - 16</td>
     <td>Semi Bright</td>
     <td>75</td>
-       <!-- Bath No - Dropdown -->
-        <td>
-  <div style="position:relative; display:flex; align-items:center;">
-    <select style="max-height:110px; overflow-y:auto; width:80px;" size="1" onchange="this.blur()">
-      <option value="B001">B001</option>
-      <option value="B002">B002</option>
-      <option value="B003">B003</option>
-      <option value="B004">B004</option>
-      <option value="B005">B005</option>
-    </select>
-    <img src="{% static 'assets/icons/scan.png' %}" alt="Scan"
-         style="opacity:0.4; margin-left:4px; height:14px; width:14px; object-fit:contain;" />
-  </div>
-</td>
+       <!-- Bath No --->
+        <td>B002</td>
+      
 
    
        <!-- ... IP Info <td>... -->
@@ -1298,9 +1245,7 @@ thead th {
         <img src="{% static 'assets/icons/bin.png' %}" alt="Delete" style="width: 20px; margin-right: 8px; height: auto; cursor:pointer;"/>
       </a>
       
-      <a href="#" class="text-primary tray-scan-btn remarks-modal-trigger" style="text-decoration: underline"
-        data-batch-id="1" data-model-no="MSN-1001" data-no-of-trays="4" data-tray-capacity="24"
-        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Remarks</a>
+     
     </td>
     
     <!-- Modal for Remarks (no inline styles, uses classes above) -->
@@ -1403,20 +1348,9 @@ thead th {
     <td>Normal - 16</td>
     <td>Semi Bright</td>
     <td>75</td>
-       <!-- Bath No - Dropdown -->
-        <td>
-  <div style="position:relative; display:flex; align-items:center;">
-    <select style="max-height:110px; overflow-y:auto; width:80px;" size="1" onchange="this.blur()">
-      <option value="B001">B001</option>
-      <option value="B002">B002</option>
-      <option value="B003">B003</option>
-      <option value="B004">B004</option>
-      <option value="B005">B005</option>
-    </select>
-    <img src="{% static 'assets/icons/scan.png' %}" alt="Scan"
-         style="opacity:0.4; margin-left:4px; height:14px; width:14px; object-fit:contain;" />
-  </div>
-</td>
+       <!-- Bath No --->
+        <td>B005</td>
+       
 
    
        <!-- ... IP Info <td>... -->
@@ -1462,9 +1396,7 @@ thead th {
         <img src="{% static 'assets/icons/bin.png' %}" alt="Delete" style="width: 20px; margin-right: 8px; height: auto; cursor:pointer;"/>
       </a>
       
-      <a href="#" class="text-primary tray-scan-btn remarks-modal-trigger" style="text-decoration: underline"
-        data-batch-id="1" data-model-no="MSN-1001" data-no-of-trays="4" data-tray-capacity="24"
-        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Remarks</a>
+      
     </td>
     
     <!-- Modal for Remarks (no inline styles, uses classes above) -->
@@ -1567,20 +1499,9 @@ thead th {
     <td>Normal - 16</td>
     <td>Semi Bright</td>
     <td>75</td>
-       <!-- Bath No - Dropdown -->
-        <td>
-  <div style="position:relative; display:flex; align-items:center;">
-    <select style="max-height:110px; overflow-y:auto; width:80px;" size="1" onchange="this.blur()">
-      <option value="B001">B001</option>
-      <option value="B002">B002</option>
-      <option value="B003">B003</option>
-      <option value="B004">B004</option>
-      <option value="B005">B005</option>
-    </select>
-    <img src="{% static 'assets/icons/scan.png' %}" alt="Scan"
-         style="opacity:0.4; margin-left:4px; height:14px; width:14px; object-fit:contain;" />
-  </div>
-</td>
+       <!-- Bath No --->
+        <td>B007</td>
+    
 
    
        <!-- ... IP Info <td>... -->
@@ -1626,9 +1547,7 @@ thead th {
         <img src="{% static 'assets/icons/bin.png' %}" alt="Delete" style="width: 20px; margin-right: 8px; height: auto; cursor:pointer;"/>
       </a>
       
-      <a href="#" class="text-primary tray-scan-btn remarks-modal-trigger" style="text-decoration: underline"
-        data-batch-id="1" data-model-no="MSN-1001" data-no-of-trays="4" data-tray-capacity="24"
-        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Remarks</a>
+    
     </td>
     
     <!-- Modal for Remarks (no inline styles, uses classes above) -->

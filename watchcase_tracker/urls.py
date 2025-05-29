@@ -32,6 +32,7 @@ urlpatterns = [
     path('recovery/', include('DP_Recovery.urls')),
     path('jigloading/', include('JigLoading.urls')),
     path('inprocessinspection/', include('Inprocess_Inspection.urls')),
+    path('jigunloading/', include('Jig_Unloading.urls')),
 
 
 
