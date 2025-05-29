@@ -33,6 +33,7 @@ urlpatterns = [
     path('jigloading/', include('JigLoading.urls')),
     path('inprocessinspection/', include('Inprocess_Inspection.urls')),
     path('jigunloading/', include('Jig_Unloading.urls')),
+    path('nickelaudit/', include('Nickel_Audit.urls')),
 
 
 

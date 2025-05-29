@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'DP_Recovery',
     'JigLoading',
     'Inprocess_Inspection',
+    'Nickel_Audit',
     
     
 ]
