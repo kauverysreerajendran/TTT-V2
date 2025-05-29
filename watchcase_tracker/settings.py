@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'JigLoading',
     'Inprocess_Inspection',
     'Nickel_Audit',
+    'Spider_Spindle',
     
     
 ]
