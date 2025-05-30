@@ -2,7 +2,7 @@
 
 <div class="content-wrapper">
   <h5 class="text-left mt-0 mb-3">
-    Day Planning / Day Planning Completed Table
+    Day Planning Completed Table
   </h5>
   <div class="row">
     <div class="col-12 grid-margin stretch-card">
@@ -108,6 +108,13 @@
   <script nonce="{{ csp_nonce }}">
     // Simple pagination (same as before)
     document.addEventListener("DOMContentLoaded", function () {
+      // Add after: document.addEventListener("DOMContentLoaded", function () { for tray highlight
+      document.querySelectorAll("#order-listing tbody tr").forEach(row => {
+        row.addEventListener("click", function () {
+          document.querySelectorAll("#order-listing tbody tr").forEach(r => r.classList.remove("highlighted-tray-scan"));
+          row.classList.add("highlighted-tray-scan");
+        });
+      });
       const table = document.getElementById("order-listing");
       if (!table) return;
       const tbody = table.querySelector("tbody");

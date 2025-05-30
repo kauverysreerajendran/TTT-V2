@@ -777,7 +777,7 @@ body {
 
 #order-listing thead th {
   height: 38px !important; /* Increase as needed */
-  background: #028084 !important; /* existing bg */
+  background: #023E4DCC !important; /* existing bg */
   color: #e5fcff !important; /* existing color */
   vertical-align: middle !important;
 }
@@ -1225,16 +1225,16 @@ body {
 #trayScanDetails.table-grid > div.tray-validation-status-header {
   background-color: #e0f7fa !important;
   font-weight: bold !important;
-  color: #028084 !important;
+  color: #023E4DCC !important;
 }
 #trayScanDetails.table-grid > div.tray-validation-status-cell {
   background-color: #f1fcff !important;
   font-weight: bold !important;
-  color: #028084 !important;
+  color: #023E4DCC !important;
 }
 #order-listing thead th {
   height: 38px !important; /* Increase as needed */
-  background: #028084 !important; /* existing bg */
+  background: #023E4DCC !important; /* existing bg */
   color: #e5fcff !important; /* existing color */
   vertical-align: middle !important;
 }
@@ -1358,7 +1358,7 @@ body {
   display: inline-block;
   vertical-align: middle;
   font-weight: 600;
-  color: #028084;
+  color: #023E4DCC;
 }
 
 .dp-row-action-highlight {

@@ -8,4 +8,7 @@ from django.shortcuts import render
 class Jig_Unloading_MainTable(APIView):
     def get(self, request):
         return render(request, 'Jig_Unloading/Jig_Unloading_Main.html')
-    
+
+class JigUnloading_Completedtable(APIView):
+    def get(self, request):
+        return render(request, 'Jig_Unloading/JigUnloading_Completedtable.html')

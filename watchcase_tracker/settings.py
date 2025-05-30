@@ -50,6 +50,11 @@ INSTALLED_APPS = [
     'Inprocess_Inspection',
     'Nickel_Audit',
     'Spider_Spindle',
+    'Brass_Qc',
+    'Input_Screening',
+    
+    
+    
     
     
 ]

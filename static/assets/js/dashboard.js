@@ -176,7 +176,7 @@ $.fn.dataTable.ext.errMode = 'none';
           datasets: [{
               data: [100, 50, 50],
               backgroundColor: [
-                 "#028084","#FFC100", "#248AFD",
+                 "#023E4DCC","#FFC100", "#248AFD",
               ],
               borderColor: "rgba(0,0,0,0)"
           }]
@@ -224,7 +224,7 @@ $.fn.dataTable.ext.errMode = 'none';
           datasets: [{
               data: [100, 50, 50],
               backgroundColor: [
-                 "#028084","#FFC100", "#248AFD",
+                 "#023E4DCC","#FFC100", "#248AFD",
               ],
               borderColor: "rgba(0,0,0,0)"
           }]

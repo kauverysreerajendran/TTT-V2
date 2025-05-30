@@ -407,10 +407,13 @@
   <div class="card-body">
     <div class="upload-file-area">
       <!-- Drag & Drop File Upload -->
-      <div class="file-upload-area" id="file-upload-area">
-        <p>Drag and drop Excel files here or <span class="upload-link">Click to Select</span></p>
-        <div class="lottie-upload">
-          <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_jcikwtux.json" background="transparent" speed="1" loop autoplay></lottie-player>
+            <div class="file-upload-area" id="file-upload-area" style="align-items: center; justify-content: center;">
+        <div style="display: flex; align-items: center; width: 100%; justify-content: center;">
+          <p style="flex:1; margin:0;">Drag and drop Excel files here or <span class="upload-link">Click to Select</span></p>
+          <div class="lottie-upload" style="flex-shrink:0;">
+            <!-- Replace the Lottie animation with a static logo image -->
+            <img src="{% static 'assets/gif/upload.gif' %}" alt="Upload Logo" style="width:60px; height:auto; object-fit:contain;">
+          </div>
         </div>
         <input type="file" id="file-upload" accept=".xlsx,.xls" multiple hidden>
       </div>

@@ -2,6 +2,22 @@
 
 
 <style>
+  
+       #viewJigModal .tray-scan-modal-header {
+      margin-top: 20px !important;  /* Move image, title, and close icon down together */
+      margin-bottom: 5px !important; /* Adjust bottom margin for spacing */
+    }
+    .tray-scan-modal-header .tray-scan-modal-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    margin-top: 15px; /* Move Add Jig button and close icon a little down */
+  }
+    /* Add this to your CSS */
+  #addJigButton .tray-scan-modal-content {
+    background: #fff !important;
+  }
         .tray-scan-modal-buttons {
       display: flex;
       justify-content: center;
@@ -47,7 +63,7 @@
   flex-direction: column;
 }
 .jig-form-col label {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   margin-bottom: 4px;
   color: #434343;
@@ -55,13 +71,16 @@
 .jig-form-col input.form-control {
   padding: 2px;
   border: 1px solid #c2c1c1 !important;
-  border-radius: 20px;
-  font-size: 13px;
-  outline: none;
+  border-radius: 10px;
+  font-size: 12px;
+  height: 10px;    
+  min-height: 10px;
+  
+
 }
 
 .jig-form-col input.form-control:focus {
-  border-color: #028084;         /* Keep border color on focus */
+  border-color: #023E4DCC;         /* Keep border color on focus */
   box-shadow: 0 0 0 3px #02808422;
 }
 .jig-loading-table-wrapper {
@@ -82,7 +101,7 @@
 }
 .jig-loading-table th {
   background: #f5f5f5;
-  color: #028084;
+  color: #023E4DCC;
   font-weight: 600;
 }
 @media (max-width: 900px) {
@@ -97,34 +116,83 @@
         .tray-scan-modal.open .tray-scan-modal-content {
       border-radius: 30px !important;
     }
+
+        .tray-scan-modal-header .tray-scan-modal-title span {
+      margin-top: 25px;    /* Move the "Spider Loading / Model No:" heading a little down */
+      display: block;
+    }
 .tray-scan-modal {
   display: none;
   position: fixed;
-  top: 70px;
+  top: 40px;
   right: 5px;
   width: 650px;
   max-width: 100vw;
-  height: 70vh;
+  max-height: 92vh;           /* Responsive max height */
+  height: auto;               /* Let content decide height */
   border-radius: 30px;
   z-index: 1060;
   align-items: flex-start;
   justify-content: flex-end;
+  overflow-y: auto;           /* Enable scroll if content exceeds max-height */
 }
+
+@media (max-width: 900px) {
+  .tray-scan-modal {
+    width: 98vw;
+    max-width: 98vw;
+    max-height: 98vh;
+    top: 8px;
+    right: 1vw;
+    border-radius: 16px;
+  }
+}
+
 .tray-scan-modal-content {
-  
-  margin: 32px 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   width: 600px;
   background: #fff;
   padding: 0;
+  max-height: 100%;
+}
 
+.tray-scan-modal-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding-bottom: 80px; /* Space for buttons */
+}
 
+/* Make the buttons bar fixed at the bottom of the modal */
+.tray-scan-modal-buttons {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 0 12px 0;
+  z-index: 2;
+  margin: 0 !important;
+}
+
+/* Responsive for mobile */
+@media (max-width: 900px) {
+  .tray-scan-modal-content {
+    width: 98vw;
+    max-width: 98vw;
+  }
 }
 .tray-scan-modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid #eee;
-  margin-top: -36px;
+  margin-top: -26px;
   margin-bottom: 10px;
   padding: 4px 10px 2px 10px;
 }
@@ -136,9 +204,15 @@
   font-size: 18px;
   font-weight: 600;
   color: #353636;
+  margin-top: 5px;
+  display: inline;      /* Show heading and model no in a single line */
+  vertical-align: middle;
 }
 #jigModalModelNo {
-  color: #028084;
+  color: #023E4DCC;
+  font-weight: 600;
+  margin-left: 4px;
+  display: inline;
 }
 .tray-scan-modal-actions {
   display: flex;
@@ -147,12 +221,12 @@
 }
 .tray-scan-modal-actions .ti-stack-overflow {
   font-size: 22px;
-  color: #028084;
+  color: #023E4DCC;
 }
 .add-model-btn {
   background: #eafff3;
-  color: #028084;
-  border: 1px solid #028084;
+  color: #023E4DCC;
+  border: 1px solid #023E4DCC;
   border-radius: 20px;
   padding: 4px 14px;
   font-size: 13px;
@@ -265,8 +339,8 @@
                   <td>85 - Jig</td>
                   
                                 <td>
-                  <div style="background: #028084; color: white; width: 16px; height: 16px; font-size: 10px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;">Q</div>
-                  <div style="background: #028084; color: white; width: 16px; height: 16px; font-size: 10px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; margin-left: 6px; padding: 0 4px; text-align: center;">QC</div>
+                  <div style="background: #023E4DCC; color: white; width: 16px; height: 16px; font-size: 10px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;">Q</div>
+                  <div style="background: #023E4DCC; color: white; width: 16px; height: 16px; font-size: 10px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; margin-left: 6px; padding: 0 4px; text-align: center;">QC</div>
                 </td>
                 <!-- Action column data -->
                                   <td>
@@ -276,7 +350,7 @@
                   <span style="display:inline-block;">
                     <img src="{% static 'assets/icons/bin.png' %}" alt="Delete" style="width: 20px; height: auto;" />
                   </span>
-                  <button style="margin-left:8px; padding:4px 8px; font-size:11px; border-radius:20px; border:1px solid #028084; background:#eafff3; color:#028084; cursor:pointer;">Add Jig</button>
+                  <button style="margin-left:8px; padding:4px 8px; font-size:11px; border-radius:20px; border:1px solid #023E4DCC; background:#eafff3; color:#023E4DCC; cursor:pointer;">Add Jig</button>
                   
                   <img src="{% static 'assets/icons/view.png' %}" alt="View" style="width: 20px; height: auto; margin-left:6px; vertical-align:middle; cursor:pointer;" />
                 </td>
@@ -361,7 +435,7 @@
                   <span style="display:inline-block;">
                     <img src="{% static 'assets/icons/bin.png' %}" alt="Delete" style="width: 20px; height: auto;" />
                   </span>
-                  <button style="margin-left:8px; padding:4px 8px; font-size:11px; border-radius:20px; border:1px solid #028084; background:#eafff3; color:#028084; cursor:pointer;">Add Jig</button>
+                  <button style="margin-left:8px; padding:4px 8px; font-size:11px; border-radius:20px; border:1px solid #023E4DCC; background:#eafff3; color:#023E4DCC; cursor:pointer;">Add Jig</button>
                   <img src="{% static 'assets/icons/view.png' %}" alt="View" style="width: 20px; height: auto; margin-left:6px; vertical-align:middle; cursor:pointer;" />
                 </td>
                   <td>
@@ -447,7 +521,7 @@
                   <span style="display:inline-block;">
                     <img src="{% static 'assets/icons/bin.png' %}" alt="Delete" style="width: 20px; height: auto;" />
                   </span>
-                  <button style="margin-left:8px; padding:4px 8px; font-size:11px; border-radius:20px; border:1px solid #028084; background:#eafff3; color:#028084; cursor:pointer;">Add Jig</button>
+                  <button style="margin-left:8px; padding:4px 8px; font-size:11px; border-radius:20px; border:1px solid #023E4DCC; background:#eafff3; color:#023E4DCC; cursor:pointer;">Add Jig</button>
                   <img src="{% static 'assets/icons/view.png' %}" alt="View" style="width: 20px; height: auto; margin-left:6px; vertical-align:middle; cursor:pointer;" />
                 </td>
                   <td>
@@ -527,8 +601,8 @@
                   <td>5 - Jig</td>
                   
                                                          <td>
-                              <div style="background: #028084; color: white; width: 16px; height: 16px; font-size: 10px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;">Q</div>
-                              <div style="background: #028084; color: white; width: 16px; height: 16px; font-size: 10px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; margin-left: 6px; padding: 0 4px; text-align: center;">QC</div>
+                              <div style="background: #023E4DCC; color: white; width: 16px; height: 16px; font-size: 10px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;">Q</div>
+                              <div style="background: #023E4DCC; color: white; width: 16px; height: 16px; font-size: 10px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; margin-left: 6px; padding: 0 4px; text-align: center;">QC</div>
                             </td>
                   <!-- Action column data -->
                                   <td>
@@ -538,7 +612,7 @@
                   <span style="display:inline-block;">
                     <img src="{% static 'assets/icons/bin.png' %}" alt="Delete" style="width: 20px; height: auto;" />
                   </span>
-                  <button style="margin-left:8px; padding:4px 8px; font-size:11px; border-radius:20px; border:1px solid #028084; background:#eafff3; color:#028084; cursor:pointer;">Added</button>
+                  <button style="margin-left:8px; padding:4px 8px; font-size:11px; border-radius:20px; border:1px solid #023E4DCC; background:#eafff3; color:#023E4DCC; cursor:pointer;">Added</button>
                   <img src="{% static 'assets/icons/view.png' %}" alt="View" style="width: 20px; height: auto; margin-left:6px; vertical-align:middle; cursor:pointer;" />
                 </td>
                   <td>
@@ -646,105 +720,6 @@
 </div>
 
 
-<!-- Added - Btn - Modal Popup from pick table-->
-<div id="jigLoadingModal" class="tray-scan-modal">
-  <div class="tray-scan-modal-content">
-    <div class="tray-scan-modal-header">
-      <div class="tray-scan-modal-title">
-        <span>Jig loading / Model No: <span id="jigModalModelNo">(fetch dynamically)</span></span>
-      </div>
-          <div class="tray-scan-modal-actions">
-      <img src="{% static 'assets/gif/stack.gif' %}" alt="Stack" title="Jig Composition" style="width:40px; height:auto; vertical-align:middle;" />
-      <button type="button" class="add-model-btn">Add Jig</button>
-      <span class="cycle-info">No of cycle: <b id="jigModalCycle">1/30</b></span>
-      <span id="closeJigLoadingModal" class="close-modal-btn">&times;</span>
-    </div>
-    </div>
-    <div class="tray-scan-modal-body">
-          <!-- Jig Loading - Tray Table -->
-        <div class="jig-loading-form">
-      <form>
-        <div class="jig-form-row">
-          <div class="jig-form-col">
-            <label for="jigQrId">JIG QR ID</label>
-            <input type="text" id="jigQrId" class="form-control" placeholder="Enter JIG QR ID" />
-          </div>
-          <div class="jig-form-col">
-            <label for="bathType">Bath Type</label>
-            <input type="text" id="bathType" class="form-control" placeholder="Auto fetch" />
-          </div>
-          <div class="jig-form-col">
-            <label for="faultySlot">Faulty Slot</label>
-            <input type="number" id="faultySlot" class="form-control" placeholder="Enter Faulty Slot" min="0" />
-          </div>
-        </div>
-        <div class="jig-form-row">
-          <div class="jig-form-col">
-            <label for="emptySlots">Empty Slots</label>
-            <input type="number" id="emptySlots" class="form-control" placeholder="Enter Empty Slots" min="0" />
-          </div>
-          <div class="jig-form-col">
-            <label for="lotQty">LOT Qty</label>
-            <input type="number" id="lotQty" class="form-control" placeholder="Enter LOT Qty" min="0" />
-          </div>
-          <div class="jig-form-col">
-            <label for="jigCapacity">Jig Capacity</label>
-            <input type="number" id="jigCapacity" class="form-control" placeholder="Enter Jig Capacity" min="0" />
-          </div>
-        </div>
-      </form>
-      <div class="jig-loading-table-wrapper">
-        <table class="jig-loading-table">
-          <thead>
-            <tr>
-              <th>S.No</th>
-              <th>Tray ID</th>
-              <th>Tray Qty</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>Tray001</td>
-                                                <td>
-                          10
-                          <img
-                            src="{% static 'assets/icons/edit1.png' %}"
-                            alt="Edit"
-                            title="Edit"
-                            style="width:16px; height:16px; margin-left:6px; vertical-align:middle; cursor:pointer;"
-                            onmouseover="this.style.filter='brightness(0.8)';"
-                            onmouseout="this.style.filter='';"
-                          />
-                        </td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Tray002</td>
-              <td>12</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>Tray003</td>
-              <td>8</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    
-        <!-- Form buttons -->
-        <div class="tray-scan-modal-buttons" style="display: flex; justify-content: center; gap: 10px; margin: 16px 0 8px 0;">
-          <button type="button" style="padding: 8px 18px; background: #007bff; color: #fff; border: none; border-radius: 30px;">Draft</button>
-          <button type="button" style="padding: 8px 18px; background: #28a745; color: #fff; border: none; border-radius: 30px;">Submit</button>
-          <button type="button" style="padding: 8px 18px; background: #dc3545; color: #fff; border: none; border-radius: 30px;">Cancel</button>
-        </div>
-    <!-- End buttons -->
-    </div>
-    
-    
-    </div>
-  </div>
-</div>
 
 <!-- Add Jig - Btn - Modal Popup -->
 <div id="addJigButton" class="tray-scan-modal">
@@ -770,26 +745,26 @@
             <input type="text" id="jigQrId" class="form-control" placeholder="Enter JIG QR ID" />
           </div>
           <div class="jig-form-col">
-            <label for="bathType">Bath Type</label>
+            <label for="bathType">Plating Color</label>
             <input type="text" id="bathType" class="form-control" placeholder="Auto fetch" />
           </div>
           <div class="jig-form-col">
-            <label for="faultySlot">Faulty Slot</label>
-            <input type="number" id="faultySlot" class="form-control" placeholder="Enter Faulty Slot" min="0" />
+            <label for="faultySlot">SL Jig Type Capacity</label>
+            <input type="number" id="faultySlot" class="form-control" placeholder="Auto Fetch" min="0" />
           </div>
         </div>
         <div class="jig-form-row">
           <div class="jig-form-col">
-            <label for="emptySlots">Empty Slots</label>
-            <input type="number" id="emptySlots" class="form-control" placeholder="Enter Empty Slots" min="0" />
+            <label for="emptySlots">Total Cases Loaded</label>
+            <input type="number" id="emptySlots" class="form-control" placeholder="Enter Total Cases Loaded" min="0" />
           </div>
           <div class="jig-form-col">
-            <label for="lotQty">LOT Qty</label>
-            <input type="number" id="lotQty" class="form-control" placeholder="Enter LOT Qty" min="0" />
+            <label for="lotQty">LOT Quantity</label>
+            <input type="number" id="lotQty" class="form-control" placeholder="Auto Fetch" min="0" />
           </div>
           <div class="jig-form-col">
-            <label for="jigCapacity">Jig Capacity</label>
-            <input type="number" id="jigCapacity" class="form-control" placeholder="Enter Jig Capacity" min="0" />
+            <label for="jigCapacity">Balance Quantity</label>
+            <input type="number" id="jigCapacity" class="form-control" placeholder="Auto Fetch" min="0" />
           </div>
         </div>
       </form>
@@ -804,7 +779,7 @@
           </thead>
           <tbody>
             <tr>
-              <td>1</td>
+              <td>1 (Top Tray)</td>
               <td>Tray001</td>
                                                 <td>
                           10
@@ -828,12 +803,23 @@
               <td>Tray003</td>
               <td>8</td>
             </tr>
+            <tr>
+              <td>4</td>
+              <td>Tray004</td>
+              <td>80</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>Tray005</td>
+              <td>20</td>
+            </tr>
           </tbody>
         </table>
       </div>
     
         <!-- Form buttons -->
         <div class="tray-scan-modal-buttons" style="display: flex; justify-content: center; gap: 10px; margin: 16px 0 8px 0;">
+          <button type="button" style="padding: 8px 18px; background: #023E4DCC; color: #fff; border: none; border-radius: 30px;">Add Jig</button>
           <button type="button" style="padding: 8px 18px; background: #007bff; color: #fff; border: none; border-radius: 30px;">Draft</button>
           <button type="button" style="padding: 8px 18px; background: #28a745; color: #fff; border: none; border-radius: 30px;">Submit</button>
           <button type="button" style="padding: 8px 18px; background: #dc3545; color: #fff; border: none; border-radius: 30px;">Cancel</button>
@@ -1041,7 +1027,7 @@ document.addEventListener("DOMContentLoaded", function () {
       tooltip.innerHTML = `
         <div style="padding: 20px; text-align: center; color: #888; font-size: 15px; min-width:220px; min-height:80px;">
           <b>No image exists for model number:</b><br>
-          <span style="color:#028084">${modelNo || "N/A"}</span>
+          <span style="color:#023E4DCC">${modelNo || "N/A"}</span>
         </div>
       `;
       return tooltip;
