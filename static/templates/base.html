@@ -971,10 +971,11 @@ body {
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
-            <a class="nav-link" href="index.html">
-              <i class="icon-grid menu-icon"></i>
-              <span class="menu-title">Dashboard</span>
-            </a>
+              <!-- Dashboard Menu -->
+            <a class="nav-link" href="{% url 'root' %}">
+                <i class="icon-grid menu-icon"></i>
+                <span class="menu-title">Dashboard</span>
+              </a>
           </li>
           <!-- Day Planning Menu -->
           <li class="nav-item">
@@ -1190,6 +1191,29 @@ body {
             </div>
           </li>
 
+<!-- Nickel Inspection Menu -->
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#NI" aria-expanded="false" aria-controls="jig-loading">
+                <i class="ti-eye menu-icon"></i>
+                <span class="menu-title">Nickel Inspection</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="NI">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'Nickel_Inspection' %}">Main Table</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'NI_Completed' %}">Completed Table</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'NI_Rejected' %}">Reject Table</a>
+                </li>
+                
+              </ul>
+            </div>
+          </li>
+
 <!-- Nickel Audit Menu -->
 <li class="nav-item">
   <a class="nav-link" data-bs-toggle="collapse" href="#nickelAuditMenu" aria-expanded="false" aria-controls="nickelAuditMenu">
@@ -1226,6 +1250,25 @@ body {
     </ul>
   </div>
 </li>
+
+<!-- User Management Menu -->
+<li class="nav-item">
+  <a class="nav-link" data-bs-toggle="collapse" href="#userManagementMenu" aria-expanded="false" aria-controls="userManagementMenu">
+    <i class="ti-user menu-icon"></i>
+    <span class="menu-title">User Management</span>
+    <i class="menu-arrow"></i>
+  </a>
+  <div class="collapse" id="userManagementMenu">
+    <ul class="nav flex-column sub-menu">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'admin_panel' %}">Admin Panel</a>
+      </li>
+    
+    </ul>
+  </div>
+</li>
+
+
 
         </ul>
       </nav>

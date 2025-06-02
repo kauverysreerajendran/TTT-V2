@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'Spider_Spindle',
     'Brass_Qc',
     'Input_Screening',
+    'User_Management',
+    'Nickel_Inspection',
     
     
     

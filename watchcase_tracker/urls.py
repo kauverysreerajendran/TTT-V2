@@ -37,6 +37,9 @@ urlpatterns = [
     path('spiderspindle/', include('Spider_Spindle.urls')),
     path('brass_qc/',include('Brass_Qc.urls')),
     path('input_screening/',include('Input_Screening.urls')),
+    path('user_management/', include('User_Management.urls')),
+    path('nickel_inspection/', include('Nickel_Inspection.urls')),
+ 
 
 
 

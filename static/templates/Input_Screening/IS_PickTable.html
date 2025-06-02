@@ -1,123 +1,125 @@
-{% extends "base.html" %} {% load static %} {% block content %}
+{% extends "base.html" %} 
+{% load static %} 
+{% block content %}
 <style>
-/* Center and style the tray scan table title */
-   .tray-scan-modal-IS h5 {
-   text-align: center !important;
-   margin: 0 auto 8px auto !important;
-   font-size: 1.15rem !important;
-   font-weight: 700 !important;
-   width: 100%;
-   display: block;
-   }
-   #trayScanDetails_IS.table-grid > div.tray-validation-status-header {
-   background-color: #e0f7fa !important;
-   font-weight: bold !important;
-   color: #023E4DCC !important;
-   }
-   #trayScanDetails_IS.table-grid > div.tray-validation-status-cell {
-   background-color: #f1fcff !important;
-   font-weight: bold !important;
-   color: #023E4DCC !important;
-   }
-      /* When modal is active, dim the content */
-   .tray-scan-modal-IS.active ~ .content-wrapper {
-   opacity: 0.3;
-   pointer-events: none; /* Optional: disable interaction */
-   }
-   /* trayScanDetails_IS 3-column grid with scroll */
-   #trayScanDetails_IS.table-grid {
-   display: grid !important; /* override any existing grid or flex */
-   grid-template-columns: repeat(4, 1fr) !important; /* Table column max limit */
-   gap: 0px !important;
-   max-height: 300px !important;
-   overflow-y: auto !important;
-   padding-right: 10px; /* prevent scrollbar overlay */
-   margin-top: 10px;
-   }
-   /* Styling individual grid cells, only inside trayScanDetails_IS */
-   #trayScanDetails_IS.table-grid > div {
-   background: #f7f7f7;
-   padding: 8px 12px;
-   font-size: 12px;
-   border: 1px solid #ddd;
-   margin: 0; /* reset any margin from 
-   <p> or others */
-      }
-      /* Sticky header row: first 3 divs inside trayScanDetails_IS */
-      #trayScanDetails_IS.table-grid > div:nth-child(-n + 3) {
-      background-color: #e0e0e0;
-      font-weight: 600;
-      position: sticky;
-      top: 0;
-      z-index: 2;
-      align-items: center;
-      }
-      /* Override only when modal is open */
-      .tray-scan-modal-IS.open {
-      width: 600px; /* your desired expanded width */
-      margin-right: 20px;
-      }
-      /* Keep it hidden with negative offset matching default width */
-      .tray-scan-modal-IS {
-      right: -500px; /* must match the new width above to stay hidden properly */
-      }
-      #trayScanModal_IS {
-      border-radius: 12px;
-      max-height: 90vh;
-      top: 40px; /* Moves the entire modal down from the top of the viewport */
-      height: calc(100% - 40px); /* Keeps height correct */
-      }
-      #trayScanDetails_IS {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      padding-top: 10px;
-      }
-      /* Make each 
-   <p> act like a table cell */
-      #trayScanDetails_IS p {
-      margin: 0;
-      padding: 4px 8px;
-      background: #f7f7f7;
-      border-radius: 6px;
-      font-size: 14px;
-      }
-      .tray-scan-modal-IS {
-      position: fixed;
-      top: 0;
-      right: -400px; /* Hidden by default */
-      width: 400px;
-      height: 100%;
-      background: white;
-      box-shadow: -3px 0 10px rgba(0, 0, 0, 0.2);
-      overflow-y: auto;
-      transition: right 0.3s ease;
-      z-index: 9999;
-      padding: 20px;
-      font-family: Arial, sans-serif;
-      }
-      .tray-scan-modal-IS.open {
-      right: 0; /* Slide in */
-      }
-      .tray-scan-modal-IS-content {
-      position: relative;
-      height: 100%;
-      }
+  /* Center and style the tray scan table title */
+    .tray-scan-modal-IS h5 {
+    text-align: center !important;
+    margin: 0 auto 8px auto !important;
+    font-size: 1.15rem !important;
+    font-weight: 700 !important;
+    width: 100%;
+    display: block;
+    }
+    #trayScanDetails_IS.table-grid > div.tray-validation-status-header {
+    background-color: #e0f7fa !important;
+    font-weight: bold !important;
+    color: #028084 !important;
+    }
+    #trayScanDetails_IS.table-grid > div.tray-validation-status-cell {
+    background-color: #f1fcff !important;
+    font-weight: bold !important;
+    color: #028084 !important;
+    }
+        /* When modal is active, dim the content */
+    .tray-scan-modal-IS.active ~ .content-wrapper {
+    opacity: 0.3;
+    pointer-events: none; /* Optional: disable interaction */
+    }
+    /* trayScanDetails_IS 3-column grid with scroll */
+    #trayScanDetails_IS.table-grid {
+    display: grid !important; /* override any existing grid or flex */
+    grid-template-columns: repeat(4, 1fr) !important; /* Table column max limit */
+    gap: 0px !important;
+    max-height: 300px !important;
+    overflow-y: auto !important;
+    padding-right: 10px; /* prevent scrollbar overlay */
+    margin-top: 10px;
+    }
+    /* Styling individual grid cells, only inside trayScanDetails_IS */
+    #trayScanDetails_IS.table-grid > div {
+    background: #f7f7f7;
+    padding: 8px 12px;
+    font-size: 12px;
+    border: 1px solid #ddd;
+    margin: 0; /* reset any margin from 
+    <p> or others */
+        }
+        /* Sticky header row: first 3 divs inside trayScanDetails_IS */
+        #trayScanDetails_IS.table-grid > div:nth-child(-n + 3) {
+        background-color: #e0e0e0;
+        font-weight: 600;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        align-items: center;
+        }
+        /* Override only when modal is open */
+        .tray-scan-modal-IS.open {
+        width: 600px; /* your desired expanded width */
+        margin-right: 20px;
+        }
+        /* Keep it hidden with negative offset matching default width */
+        .tray-scan-modal-IS {
+        right: -500px; /* must match the new width above to stay hidden properly */
+        }
+        #trayScanModal_IS {
+        border-radius: 12px;
+        max-height: 90vh;
+        top: 40px; /* Moves the entire modal down from the top of the viewport */
+        height: calc(100% - 40px); /* Keeps height correct */
+        }
+        #trayScanDetails_IS {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        padding-top: 10px;
+        }
+        /* Make each 
+    <p> act like a table cell */
+        #trayScanDetails_IS p {
+        margin: 0;
+        padding: 4px 8px;
+        background: #f7f7f7;
+        border-radius: 6px;
+        font-size: 14px;
+        }
+        .tray-scan-modal-IS {
+        position: fixed;
+        top: 0;
+        right: -400px; /* Hidden by default */
+        width: 400px;
+        height: 100%;
+        background: white;
+        box-shadow: -3px 0 10px rgba(0, 0, 0, 0.2);
+        overflow-y: auto;
+        transition: right 0.3s ease;
+        z-index: 9999;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        }
+        .tray-scan-modal-IS.open {
+        right: 0; /* Slide in */
+        }
+        .tray-scan-modal-IS-content {
+        position: relative;
+        height: 100%;
+        }
 
-  #order-listing thead th {
-  height: 38px !important; /* Increase as needed */
-  background: #023E4DCC !important; /* existing bg */
-  color: #e5fcff !important;      /* existing color */
-  vertical-align: middle !important;
-  
-}
-thead th {
-  height: 38px !important; /* Increase as needed */
-  background: #023E4DCC !important; /* existing bg */
-  color: #e5fcff !important;      /* existing color */
-  vertical-align: middle !important;
-  
-}
+    #order-listing thead th {
+    height: 38px !important; /* Increase as needed */
+    background: #028084 !important; /* existing bg */
+    color: #e5fcff !important;      /* existing color */
+    vertical-align: middle !important;
+    
+  }
+  thead th {
+    height: 38px !important; /* Increase as needed */
+    background: #028084 !important; /* existing bg */
+    color: #e5fcff !important;      /* existing color */
+    vertical-align: middle !important;
+    
+  }
     /* --- DP_PickTable: Match DP_Completed_Table style --- */
   #order-listing {
     border-collapse: collapse;
@@ -1746,7 +1748,7 @@ thead th {
                               Input Screening - Tray Scan
                            </h5>
                            <!-- Tray Validate Button (NEW) -->
-                           <button id="trayValidateBtn" type="button" style="display: flex; align-items: center; gap: 6px; background: #f5faff; border: 1px solid #023E4DCC; color: #023E4DCC; border-radius: 20px; padding: 4px 14px; font-size: 13px; font-weight: 500; cursor: pointer;">
+                           <button id="trayValidateBtn" type="button" style="display: flex; align-items: center; gap: 6px; background: #f5faff; border: 1px solid #028084; color: #028084; border-radius: 20px; padding: 4px 14px; font-size: 13px; font-weight: 500; cursor: pointer;">
                            <img src="{% static 'assets/icons/validate.png' %}" alt="Validate" style="width: 20px; height: 20px; margin-right: 4px;" />
                            Tray Validate
                            </button>
