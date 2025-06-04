@@ -1,5 +1,16 @@
   {% extends "base.html" %} {% load static %} {% block content %}
 <style>
+ .dp-row-action-highlight {
+    background-color: #b3e6ff !important; /* Light blue */
+    /* Remove box-shadow for no border */
+    box-shadow: none !important;
+    transition: background 0.3s;
+  }
+.dp-row-cancel-highlight {
+  background-color: #b3e6ff !important; /* Light red */
+  
+  transition: background 0.3s, box-shadow 0.3s;
+}
   /* Base Styles for Popups */
   .avatar-group {
   display: flex;
@@ -613,13 +624,7 @@ thead th {
   }
 
 </style>
-<style id="dp-row-action-highlight-style">
-  .dp-row-action-highlight {
-    background-color: #b3e6ff !important; /* Light blue */
-    box-shadow: 0 0 0 3px #007bff, 0 0 10px #007bff55 !important;
-    transition: background 0.3s, box-shadow 0.3s;
-  }
-</style>
+
 <div class="content-wrapper">
   <h5 class="text-left mt-0 mb-3">Nickel Inspection / Pick Table</h5>
   <div class="row">
@@ -714,7 +719,7 @@ thead th {
                 </thead>
                 <tbody>
                   <!-- Row 1 - Highlighted -->
-                  <tr class="highlighted-tray-scan">
+                  <tr>
                     <td>1</td>
                     <td>2025-05-22 10:00 AM</td>
                     <td>LOTID001</td>
@@ -1154,13 +1159,24 @@ thead th {
                         <i class="fa fa-close"></i>Reject
                       </button>
                                            <!-- Eye icon to view submitted "Tray Scan Table" -->
-                        <a href="#viewModal">
-                            <img
-                                src="{% static 'assets/icons/view.png' %}"
-                                alt="View"
-                                class="view-icon"
-                            />
-                        </a>
+                        <a
+                              href="#"
+                              title="View"
+                              class="text-primary tray-scan-btn-NI"
+                              style="text-decoration: underline"
+                              data-batch-id="{{ data.batch_id }}"
+                              data-model-no="{{ data.model_stock_no__model_no }}"
+                              data-no-of-trays="{{ data.no_of_trays }}"
+                              data-tray-capacity="{{ data.tray_capacity|default:'0' }}"
+                              data-moved-to-d-picker="{{ data.Moved_to_D_Picker }}"
+                              data-tray-qty-list="{{ data.tray_qty_list|default:'[]'|safe }}"
+                              >
+                           <img
+                              src="{% static 'assets/icons/view.png' %}"
+                              alt="View"
+                              style="width: 20px; margin-right: 8px; height: auto; cursor:pointer;"
+                              />
+                      </a>
                     </td>
                     <td>
                       <div
@@ -1441,13 +1457,24 @@ thead th {
                         <i class="fa fa-close"></i>Rejected
                       </button>
                                            <!-- Eye icon to view submitted "Tray Scan Table" -->
-                        <a href="#viewModal">
-                            <img
-                                src="{% static 'assets/icons/view.png' %}"
-                                alt="View"
-                                class="view-icon"
-                            />
-                        </a>
+                        <a
+                              href="#"
+                              title="View"
+                              class="text-primary tray-scan-btn-NI"
+                              style="text-decoration: underline"
+                              data-batch-id="{{ data.batch_id }}"
+                              data-model-no="{{ data.model_stock_no__model_no }}"
+                              data-no-of-trays="{{ data.no_of_trays }}"
+                              data-tray-capacity="{{ data.tray_capacity|default:'0' }}"
+                              data-moved-to-d-picker="{{ data.Moved_to_D_Picker }}"
+                              data-tray-qty-list="{{ data.tray_qty_list|default:'[]'|safe }}"
+                              >
+                           <img
+                              src="{% static 'assets/icons/view.png' %}"
+                              alt="View"
+                              style="width: 20px; margin-right: 8px; height: auto; cursor:pointer;"
+                              />
+                      </a>
                     </td>
                     <td>
                       <div
@@ -1725,12 +1752,23 @@ thead th {
                         <i class="fa fa-close"></i>Reject
                       </button>
                                            <!-- Eye icon to view submitted "Tray Scan Table" -->
-                        <a href="#viewModal">
-                          <img
+                        <a
+                              href="#"
+                              title="View"
+                              class="text-primary tray-scan-btn-NI"
+                              style="text-decoration: underline"
+                              data-batch-id="{{ data.batch_id }}"
+                              data-model-no="{{ data.model_stock_no__model_no }}"
+                              data-no-of-trays="{{ data.no_of_trays }}"
+                              data-tray-capacity="{{ data.tray_capacity|default:'0' }}"
+                              data-moved-to-d-picker="{{ data.Moved_to_D_Picker }}"
+                              data-tray-qty-list="{{ data.tray_qty_list|default:'[]'|safe }}"
+                              >
+                           <img
                               src="{% static 'assets/icons/view.png' %}"
                               alt="View"
-                              class="view-icon"
-                          />
+                              style="width: 20px; margin-right: 8px; height: auto; cursor:pointer;"
+                              />
                       </a>
                     </td>
                     <td>
@@ -2423,11 +2461,16 @@ thead th {
                   const noOfTrays = parseInt(event.target.getAttribute("data-no-of-trays")) || 0;
                   const trayCapacity = event.target.getAttribute("data-tray-capacity") || "";
       
-                  // Highlight the clicked row
-                  document.querySelectorAll("tbody tr").forEach((row) => {
-                      row.classList.remove("highlighted-tray-scan");
+                                   // Remove highlight from all rows
+                  document.querySelectorAll("tbody tr").forEach((r) => {
+                      r.classList.remove("dp-row-action-highlight");
                   });
-                  row.classList.add("highlighted-tray-scan");
+                  // Add highlight to the clicked row
+                  row.classList.add("dp-row-action-highlight");
+                  // Remove highlight after 2 seconds
+                  setTimeout(() => {
+                      row.classList.remove("dp-row-action-highlight");
+                  }, 2000);
       
                   // Update modal with dynamic model number
                   if (modalModelNo && modelNo) {
@@ -3701,4 +3744,105 @@ thead th {
     });
   });
 </script>
+
+<!-- script for active tablr row highlight -->
+<script nonce="{{ csp_nonce }}">
+document.addEventListener("DOMContentLoaded", function () {
+    // Highlight row when clicking any .tray-scan-btn or .view-icon
+  function highlightActiveRow(e) {
+    const row = e.target.closest("tr");
+    if (row) {
+      // Remove highlight from all rows
+      document.querySelectorAll('#order-listing tbody tr').forEach(function(r) {
+        r.classList.remove("dp-row-action-highlight");
+      });
+      // Add highlight to the clicked row
+      row.classList.add("dp-row-action-highlight");
+      // Remove highlight after 2 seconds
+      setTimeout(() => {
+        row.classList.remove("dp-row-action-highlight");
+      }, 2000);
+    }
+  }
+
+  // For left modal tray scan triggers
+  document.querySelectorAll(".tray-scan-btn").forEach(function(btn) {
+    btn.addEventListener("click", highlightActiveRow);
+  });
+
+  // For all view.png icons (with class .view-icon)
+  document.querySelectorAll(".view-icon").forEach(function(icon) {
+    icon.addEventListener("click", function(e) {
+      highlightActiveRow(e);
+      // If you want to open a modal, add your modal logic here
+    });
+  });
+});
+</script>
+
+
+<script nonce="{{ csp_nonce }}">
+document.addEventListener("DOMContentLoaded", function() {
+  let originalRowIndex = null;
+  let movedRow = null;
+  let placeholderRow = null;
+
+  // For all tray-scan-btn-NI (view.png) links
+  document.querySelectorAll('.tray-scan-btn-NI').forEach(function(link) {
+    link.addEventListener('click', function(event) {
+      // Remove highlight from all rows
+      document.querySelectorAll('#order-listing tbody tr').forEach(function(row) {
+        row.classList.remove('dp-row-action-highlight');
+      });
+      // Move the clicked row to the top and highlight
+      var row = event.target.closest('tr');
+      if (row && row.parentNode) {
+        const tbody = row.parentNode;
+        // Only move if not already at top
+        if (tbody.firstElementChild !== row) {
+          // If a previous move exists, restore it first
+          if (movedRow && placeholderRow && placeholderRow.parentNode) {
+            placeholderRow.parentNode.insertBefore(movedRow, placeholderRow);
+            placeholderRow.parentNode.removeChild(placeholderRow);
+            movedRow.classList.remove('dp-row-action-highlight');
+            movedRow = null;
+            placeholderRow = null;
+            originalRowIndex = null;
+          }
+          // Store original index and row
+          originalRowIndex = Array.from(tbody.children).indexOf(row);
+          movedRow = row;
+          // Insert a placeholder at the original position
+          placeholderRow = document.createElement('tr');
+          placeholderRow.style.display = 'none';
+          tbody.insertBefore(placeholderRow, tbody.children[originalRowIndex]);
+          // Move row to top
+          tbody.insertBefore(row, tbody.firstElementChild);
+        }
+        row.classList.add('dp-row-action-highlight');
+      }
+    });
+  });
+
+  // On modal close, restore row to original position and remove highlight
+  var closeBtn = document.getElementById('closetrayScanModal_NI');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', function() {
+      if (movedRow && placeholderRow && placeholderRow.parentNode) {
+        placeholderRow.parentNode.insertBefore(movedRow, placeholderRow);
+        placeholderRow.parentNode.removeChild(placeholderRow);
+        movedRow.classList.remove('dp-row-action-highlight');
+        movedRow = null;
+        placeholderRow = null;
+        originalRowIndex = null;
+      }
+      // Also remove highlight from any row just in case
+      document.querySelectorAll('#order-listing tbody tr').forEach(function(row) {
+        row.classList.remove('dp-row-action-highlight');
+      });
+    });
+  }
+});
+</script>
+
 {% endblock %} {% endblock content %}

@@ -1,6 +1,22 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 
 <style>
+.dp-row-action-highlight,
+tr.dp-row-action-highlight > td {
+  background: #e6f7ff !important;
+  border: none !important;
+  border-radius: 0 !important;
+  position: relative;
+  z-index: 100;
+  /* Optional: add border-radius for effect */
+  border-radius: 8px;
+  overflow: hidden;
+}
+/* Highlight style for active row */
+.dp-row-action-highlight {
+  background: #e6f7ff !important;
+  transition: background 0.3s;
+}
 
 @media (max-width: 900px) {
   #uploadChildModal > div {
@@ -176,6 +192,9 @@
   background-color: #e0f7fa !important;
   font-weight: bold !important;
   color: #023E4DCC !important;
+  z-index: 10 !important;
+  position: sticky !important;
+  top: 0;
 }
 #trayScanDetails.table-grid > div.tray-validation-status-cell {
   background-color: #f1fcff !important;
@@ -488,7 +507,7 @@
 /* When modal is active, dim the content */
 .tray-scan-modal.active ~ .content-wrapper {
   opacity: 0.3;
-  pointer-events: none; /* Optional: disable interaction */
+  
 }
 span {
   font-weight: bold;
@@ -576,7 +595,7 @@ h6 {
   font-size: 14px;
 }
 #order-listing tbody tr {
-  background: #f5f5f5 !important;
+  background: transparent !important;
 }
 .highlighted-tray-scan {
   background: #e6f7ff !important;
@@ -796,7 +815,8 @@ thead th {
       
       <a href="#" class="text-primary tray-scan-btn remarks-modal-trigger" style="text-decoration: underline"
         data-batch-id="1" data-model-no="MSN-1001" data-no-of-trays="4" data-tray-capacity="24"
-        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Unload</a>
+        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Unload   <img src="{% static 'assets/icons/view.png' %}" alt="View" style="width:18px; height:18px; margin-left:6px; vertical-align:middle;"/>
+</a>
     </td>
     
  
@@ -835,7 +855,7 @@ thead th {
   <!-- to delete static rows -->
  <!-- Static Data Rows -->
     <tr class="highlighted-tray-scan">
-     <td>1
+     <td>2
         <input type="checkbox" class="row-checkbox" style="vertical-align:middle; margin-left:4px;" />
   </td>
     <td>JD001</td>
@@ -900,7 +920,8 @@ thead th {
       
       <a href="#" class="text-primary tray-scan-btn remarks-modal-trigger" style="text-decoration: underline"
         data-batch-id="1" data-model-no="MSN-1001" data-no-of-trays="4" data-tray-capacity="24"
-        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Unload</a>
+        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Unload   <img src="{% static 'assets/icons/view.png' %}" alt="View" style="width:18px; height:18px; margin-left:6px; vertical-align:middle;"/>
+</a>
     </td>
     
     
@@ -938,7 +959,7 @@ thead th {
   </tr>
   <!-- Static Data Rows -->
     <tr class="highlighted-tray-scan">
-     <td>1
+     <td>3
         <input type="checkbox" class="row-checkbox" style="vertical-align:middle; margin-left:4px;" />
   </td>
     <td>JD001</td>
@@ -1004,7 +1025,8 @@ thead th {
       
       <a href="#" class="text-primary tray-scan-btn remarks-modal-trigger" style="text-decoration: underline"
         data-batch-id="1" data-model-no="MSN-1001" data-no-of-trays="4" data-tray-capacity="24"
-        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Unload</a>
+        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Unload   <img src="{% static 'assets/icons/view.png' %}" alt="View" style="width:18px; height:18px; margin-left:6px; vertical-align:middle;"/>
+</a>
     </td>
     
    
@@ -1043,7 +1065,7 @@ thead th {
   </tr>
   <!-- Static Data Rows -->
     <tr class="highlighted-tray-scan">
-     <td>1
+     <td>4
         <input type="checkbox" class="row-checkbox" style="vertical-align:middle; margin-left:4px;" />
   </td>
     <td>JD001</td>
@@ -1102,8 +1124,11 @@ thead th {
       </a>
       
       <a href="#" class="text-primary tray-scan-btn remarks-modal-trigger" style="text-decoration: underline"
-        data-batch-id="1" data-model-no="MSN-1001" data-no-of-trays="4" data-tray-capacity="24"
-        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Unload</a>
+   data-batch-id="1" data-model-no="MSN-1001" data-no-of-trays="4" data-tray-capacity="24"
+   data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">
+  Unload
+  <img src="{% static 'assets/icons/view.png' %}" alt="View" style="width:18px; height:18px; margin-left:6px; vertical-align:middle;"/>
+</a>
     </td>
     
     
@@ -1140,7 +1165,7 @@ thead th {
   </tr>
   <!-- Static Data Rows -->
     <tr class="highlighted-tray-scan">
-     <td>1
+     <td>5
         <input type="checkbox" class="row-checkbox" style="vertical-align:middle; margin-left:4px;" />
   </td>
     <td>JD001</td>
@@ -1203,8 +1228,11 @@ thead th {
       </a>
       
       <a href="#" class="text-primary tray-scan-btn remarks-modal-trigger" style="text-decoration: underline"
-        data-batch-id="1" data-model-no="MSN-1001" data-no-of-trays="4" data-tray-capacity="24"
-        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Unload</a>
+   data-batch-id="1" data-model-no="MSN-1001" data-no-of-trays="4" data-tray-capacity="24"
+   data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">
+  Unload
+  <img src="{% static 'assets/icons/view.png' %}" alt="View" style="width:18px; height:18px; margin-left:6px; vertical-align:middle;"/>
+</a>
     </td>
     
    
@@ -1241,7 +1269,7 @@ thead th {
   </tr>
   <!-- Static Data Rows -->
     <tr class="highlighted-tray-scan">
-     <td>1
+     <td>6
         <input type="checkbox" class="row-checkbox" style="vertical-align:middle; margin-left:4px;" />
   </td>
     <td>JD001</td>
@@ -1303,8 +1331,11 @@ thead th {
       </a>
       
       <a href="#" class="text-primary tray-scan-btn remarks-modal-trigger" style="text-decoration: underline"
-        data-batch-id="1" data-model-no="MSN-1001" data-no-of-trays="4" data-tray-capacity="24"
-        data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">Unload</a>
+   data-batch-id="1" data-model-no="MSN-1001" data-no-of-trays="4" data-tray-capacity="24"
+   data-moved-to-d-picker="False" data-tray-qty-list="[30,30,30,30]">
+  Unload
+  <img src="{% static 'assets/icons/view.png' %}" alt="View" style="width:18px; height:18px; margin-left:6px; vertical-align:middle;"/>
+</a>
     </td>
     
 
@@ -2484,7 +2515,7 @@ document.addEventListener("DOMContentLoaded", function() {
     style.id = 'dp-row-action-highlight-style';
     style.innerHTML = `
       .dp-row-action-highlight {
-        box-shadow: 0 0 0 3px #007bff, 0 0 10px #007bff55 !important;
+       
         transition: box-shadow 9.3s;
         background-color: #f0f8ff !important;
         animation: highlightAnimation 2s ease-in-out;
@@ -3148,6 +3179,71 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 
+<!-- Highlight active row on "Unload" click, move to top, restore on modal close --- -->
+<script nonce="{{ csp_nonce }}">
+document.addEventListener("DOMContentLoaded", function () {
+  let originalRowIndex = null;
+  let movedRow = null;
+  let placeholderRow = null;
+
+  // Attach to all Unload hyperlinks (".tray-scan-btn")
+  document.querySelectorAll('.tray-scan-btn').forEach(function(link) {
+    link.addEventListener('click', function(event) {
+      // Remove highlight from all rows
+      document.querySelectorAll('tbody tr').forEach(function(row) {
+        row.classList.remove('dp-row-action-highlight');
+      });
+      // Move the clicked row to the top and highlight
+      var row = event.target.closest('tr');
+      if (row && row.parentNode) {
+        const tbody = row.parentNode;
+        // Only move if not already at top
+        if (tbody.firstElementChild !== row) {
+          // If a previous move exists, restore it first
+          if (movedRow && placeholderRow && placeholderRow.parentNode) {
+            placeholderRow.parentNode.insertBefore(movedRow, placeholderRow);
+            placeholderRow.parentNode.removeChild(placeholderRow);
+            movedRow.classList.remove('dp-row-action-highlight');
+            movedRow = null;
+            placeholderRow = null;
+            originalRowIndex = null;
+          }
+          // Store original index and row
+          originalRowIndex = Array.from(tbody.children).indexOf(row);
+          movedRow = row;
+          // Insert a placeholder at the original position
+          placeholderRow = document.createElement('tr');
+          placeholderRow.style.display = 'none';
+          tbody.insertBefore(placeholderRow, tbody.children[originalRowIndex]);
+          // Move row to top
+          tbody.insertBefore(row, tbody.firstElementChild);
+        }
+        row.classList.add('dp-row-action-highlight');
+      }
+    });
+  });
+
+  // On modal close, restore row to original position and remove highlight
+  var closeBtn = document.getElementById('unloadModalClose');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', function() {
+      if (movedRow && placeholderRow && placeholderRow.parentNode) {
+        placeholderRow.parentNode.insertBefore(movedRow, placeholderRow);
+        placeholderRow.parentNode.removeChild(placeholderRow);
+        movedRow.classList.remove('dp-row-action-highlight');
+        movedRow = null;
+        placeholderRow = null;
+        originalRowIndex = null;
+      }
+      // Also remove highlight from any row just in case
+      document.querySelectorAll('tbody tr').forEach(function(row) {
+        row.classList.remove('dp-row-action-highlight');
+        row.classList.remove('highlighted-tray-scan');
+      });
+    });
+  }
+});
+</script>
 
 
 

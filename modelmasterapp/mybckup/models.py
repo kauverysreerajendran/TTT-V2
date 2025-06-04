@@ -113,9 +113,7 @@ class ModelMasterCreation(models.Model):
     sequence_number = models.IntegerField(default=0)  # Add this field
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, blank=True)  # Allow null values
     Moved_to_D_Picker = models.BooleanField(default=False, help_text="Moved to D Picker")
-    top_tray_qty_verified = models.BooleanField(default=False, help_text="On Hold Picking")
-    verified_tray_qty=models.IntegerField(default=0, help_text="Verified Tray Quantity")
-    top_tray_qty_modify=models.IntegerField(default=0, help_text="Top Tray Quantity Modified")
+    Onhold_picking = models.BooleanField(default=False, help_text="On Hold Picking")
     Draft_Saved=models.BooleanField(default=False,help_text="Draft Save")
     dp_pick_remarks=models.CharField(max_length=100,null=True, blank=True)
     
@@ -241,20 +239,18 @@ class TotalStockModel(models.Model):
     version = models.ForeignKey(Version, on_delete=models.CASCADE, help_text="Version")
     total_stock = models.IntegerField(help_text="Total stock quantity")
     polish_finish = models.ForeignKey(PolishFinishType, on_delete=models.SET_NULL, null=True, blank=True, help_text="Polish Finish")
-
+    
+    balance_quantity = models.IntegerField(help_text="Balance quantity") #need to check 
+    assigned_quantity = models.IntegerField(help_text="Assigned quantity")
+    
     plating_color = models.ForeignKey(Plating_Color, on_delete=models.SET_NULL, null=True, blank=True, help_text="Plating Color")
     location = models.ManyToManyField(Location, blank=True, help_text="Multiple Locations")
     lot_id = models.CharField(max_length=50, unique=True, null=True, blank=True, help_text="Lot ID")
     created_at = models.DateTimeField(default=now, help_text="Timestamp of the record")
     # day planning missing qty in day planning pick table
-    dp_missing_qty = models.IntegerField(default=0, help_text="Missing quantity in day planning")
-    dp_physical_qty = models.IntegerField(help_text="Original physical quantity", default=0)  # New field
-    dp_physical_qty_edited = models.BooleanField(default=False, help_text="Qunatity Edited in IP")
-
-    brass_missing_qty= models.IntegerField(default=0, help_text="Missing quantity in Brass QC")
-    brass_physical_qty= models.IntegerField(help_text="Original physical quantity in Brass QC", default=0)  # New field
-    brass_physical_qty_edited = models.BooleanField(default=False, help_text="Qunatity Edited in Brass")
-
+    day_planning_missing_qty = models.IntegerField(default=0, help_text="Missing quantity in day planning")
+    day_planning_assigned_qty = models.IntegerField(help_text="Original assigned quantity", default=0)  # New field
+    
     # New fields for process tracking
     last_process_date_time = models.DateTimeField(null=True, blank=True, help_text="Last Process Date/Time")
     last_process_module = models.CharField(max_length=255, null=True, blank=True, help_text="Last Process Module")
@@ -280,10 +276,7 @@ class TotalStockModel(models.Model):
     few_cases_accepted_Ip_stock = models.BooleanField(default=False, help_text="Few Accepted IP Stock")  # New field
     rejected_ip_stock = models.BooleanField(default=False, help_text="Rejected IP Stock")  # New field
     wiping_status = models.BooleanField(default=False, help_text="Wiping Status")  # New field
-    IP_pick_remarks=models.CharField(max_length=100, null=True, blank=True, help_text="IP Pick Remarks")
-    Bq_pick_remarks= models.CharField(max_length=100, null=True, blank=True, help_text="BQ Pick Remarks")  # New field
-    brass_qc_accepted_qty_verified= models.BooleanField(default=False, help_text="Brass QC Accepted Quantity Verified")  # New field
-    
+   
     rejected_tray_scan_status=models.BooleanField(default=False)
     accepted_tray_scan_status=models.BooleanField(default=False)
     
@@ -293,7 +286,6 @@ class TotalStockModel(models.Model):
     brass_qc_rejection=models.BooleanField(default=False)
     brass_rejection_tray_scan_status=models.BooleanField(default=False)
     brass_accepted_tray_scan_status=models.BooleanField(default=False)
-    brass_onhold_picking=models.BooleanField(default=False, help_text="Brass QC On Hold Picking")
     
     #IQF Module accept and rejection
     iqf_acceptance=models.BooleanField(default=False)
@@ -310,7 +302,12 @@ class TotalStockModel(models.Model):
     jig_full_cases_qty=models.IntegerField(default=0, help_text="JIG Full Quantity")
     jig_remining_cases = models.BooleanField(default=False, help_text="Indicates if jig has remaining cases")
     jig_remaining_cases_qty=models.IntegerField(default=0, help_text="JIG Remaining Quantity")
-   
+    
+    
+    # Override the save method to calculate day_planning_assigned_qty
+    def save(self, *args, **kwargs):
+        self.day_planning_assigned_qty = self.assigned_quantity + self.day_planning_missing_qty
+        super().save(*args, **kwargs)
         
     def __str__(self):
         return f"{self.model_stock_no.model_no} - {self.version.version_name} - {self.lot_id}"
@@ -360,24 +357,11 @@ class IP_Rejection_Table(models.Model):
         return f"{self.rejection_reason} - {self.rejection_count}"
     
 class Brass_QC_Rejection_Table(models.Model):
-    group = models.ForeignKey(IP_RejectionGroup, on_delete=models.SET_NULL, null=True, blank=True, related_name='brass_qc_rejection_reasons')
-    rejection_reason_id = models.CharField(max_length=10, null=True, blank=True, editable=False)
-    rejection_reason = models.TextField(help_text="Reason for rejection")
-    rejection_count = models.PositiveIntegerField(help_text="Count of rejected items")
-
-    def save(self, *args, **kwargs):
-        if not self.rejection_reason_id:
-            last = Brass_QC_Rejection_Table.objects.order_by('-rejection_reason_id').first()
-            if last and last.rejection_reason_id.startswith('R'):
-                last_num = int(last.rejection_reason_id[1:])
-                new_num = last_num + 1
-            else:
-                new_num = 1
-            self.rejection_reason_id = f"R{new_num:02d}"
-        super().save(*args, **kwargs)
+    brass_rejection_reason = models.TextField(help_text="Reason for rejection")
+    brass_rejection_count = models.PositiveIntegerField(help_text="Count of rejected items")
 
     def __str__(self):
-        return f"{self.rejection_reason} - {self.rejection_count}"
+        return f"{self.brass_rejection_reason} - {self.brass_rejection_count}"
     
 class IQF_Rejection_Table(models.Model):
     iqf_rejection_reason = models.TextField(help_text="Reason for rejection")
@@ -398,31 +382,30 @@ class IP_Rejection_ReasonStore(models.Model):
         return f"{self.user} - {self.total_rejection_quantity} - {self.lot_id}"
     
 class Brass_QC_Rejection_ReasonStore(models.Model):
-    rejection_reason = models.ManyToManyField(Brass_QC_Rejection_Table, blank=True)
+    brass_rejection_reason = models.ManyToManyField(Brass_QC_Rejection_Table, blank=True)
     lot_id = models.CharField(max_length=50, null=True, blank=True, help_text="Lot ID")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    total_rejection_quantity = models.PositiveIntegerField(help_text="Total Rejection Quantity")
-    batch_rejection=models.BooleanField(default=False)
+    brass_total_rejection_quantity = models.PositiveIntegerField(help_text="Total Rejection Quantity")
+    brass_batch_rejection=models.BooleanField(default=False)
     created_at = models.DateTimeField(default=now, help_text="Timestamp of the record")
     
     def __str__(self):
-        return f"{self.user} - {self.total_rejection_quantity} - {self.lot_id}"
+        return f"{self.user} - {self.brass_total_rejection_quantity} - {self.lot_id}"
 
 class IQF_Rejection_ReasonStore(models.Model):
-    rejection_reason = models.ManyToManyField(IQF_Rejection_Table, blank=True)
+    iqf_rejection_reason = models.ManyToManyField(IQF_Rejection_Table, blank=True)
     lot_id = models.CharField(max_length=50, null=True, blank=True, help_text="Lot ID")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    total_rejection_quantity = models.PositiveIntegerField(help_text="Total Rejection Quantity")
-    batch_rejection=models.BooleanField(default=False)
+    iqf_total_rejection_quantity = models.PositiveIntegerField(help_text="Total Rejection Quantity")
+    iqf_batch_rejection=models.BooleanField(default=False)
     
     def __str__(self):
-        return f"{self.user} - {self.total_rejection_quantity} - {self.lot_id}"
+        return f"{self.user} - {self.iqf_total_rejection_quantity} - {self.lot_id}"
     
 #give rejected trayscans - fields are lot_id , rejected_tray_quantity , rejected_reson(forign key from RejectionTable), user
 class IP_Rejected_TrayScan(models.Model):
     lot_id = models.CharField(max_length=50, null=True, blank=True, help_text="Lot ID")
     rejected_tray_quantity = models.CharField(help_text="Rejected Tray Quantity")
-    rejected_tray_id= models.CharField(max_length=100, null=True, blank=True, help_text="Rejected Tray ID")
     rejection_reason = models.ForeignKey(IP_Rejection_Table, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
@@ -431,22 +414,21 @@ class IP_Rejected_TrayScan(models.Model):
 
 class Brass_QC_Rejected_TrayScan(models.Model):
     lot_id = models.CharField(max_length=50, null=True, blank=True, help_text="Lot ID")
-    rejected_tray_quantity = models.CharField(help_text="Rejected Tray Quantity")
-    rejected_tray_id= models.CharField(max_length=100, null=True, blank=True, help_text="Rejected Tray ID")
-    rejection_reason = models.ForeignKey(Brass_QC_Rejection_Table, on_delete=models.CASCADE)
+    brass_rejected_tray_quantity = models.CharField(help_text="Rejected Tray Quantity")
+    brass_rejection_reason = models.ForeignKey(Brass_QC_Rejection_Table, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def __str__(self):
-        return f"{self.rejection_reason} - {self.rejected_tray_quantity} - {self.lot_id}"
+        return f"{self.brass_rejection_reason} - {self.brass_rejected_tray_quantity} - {self.lot_id}"
     
 class IQF_Rejected_TrayScan(models.Model):
     lot_id = models.CharField(max_length=50, null=True, blank=True, help_text="Lot ID")
-    rejected_tray_quantity = models.CharField(help_text="Rejected Tray Quantity")
-    rejection_reason = models.ForeignKey(IQF_Rejection_Table, on_delete=models.CASCADE)
+    iqf_rejected_tray_quantity = models.CharField(help_text="Rejected Tray Quantity")
+    iqf_rejection_reason = models.ForeignKey(IQF_Rejection_Table, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def __str__(self):
-        return f"{self.rejection_reason} - {self.rejected_tray_quantity} - {self.lot_id}"
+        return f"{self.iqf_rejection_reason} - {self.iqf_rejected_tray_quantity} - {self.lot_id}"
     
 #give accpeted tray scan - fields are lot_id , accepted_tray_quantity , user    
 class IP_Accepted_TrayScan(models.Model):
@@ -459,25 +441,24 @@ class IP_Accepted_TrayScan(models.Model):
 
 class Brass_Qc_Accepted_TrayScan(models.Model):
     lot_id = models.CharField(max_length=50, null=True, blank=True, help_text="Lot ID")
-    accepted_tray_quantity = models.CharField(help_text="Accepted Tray Quantity")
+    brass_accepted_tray_quantity = models.CharField(help_text="Accepted Tray Quantity")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def __str__(self):
-        return f"{self.accepted_tray_quantity} - {self.lot_id}"
+        return f"{self.brass_accepted_tray_quantity} - {self.lot_id}"
     
 class IQF_Accepted_TrayScan(models.Model):
     lot_id = models.CharField(max_length=50, null=True, blank=True, help_text="Lot ID")
-    accepted_tray_quantity = models.CharField(help_text="Accepted Tray Quantity")
+    iqf_accepted_tray_quantity = models.CharField(help_text="Accepted Tray Quantity")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def __str__(self):
-        return f"{self.accepted_tray_quantity} - {self.lot_id}"
+        return f"{self.iqf_accepted_tray_quantity} - {self.lot_id}"
     
 #give accepted tray scan in input screening - fields are lot_id , tray_id , user
 class IP_Accepted_TrayID_Store(models.Model):
     lot_id = models.CharField(max_length=50, null=True, blank=True, help_text="Lot ID")
     tray_id = models.CharField(max_length=100, unique=True)
-    tray_qty = models.IntegerField(null=True, blank=True, help_text="Quantity in the tray")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def __str__(self):
@@ -486,7 +467,6 @@ class IP_Accepted_TrayID_Store(models.Model):
 class Brass_Qc_Accepted_TrayID_Store(models.Model):
     lot_id = models.CharField(max_length=50, null=True, blank=True, help_text="Lot ID")
     tray_id = models.CharField(max_length=100, unique=True)
-    tray_qty = models.IntegerField(null=True, blank=True, help_text="Quantity in the tray")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def __str__(self):
@@ -495,7 +475,6 @@ class Brass_Qc_Accepted_TrayID_Store(models.Model):
 class IQF_Accepted_TrayID_Store(models.Model):
     lot_id = models.CharField(max_length=50, null=True, blank=True, help_text="Lot ID")
     tray_id = models.CharField(max_length=100, unique=True)
-    tray_qty = models.IntegerField(null=True, blank=True, help_text="Quantity in the tray")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def __str__(self):

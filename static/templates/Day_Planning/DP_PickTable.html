@@ -2405,5 +2405,24 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
+<!-- Script for clearing "Tray ID" -->
+<script nonce="{{ csp_nonce }}">
+document.addEventListener("click", function(e) {
+  // Only act on the editable modal's redo button
+  if (e.target && e.target.id === "trayScanRedoBtn") {
+    // Find the editable tray scan modal grid
+    var detailsDiv = document.getElementById("trayScanDetails");
+    if (!detailsDiv) return;
+    // Find all text inputs (Tray ID) that are NOT readonly
+    var trayIdInputs = detailsDiv.querySelectorAll('input[type="text"]:not([readonly])');
+    trayIdInputs.forEach(function(input) {
+      input.value = "";
+    });
+  }
+});
+</script>
+
+
+
   {% endblock %} {% endblock content %}
 </div>

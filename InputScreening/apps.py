@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class InputScreeningConfig(AppConfig):
+class InputscreeningConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'Input_Screening'
+    name = 'InputScreening'

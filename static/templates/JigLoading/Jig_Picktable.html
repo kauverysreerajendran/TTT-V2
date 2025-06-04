@@ -1,5 +1,165 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 <style>
+/* Modal Base */
+.right-slide-modal.open {
+  right: 0 !important;
+}
+.dp-row-action-highlight {
+  animation: jig-highlight-flash 2.5s ease-in-out;
+  background-color: #f0f8ff !important;
+  
+}
+
+
+
+
+
+.right-slide-modal {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 100%;
+  max-width: 650px;
+  height: 100%;
+  background: #ffffff;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
+  transition: right 0.4s ease;
+  z-index: 10500;
+  overflow-y: auto;
+  font-family: 'Segoe UI', sans-serif;
+  border-radius: 16px 0 0 16px;
+}
+
+.right-slide-modal:target {
+  right: 0;
+}
+
+.right-slide-content {
+  padding: 24px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.modal-header h3 {
+  font-size: 18px;
+  margin: 0;
+}
+.highlight {
+  color: #028084;
+}
+.close-btn {
+  font-size: 26px;
+  text-decoration: none;
+  color: #666;
+}
+.close-btn:hover {
+  color: red;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+.btn-action {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 20px;
+  font-size: 13px;
+  color: white;
+  cursor: pointer;
+}
+.btn-action.blue { background-color: #0378bd; }
+.btn-action.teal { background-color: #02b4a8; }
+.cycle-status {
+  background: #e6f9fa;
+  padding: 6px 14px;
+  border-radius: 20px;
+  color: #017d7a;
+  font-size: 13px;
+}
+
+.form-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px !important;
+  margin-bottom: 20px;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.5rem !important;
+}
+.form-group label {
+  font-size: 13px;
+  margin-bottom: 4px;
+  color: #555;
+}
+.form-group input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+  font-size: 13px;
+}
+
+.tray-table {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: 16px 0;
+}
+.tray-table > div {
+  background: #f0fdfc;
+  border: 1px solid #d1d1d1;
+  padding: 8px;
+  font-size: 13px;
+  text-align: center;
+}
+.tray-table > div:nth-child(-n+3) {
+  background: #d1f2f3;
+  font-weight: bold;
+}
+
+.action-buttons {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+.action-buttons button {
+  flex: 1 1 calc(50% - 6px);
+  padding: 10px;
+  border: none;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-twitter { background-color: #028084a8; color: white; }
+.btn-success { background-color: #28a745; color: white; }
+.btn-warning { background-color: #ffc107; color: #000; }
+.btn-danger  { background-color: #dc3545; color: white; }
+
+@media (max-width: 600px) {
+  .right-slide-content {
+    padding: 16px;
+  }
+  .tray-table {
+    grid-template-columns: 1fr;
+  }
+  .form-section {
+    grid-template-columns: 1fr;
+  }
+  .action-buttons button {
+    flex: 1 1 100%;
+  }
+}
 /* Center and style the tray scan table title */
    .tray-scan-modal-Jig h5 {
    text-align: center !important;
@@ -103,7 +263,54 @@
       position: relative;
       height: 100%;
       }
+        /* Modal backdrop */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+        }
 
+        /* Show modal when targeted */
+        .modal:target {
+            display: block;
+        }
+
+        /* Modal content box */
+        .modal-content {
+            position: relative;
+            background: white;
+            width: 50%;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        /* Close button */
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            text-decoration: none;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .close-btn:hover {
+            color: red;
+        }
+
+        /* Icon link styling */
+        .view-icon {
+            width: 20px !important;
+            height: 20px !important;
+            cursor: pointer;
+            margin-right: 8px;
+        }
  #order-listing thead th {
   height: 38px !important; /* Increase as needed */
   background: #028084 !important; /* existing bg */
@@ -142,8 +349,7 @@ thead th {
     transition: opacity 0.3s ease;
     padding-bottom: 20px !important; /* Reduce space above footer */
   }
-  .tray-scan-modal,
-  .new-popup-modal {
+  .tray-scan-modal{
     position: fixed;
     top: 0;
     width: 400px;
@@ -162,13 +368,7 @@ thead th {
   .tray-scan-modal.open {
     right: 400px; /* When open, sits next to New Popup */
   }
-  .new-popup-modal {
-    right: -440px; /* hidden by default */
-    z-index: 10000;
-  }
-  .new-popup-modal.open {
-    right: 0; /* When open, slides in from the right */
-  }
+
   .tray-scan-close {
     position: absolute;
     right: 10px;
@@ -222,6 +422,7 @@ thead th {
     grid-template-columns: 1fr 1fr;
     gap: 12px;
   }
+
   .ms-2{
         margin-top: 8px;
   }
@@ -237,8 +438,7 @@ thead th {
 
   /* Responsive adjustments for screens below 768px */
   @media (max-width: 767px) {
-    .tray-scan-modal,
-    .new-popup-modal {
+    .tray-scan-modal {
       width: 100%;
       padding: 10px;
     }
@@ -251,32 +451,19 @@ thead th {
       right: 0;
       top: 0;
     }
-    .new-popup-modal.open {
-      right: 0;
-      top: 0;
-      /* Optionally, you can add margin-top to separate them */
-      margin-top: 20px;
-    }
+
   }
   /* Responsive adjustments for tablets (768px to 1024px) */
   @media (min-width: 768px) and (max-width: 1024px) {
     .tray-scan-modal,
-    .new-popup-modal {
-      width: 300px;
-      padding: 15px;
-    }
+
     .tray-scan-modal {
       right: -300px;
     }
     .tray-scan-modal.open {
       right: 300px;
     }
-    .new-popup-modal {
-      right: -300px;
-    }
-    .new-popup-modal.open {
-      right: 0;
-    }
+
   }
   /* ... remaining styles unchanged ... */
   .pagination-wrapper {
@@ -357,7 +544,7 @@ thead th {
   .btn-twitter.btn-social-icon-text i {
     margin-right: 0.5rem !important;
     padding: 0.3rem !important;
-    background: #2e7d32;
+    background: #028084 ;
   }
   .btn-youtube.btn-social-icon-text i {
     margin-right: 0.5rem !important;
@@ -380,7 +567,7 @@ thead th {
   .image-slider-modal.open {
     display: block;
   }
-  .modal-close {
+  .modal-close-Jig {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -388,7 +575,7 @@ thead th {
     cursor: pointer;
     color: #666;
   }
-  .modal-close:hover {
+  .modal-close-Jig:hover {
     color: #333;
   }
   /* Slider styles */
@@ -441,17 +628,11 @@ thead th {
     .slider { height: 250px; }
     .slide img { height: 250px; }
   }
-  
+
 </style>
-<style id="dp-row-action-highlight-style">
-  .dp-row-action-highlight {
-    background-color: #b3e6ff !important; /* Light blue */
-    box-shadow: 0 0 0 3px #007bff, 0 0 10px #007bff55 !important;
-    transition: background 0.3s, box-shadow 0.3s;
-  }
-</style>
+
 <div class="content-wrapper">
-  <h5 class="text-left mt-0 mb-3">Input Screening / Completed Table</h5>
+  <h5 class="text-left mt-0 mb-3">Jig Loading / Pick Table</h5>
   <div class="row">
     <div class="col-12 grid-margin stretch-card">
       <div class="card">
@@ -496,16 +677,19 @@ thead th {
                       No of Tray <i class="fa fa-filter" aria-hidden="true"></i>
                     </th>
                     <th>
-                      LOT Qty
+                      LOT Quantity
                       <i class="fa fa-filter" aria-hidden="true"></i>
                     </th>
                     <th>
-                      Physical Qty
+                      Physical Quantity
                       <i class="fa fa-filter" aria-hidden="true"></i>
                     </th>
-                    
                     <th>
-                      Wiping Req <i class="fa fa-filter" aria-hidden="true"></i>
+                      Jig Type Capacity 
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                      </th>
+                    <th>
+                      IP Info<i class="fa fa-filter" aria-hidden="true"></i>
                     </th>
                     <th>
                       Process Status
@@ -525,12 +709,18 @@ thead th {
                     <th>
                       Remarks <i class="fa fa-filter" aria-hidden="true"></i>
                     </th>
+                   
                   </tr>
                 </thead>
                 <tbody>
                   <!-- Row 1 - Highlighted -->
-                  <tr class="highlighted-tray-scan">
-                    <td>1</td>
+                  <tr>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span>1</span>
+                            <input type="checkbox" style="width: 15px; height: 15px;" />
+                        </div>
+                    </td>
                     <td>2025-05-22 10:00 AM</td>
                     <!-- Model/Stock No - Image hover -->  
                     <td style="position: relative;">
@@ -543,7 +733,7 @@ thead th {
                             <img src="/static/assets/images/imagePlaceholder.png" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
                             <img src="/static/assets/images/dashboard.jpg" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
 
-                          </div> 
+                          </div>
 
 
                           <button class="img-scroll-right" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8594;</button>
@@ -556,27 +746,46 @@ thead th {
                     <td>Nil</td>
                     <td>Normal 16</td>
                     <td>10</td>
-             
                     <td>
-                      150
-                    </td>
-                    <td>
-                      10
-                    </td>
-                    <td>
-                      <div
-                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-                        style="
-                          border: 2px solid #0d5d17;
-                          background-color: #c5f9c2;
-                          color: #2f801b;
-                          font-size: clamp(0.3rem, 2vw, 0.875rem);
-                          white-space: nowrap;
-                          padding: 0.3rem;
-                        "
-                      >
-                        Yes
+                      <div style="display: flex; align-items: center; gap: 8px">
+                        <span style="min-width: 30px; text-align: right"
+                          >150</span
+                        >
+                        <input
+                          type="checkbox"
+                          style="width: 15px; height: 15px"
+                        />
+                        <input
+                          type="text"
+                          value="20"
+                          style="
+                            width: 60px;
+                            padding: 2px 4px;
+                            border: 1px solid #ccc;
+                            border-radius: 4px;
+                          "
+                        />
                       </div>
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        value="130"
+                        style="
+                          width: 60px;
+                          padding: 2px 4px;
+                          border: 1px solid #ccc;
+                          border-radius: 4px;
+                        "
+                      />
+                    </td>
+                    <td>
+                        130
+                    </td>
+                    <td>
+                        <span class="mobile-cross-icon" title="Item removed" style="cursor: pointer; display: inline-flex; align-items: center;">
+                            <i class="fa fa-mobile" aria-hidden="true" style="font-size:25px; color: #028084; font-weight: 900;" data-bs-toggle="tooltip" data-placement="right" data-bs-original-title="Jig"></i>
+                        </span>
                     </td>
                     <td>
                       <div class="d-flex">
@@ -612,43 +821,38 @@ thead th {
                             padding-right: 1px;
                           "
                         >
-                          S
+                          L
                         </div>
-                        <div
-                          title="Tray Scan"
-                          class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-                          style="
-                            width: 20px;
-                            height: 20px;
-                            background-color: #0c8249;
-                            color: white;
-                            font-weight: bold;
-                            line-height: 20px;
-                            text-align: center;
-                            padding-top: 1px;
-                            padding-right: 1px;
-                          "
-                        >
-                          W
-                        </div>
+                       
                       </div>
                     </td>
                     <td>
-                       <span style="opacity:0.5; pointer-events:none; display:inline-block;">
-                      <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit Disabled" style="width: 20px; margin-right: 8px; height: auto; filter: grayscale(1) opacity(0.5);" />
-                    </span>
-                    <span style="opacity:0.5; pointer-events:none; display:inline-block;">
-                      <img src="{% static 'assets/icons/bin.png' %}" alt="Delete Disabled" style="width: 20px; height: auto; filter: grayscale(1) opacity(0.5);" />
-                    </span>
-                    <button
-                        type="button"
-                        class="btn btn-social-icon-text btn-twitter"
-                        style="background-color: #66bb6a"
-                      >
-                        <i class="fa fa-check-circle"></i>Accepted
-                      </button>
-                       
-                        <a
+                      <a href="#" title="Edit">
+                        <img
+                          src="{% static 'assets/icons/edit1.png' %}"
+                          alt="Edit"
+                          style="width: 20px; margin-right: 8px; height: auto"
+                        />
+                      </a>
+                      <a href="#" title="Delete">
+                        <img
+                          src="{% static 'assets/icons/bin.png' %}"
+                          alt="Delete"
+                          style="width: 20px; margin-right: 8px; height: auto"
+                        />
+                      </a>
+                   <a href="#rightSideModal">
+                        <button
+                            type="button"
+                            class="btn btn-social-icon-text btn-twitter"
+                            style="background-color: #028084a8"
+                        >
+                            <i class="fa fa-plus"></i>Added
+                        </button>
+                    </a>            
+
+
+                      <a
                               href="#"
                               title="View"
                               class="text-primary tray-scan-btn-Jig"
@@ -679,7 +883,7 @@ thead th {
                           padding: 0.3rem;
                         "
                       >
-                        Yet to Release
+                        Released
                       </div>
                     </td>
                     <td>
@@ -694,7 +898,7 @@ thead th {
                           padding: 0.3rem;
                         "
                       >
-                        Input Screening
+                        Jig Loading
                       </div>
                     </td>
                     <td>
@@ -798,10 +1002,16 @@ thead th {
                         </div>
                       </a>
                     </td>
+                   
                   </tr>
                   <!-- Row 2 -->
                   <tr>
-                    <td>2</td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span>2</span>
+                            <input type="checkbox" style="width: 15px; height: 15px;" />
+                        </div>
+                    </td>
                     <td>2025-05-22 10:00 AM</td>
                     <td>2565</td>
                     <td>ISP</td>
@@ -811,25 +1021,45 @@ thead th {
                     <td>Jumbo 14</td>
                     <td>10</td>
                     <td>
-                      50
-                    </td>
-                    <td>
-                      10
-                    </td>
-                    <td>
-                      <div
-                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-                        style="
-                          border: 2px solid #5d0d0d;
-                          background-color: #f9c2c2;
-                          color: #801b1b;
-                          font-size: clamp(0.3rem, 2vw, 0.875rem);
-                          white-space: nowrap;
-                          padding: 0.3rem;
-                        "
-                      >
-                        No
+                      <div style="display: flex; align-items: center; gap: 8px">
+                        <span style="min-width: 30px; text-align: right"
+                          >50</span
+                        >
+                        <input
+                          type="checkbox"
+                          style="width: 15px; height: 15px"
+                          disabled
+                        />
+                        <input
+                          type="text"
+                          value="-"
+                          style="
+                            width: 60px;
+                            padding: 2px 4px;
+                            border: 1px solid #ccc;
+                            border-radius: 4px;
+                          "
+                          disabled
+                        />
                       </div>
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        value="-"
+                        style="
+                          width: 60px;
+                          padding: 2px 4px;
+                          border: 1px solid #ccc;
+                          border-radius: 4px;
+                        "
+                      />
+                    </td>
+                    <td>
+                    40
+                    </td>
+                    <td>
+                        <img src="{% static 'assets/icons/mobile-slash.svg' %}" alt="Mobile Slash" style="width:20px; height:20px; fill:red; margin: -4px; color:red;" data-bs-toggle="tooltip" data-placement="right" data-bs-original-title="Jig"/>
                     </td>
                     <td>
                       <div class="d-flex">
@@ -851,69 +1081,82 @@ thead th {
                           Q
                         </div>
                         <div
-                          title="Tray Scan"
-                          class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-                          style="
+                            title="Tray Scan"
+                            class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+                            style="
                             width: 20px;
                             height: 20px;
-                            background-color: #0c8249;
+                            background: linear-gradient(
+                                to right,
+                                green 50%,
+                                #bfbfbf 50%
+                            );
                             color: white;
                             font-weight: bold;
                             line-height: 20px;
                             text-align: center;
                             padding-top: 1px;
-                            padding-right: 1px;
-                          "
+                            padding-right: 1px;"
                         >
-                          S
+                          L
                         </div>
                       </div>
                     </td>
                     <td>
-                        <span style="opacity:0.5; pointer-events:none; display:inline-block;">
-                      <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit Disabled" style="width: 20px; margin-right: 8px; height: auto; filter: grayscale(1) opacity(0.5);" />
-                    </span>
-                    <span style="opacity:0.5; pointer-events:none; display:inline-block;">
-                      <img src="{% static 'assets/icons/bin.png' %}" alt="Delete Disabled" style="width: 20px; height: auto; filter: grayscale(1) opacity(0.5);" />
-                    </span>
+                      <a href="#" title="Edit">
+                        <img
+                          src="{% static 'assets/icons/edit1.png' %}"
+                          alt="Edit"
+                          style="width: 20px; margin-right: 8px; height: auto"
+                        />
+                      </a>
+                      <a href="#" title="Delete">
+                        <img
+                          src="{% static 'assets/icons/bin.png' %}"
+                          alt="Delete"
+                          style="width: 20px; margin-right: 8px; height: auto"
+                        />
+                      </a>
                       <button
                         type="button"
-                        class="btn btn-social-icon-text btn-youtube"
+                        class="btn btn-social-icon-text btn-twitter"
+                        style="background-color: #028084a8"
                       >
-                        <i class="fa fa-close"></i>Rejected
+                        <i class="fa fa-plus-circle"></i>Add Jig
                       </button>
-                      <a
-                              href="#"
-                              title="View"
-                              class="text-primary tray-scan-btn-Jig"
-                              style="text-decoration: underline"
-                              data-batch-id="{{ data.batch_id }}"
-                              data-model-no="{{ data.model_stock_no__model_no }}"
-                              data-no-of-trays="{{ data.no_of_trays }}"
-                              data-tray-capacity="{{ data.tray_capacity|default:'0' }}"
-                              data-moved-to-d-picker="{{ data.Moved_to_D_Picker }}"
-                              data-tray-qty-list="{{ data.tray_qty_list|default:'[]'|safe }}"
-                              >
-                           <img
-                              src="{% static 'assets/icons/view.png' %}"
-                              alt="View"
-                              style="width: 20px; margin-right: 8px; height: auto; cursor:pointer;"
-                              />
-                      </a>
+                      
+                                           <!-- Eye icon to view submitted "Tray Scan Table" -->
+                                                <a
+                          href="#"
+                          title="View"
+                          class="text-primary tray-scan-btn-Jig"
+                          data-batch-id="{{ data.batch_id|default:'' }}"
+                          data-model-no="{{ data.model_stock_no__model_no|default:'' }}"
+                          data-no-of-trays="{{ data.no_of_trays|default:'' }}"
+                          data-tray-capacity="{{ data.tray_capacity|default:'0' }}"
+                          data-moved-to-d-picker="{{ data.Moved_to_D_Picker|default:'' }}"
+                          data-tray-qty-list="{{ data.tray_qty_list|default:'[]'|safe }}"
+                        >
+                          <img
+                            src="{% static 'assets/icons/view.png' %}"
+                            alt="View"
+                            style="width: 20px; margin-right: 8px; height: auto; cursor:pointer;"
+                          />
+                        </a>
                     </td>
-                      <td>
+                    <td>
                       <div
                         class="d-inline-block px-3 fw-semibold text-center rounded-pill"
                         style="
-                          border: 2px solid #0d5d17;
-                          background-color: #c5f9c2;
-                          color: #2f801b;
+                          border: 2px solid #4997ac;
+                          background-color: #d1f2f3;
+                          color: #03425d;
                           font-size: clamp(0.3rem, 2vw, 0.875rem);
                           white-space: nowrap;
                           padding: 0.3rem;
                         "
                       >
-                     Released
+                        On-Hold
                       </div>
                     </td>
                     <td>
@@ -928,7 +1171,7 @@ thead th {
                           padding: 0.3rem;
                         "
                       >
-                        Input Screening
+                        Jig Loading
                       </div>
                     </td>
                     <td>
@@ -1034,12 +1277,725 @@ thead th {
                         </div>
                       </a>
                     </td>
+                   
                   </tr>
-                  
+                  <!-- Row 3 (new, same static data) -->
+                  <tr>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span>3</span>
+                            <input type="checkbox" style="width: 15px; height: 15px;" />
+                        </div>
+                    </td>
+                    <td>2025-05-22 10:00 AM</td>
+                    <td>7346</td>
+                    <td>ISP</td>
+                    <td>A - Buffed</td>
+                    <td>A</td>
+                    <td>Nil</td>
+                    <td>Jumbo 14</td>
+                    <td>10</td>
+                    <td>
+                      <div style="display: flex; align-items: center; gap: 8px">
+                        <span style="min-width: 30px; text-align: right"
+                          >45</span
+                        >
+                        <input
+                          type="checkbox"
+                          style="width: 15px; height: 15px"
+                        />
+                        <input
+                          type="text"
+                          value="50"
+                          style="
+                            width: 60px;
+                            padding: 2px 4px;
+                            border: 1px solid #ccc;
+                            border-radius: 4px;
+                          "
+                        />
+                      </div>
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        value="50"
+                        style="
+                          width: 60px;
+                          padding: 2px 4px;
+                          border: 1px solid #ccc;
+                          border-radius: 4px;
+                        "
+                      />
+                    </td>
+                    <td>
+                      35
+                    </td>
+                    <td>
+                        <span class="mobile-cross-icon" title="Item removed" style="cursor: pointer; display: inline-flex; align-items: center;">
+                            <i class="fa fa-mobile" aria-hidden="true" style="font-size:25px; color: #028084; font-weight: 900;" data-bs-toggle="tooltip" data-placement="right" data-bs-original-title="Jig"></i>
+                        </span>
+                    </td>
+                    <td>
+                      <div class="d-flex">
+                        <div
+                          title="Tray Scan"
+                          class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+                          style="
+                            width: 20px;
+                            height: 20px;
+                            background-color: #c3c2c2;
+                            color: white;
+                            font-weight: bold;
+                            line-height: 20px;
+                            text-align: center;
+                            padding-top: 1px;
+                            padding-right: 1px;
+                          "
+                        >
+                          B
+                        </div>
+                        <div
+                          title="Tray Scan"
+                          class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+                          style="
+                            width: 20px;
+                            height: 20px;
+                            background-color: #c3c2c2;
+                            color: white;
+                            font-weight: bold;
+                            line-height: 20px;
+                            text-align: center;
+                            padding-top: 1px;
+                            padding-right: 1px;
+                          "
+                        >
+                          I
+                        </div>
+                        
+                      </div>
+                    </td>
+                    <td>
+                      <a href="#" title="Edit">
+                        <img
+                          src="{% static 'assets/icons/edit1.png' %}"
+                          alt="Edit"
+                          style="width: 20px; margin-right: 8px; height: auto"
+                        />
+                      </a>
+                      <a href="#" title="Delete">
+                        <img
+                          src="{% static 'assets/icons/bin.png' %}"
+                          alt="Delete"
+                          style="width: 20px; margin-right: 8px; height: auto"
+                        />
+                      </a>
+                        <a href="#rightSideModal">
+                        <button
+                            type="button"
+                            class="btn btn-social-icon-text btn-twitter"
+                            style="background-color: #028084a8"
+                        >
+                            <i class="fa fa-plus"></i>Added
+                        </button>
+                    </a>            
+                      <!-- Eye icon to view submitted "Tray Scan Table" -->
+                                                <a
+                          href="#"
+                          title="View"
+                          class="text-primary tray-scan-btn-Jig"
+                          data-batch-id="{{ data.batch_id|default:'' }}"
+                          data-model-no="{{ data.model_stock_no__model_no|default:'' }}"
+                          data-no-of-trays="{{ data.no_of_trays|default:'' }}"
+                          data-tray-capacity="{{ data.tray_capacity|default:'0' }}"
+                          data-moved-to-d-picker="{{ data.Moved_to_D_Picker|default:'' }}"
+                          data-tray-qty-list="{{ data.tray_qty_list|default:'[]'|safe }}"
+                        >
+                          <img
+                            src="{% static 'assets/icons/view.png' %}"
+                            alt="View"
+                            style="width: 20px; margin-right: 8px; height: auto; cursor:pointer;"
+                          />
+                        </a>
+                    </td>
+                    <td>
+                      <div
+                          class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                         
+                          style="
+                          border: 2px solid #0d5d17;
+                            background-color: #c5f9c2;
+                            color: #2f801b;
+                          font-size: 12px;
+                          white-space: nowrap;
+                          padding: 6px;
+                        "
+                        >
+                          Yet To Release
+                        </div>
+                    </td>
+                    <td>
+                      <div
+                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                        style="
+                          border: 2px solid #9adeed;
+                          background-color: #d1edf3;
+                          color: #033b5d;
+                          font-size: clamp(0.3rem, 2vw, 0.875rem);
+                          white-space: nowrap;
+                          padding: 0.3rem;
+                        "
+                      >
+                        Jig Loading
+                      </div>
+                    </td>
+                    <td>
+                         <a href="#" title="Add Audio Remark" class="remark-tooltip-trigger" style="display: inline-flex; align-items: center; height: 28px; margin-left: 0; position: relative; cursor: pointer;">
+                          <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec" style="width: 20px; height: 20px"/>
+                          <div class="remark-tooltip" style="position: absolute; top: 110%; left: 50%; transform: translateX(-50%); width: 300px; background: #fff; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: 15px; z-index: 1000;">
+                            <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid #fff;"></div>
+                            <!-- Audio recording UI placeholder -->
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                              <button type="button" style="background: #28a745; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fa fa-microphone"></i>
+                              </button>
+                              <span style="font-size: 14px; color: #333;">Hold to record audio</span>
+                            </div>
+                            <div style="text-align: right; margin-top: 10px;">
+                              <button type="button" style="background-color: #007bff; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                                <i class="fa fa-send"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </a>
+                      <a
+                        href="#"
+                        title="Add Remark"
+                        class="remark-tooltip-trigger"
+                        style="
+                          display: inline-flex;
+                          align-items: center;
+                          height: 20px;
+                          margin-left: 5px;
+                          position: relative;
+                          cursor: pointer;
+                        "
+                      >
+                        <img
+                          src="{% static 'assets/icons/chat1.png' %}"
+                          alt="Chat"
+                          style="width: 20px; height: 20px"
+                        />
+                        <div
+                          class="remark-tooltip"
+                          style="
+                            position: absolute;
+                            top: 110%;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            width: 300px;
+                            background: #fff;
+                            border: 1px solid #ccc;
+                            border-radius: 6px;
+                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                            opacity: 0;
+                            visibility: hidden;
+                            transition: opacity 0.3s ease, visibility 0.3s ease;
+                            padding: 15px;
+                            z-index: 1000;
+                          "
+                        >
+                          <div
+                            style="
+                              position: absolute;
+                              top: -10px;
+                              left: 50%;
+                              transform: translateX(-50%);
+                              width: 0;
+                              height: 0;
+                              border-left: 10px solid transparent;
+                              border-right: 10px solid transparent;
+                              border-bottom: 10px solid #fff;
+                            "
+                          ></div>
+                          <textarea
+                            placeholder="Type your remark..."
+                            style="
+                              width: 85%;
+                              height: 40px;
+                              resize: vertical;
+                              border: 1px solid #ccc;
+                              padding: 5px;
+                              border-radius: 4px;
+                              font-family: Arial, sans-serif;
+                              font-size: 14px;
+                            "
+                          ></textarea>
+                          <div style="text-align: right; margin-top: -35px">
+                            <button
+                              type="button"
+                              style="
+                                background-color: #007bff;
+                                color: #fff;
+                                border: none;
+                                padding: 6px 12px;
+                                border-radius: 4px;
+                                cursor: pointer;
+                                font-size: 14px;
+                              "
+                            >
+                              <i class="fa fa-send"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </a>
+                    </td>
+                   
+                  </tr>
+                  <!-- Row 4 -->
+                  <tr>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span>4</span>
+                            <input type="checkbox" style="width: 15px; height: 15px;" />
+                        </div>
+                    </td>
+
+                    <td>2025-05-22 10:00 AM</td>
+                    <td>2565</td>
+                    <td>ISP</td>
+                    <td>A - Buffed</td>
+                    <td>A</td>
+                    <td>Nil</td>
+                    <td>Jumbo 14</td>
+                    <td>10</td>
+                    <td>
+                      <div style="display: flex; align-items: center; gap: 8px">
+                        <span style="min-width: 30px; text-align: right"
+                          >50</span
+                        >
+                        <input
+                          type="checkbox"
+                          style="width: 15px; height: 15px"
+                          disabled
+                        />
+                        <input
+                          type="text"
+                          value="-"
+                          style="
+                            width: 60px;
+                            padding: 2px 4px;
+                            border: 1px solid #ccc;
+                            border-radius: 4px;
+                          "
+                          disabled
+                        />
+                      </div>
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        value="-"
+                        style="
+                          width: 60px;
+                          padding: 2px 4px;
+                          border: 1px solid #ccc;
+                          border-radius: 4px;
+                        "
+                      />
+                    </td>
+                    <td> 50 </td>
+                    <td>
+                        <img src="{% static 'assets/icons/mobile-slash.svg' %}" alt="Mobile Slash" style="width:20px; height:20px; fill:red; margin: -4px; color:red;" data-bs-toggle="tooltip" data-placement="right" data-bs-original-title="Jig"/>
+                    </td>
+                    <td>
+                      <div class="d-flex">
+                        <div
+                          title="Tray Scan"
+                          class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+                          style="
+                            width: 20px;
+                            height: 20px;
+                            background-color: #c3c2c2;
+                            color: white;
+                            font-weight: bold;
+                            line-height: 20px;
+                            text-align: center;
+                            padding-top: 1px;
+                            padding-right: 1px;
+                          "
+                        >
+                          B
+                        </div>
+                        <div
+                          title="Tray Scan"
+                          class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+                          style="
+                            width: 20px;
+                            height: 20px;
+                            background-color: #c3c2c2;
+                            color: white;
+                            font-weight: bold;
+                            line-height: 20px;
+                            text-align: center;
+                            padding-top: 1px;
+                            padding-right: 1px;
+                          "
+                        >
+                          I
+                        </div>
+                       
+                      </div>
+                    </td>
+                    <td>
+                      <a href="#" title="Edit">
+                        <img
+                          src="{% static 'assets/icons/edit1.png' %}"
+                          alt="Edit"
+                          style="width: 20px; margin-right: 8px; height: auto"
+                        />
+                      </a>
+                      <a href="#" title="Delete">
+                        <img
+                          src="{% static 'assets/icons/bin.png' %}"
+                          alt="Delete"
+                          style="width: 20px; margin-right: 8px; height: auto"
+                        />
+                      </a>
+                       <button
+                        type="button"
+                        class="btn btn-social-icon-text btn-twitter"
+                        style="background-color: #028084a8"
+                      >
+                        <i class="fa fa-plus-circle"></i>Add Jig
+                      </button>
+                        <!-- Eye icon to view submitted "Tray Scan Table" -->
+                                                <a
+                          href="#"
+                          title="View"
+                          class="text-primary tray-scan-btn-Jig"
+                          data-batch-id="{{ data.batch_id|default:'' }}"
+                          data-model-no="{{ data.model_stock_no__model_no|default:'' }}"
+                          data-no-of-trays="{{ data.no_of_trays|default:'' }}"
+                          data-tray-capacity="{{ data.tray_capacity|default:'0' }}"
+                          data-moved-to-d-picker="{{ data.Moved_to_D_Picker|default:'' }}"
+                          data-tray-qty-list="{{ data.tray_qty_list|default:'[]'|safe }}"
+                        >
+                          <img
+                            src="{% static 'assets/icons/view.png' %}"
+                            alt="View"
+                            style="width: 20px; margin-right: 8px; height: auto; cursor:pointer;"
+                          />
+                        </a>
+                    </td>
+                    <td>
+                      <div
+                          class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                          style="
+                          border: 1px solid #a6a6a6;
+                          background-color: #dcdada;
+                          color: #505050;
+                          font-size: 12px;
+                          white-space: nowrap;
+                          padding: 6px;
+                          
+                        "
+                        >
+                          Yet to Start
+                      </div>
+                    </td>
+                    <td>
+                      <div
+                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                        style="
+                          border: 2px solid #9adeed;
+                          background-color: #d1edf3;
+                          color: #033b5d;
+                          font-size: clamp(0.3rem, 2vw, 0.875rem);
+                          white-space: nowrap;
+                          padding: 0.3rem;
+                        "
+                      >
+                        Jig Loading
+                      </div>
+                    </td>
+                    <td>
+                      <!-- VoiceRec with tooltip (audio remark) -->
+                        <a href="#" title="Add Audio Remark" class="remark-tooltip-trigger" style="display: inline-flex; align-items: center; height: 28px; margin-left: 0; position: relative; cursor: pointer;">
+                          <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec" style="width: 20px; height: 20px"/>
+                          <div class="remark-tooltip" style="position: absolute; top: 110%; left: 50%; transform: translateX(-50%); width: 300px; background: #fff; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: 15px; z-index: 1000;">
+                            <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid #fff;"></div>
+                            <!-- Audio recording UI placeholder -->
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                              <button type="button" style="background: #28a745; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fa fa-microphone"></i>
+                              </button>
+                              <span style="font-size: 14px; color: #333;">Hold to record audio</span>
+                            </div>
+                            <div style="text-align: right; margin-top: 10px;">
+                              <button type="button" style="background-color: #007bff; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                                <i class="fa fa-send"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </a>
+
+                      <a
+                        href="#"
+                        title="Add Remark"
+                        class="remark-tooltip-trigger"
+                        style="
+                          display: inline-flex;
+                          align-items: center;
+                          height: 20px;
+                          margin-left: 5px;
+                          position: relative;
+                          cursor: pointer;
+                        "
+                      >
+                        <img
+                          src="{% static 'assets/icons/chat1.png' %}"
+                          alt="Chat"
+                          style="width: 20px; height: 20px"
+                        />
+                        <div
+                          class="remark-tooltip"
+                          style="
+                            position: absolute;
+                            top: 110%;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            width: 300px;
+                            background: #fff;
+                            border: 1px solid #ccc;
+                            border-radius: 6px;
+                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                            opacity: 0;
+                            visibility: hidden;
+                            transition: opacity 0.3s ease, visibility 0.3s ease;
+                            padding: 15px;
+                            z-index: 1000;
+                          "
+                        >
+                          <div
+                            style="
+                              position: absolute;
+                              top: -10px;
+                              left: 50%;
+                              transform: translateX(-50%);
+                              width: 0;
+                              height: 0;
+                              border-left: 10px solid transparent;
+                              border-right: 10px solid transparent;
+                              border-bottom: 10px solid #fff;
+                            "
+                          ></div>
+                          <textarea
+                            placeholder="Type your remark..."
+                            style="
+                              width: 85%;
+                              height: 40px;
+                              resize: vertical;
+                              border: 1px solid #ccc;
+                              padding: 5px;
+                              border-radius: 4px;
+                              font-family: Arial, sans-serif;
+                              font-size: 14px;
+                            "
+                          ></textarea>
+                          <div style="text-align: right; margin-top: -35px">
+                            <button
+                              type="button"
+                              style="
+                                background-color: #007bff;
+                                color: #fff;
+                                border: none;
+                                padding: 6px 12px;
+                                border-radius: 4px;
+                                cursor: pointer;
+                                font-size: 14px;
+                              "
+                            >
+                              <i class="fa fa-send"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </a>
+                    </td>
+                   
+                  </tr>
                 </tbody>
               </table>
 
-               <!-- Tray Scan (hyperlink) - Right side modal -->
+<!-- Right Slide-in Modal (CSS-only toggle) -->
+<div id="rightSideModal" class="right-slide-modal">
+  <div class="right-slide-content">
+    <!-- Header -->
+    <div class="modal-header">
+      <h3>
+        Jig Loading / Model No: <span class="highlight">1805</span>
+      </h3>
+      <a href="#" class="close-btn">&times;</a>
+    </div>
+
+    <!-- Top Actions -->
+    <div class="modal-actions">
+<a class="nav-link" href="{% url 'jig_composition' %}">Jig Composition</a>
+</li>      <button class="btn-action teal">Add Model</button>
+      <div class="cycle-status">No of Cycle: <strong>1/30</strong></div>
+    </div>
+
+    <!-- Form Fields -->
+    <div class="form-section" style="grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px;">
+      <div class="form-group">
+      <label>Jig QR ID</label>
+      <input type="text" placeholder="Enter Jig QR ID" />
+      </div>
+      <div class="form-group">
+      <label>Bath Type</label>
+      <input type="text" placeholder="Auto Fetch" disabled />
+      </div>
+      <div class="form-group">
+      <label>Faulty Slots</label>
+      <input type="text" placeholder="Enter Faulty Slots" />
+      </div>
+      <div class="form-group">
+      <label>Empty Slots</label>
+      <input type="text" placeholder="Auto Fetch" disabled />
+      </div>
+      <div class="form-group">
+      <label>LOT Qty</label>
+      <input type="text" placeholder="Auto Fetch" disabled />
+      </div>
+      <div class="form-group">
+      <label>Jig Capacity</label>
+      <input type="text" placeholder="Auto Fetch" disabled />
+      </div>
+    </div>
+    <!-- Tray Table Heading -->
+    <h4>No of Model Loaded:</h4>
+    <!-- Number of Model Loaded Slider -->
+    <div class="model-slider-wrapper" style="position: relative; margin-bottom: 20px;">
+      <!-- Previous Button -->
+      <button class="slider-btn prev-btn" style="position: absolute; left: 0; top: 50%; transform: translateY(-50%); z-index: 2; background: rgba(0,0,0,0.5); border: none; color: #fff; padding: 8px; cursor: pointer;">&#10094;</button>
+      
+      <!-- Slider Container -->
+      <div class="model-slider-container" style="overflow: hidden; margin: 0 40px;">
+        <div class="model-slider" style="display: flex; transition: transform 0.3s ease;">
+          <!-- Model 1 -->
+          <div class="model-loaded-item" style="min-width: 200px; flex: 0 0 auto; margin-right: 16px; display: flex; align-items: center; border: 1px solid #ccc; border-radius: 8px; padding: 8px;">
+            <button class="model-image-btn" style="border: none; background: none; padding: 0; margin-right: 8px;">
+              <img src="{% static 'assets/images/imagePlaceholder.png' %}" alt="Model Image" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+            </button>
+            <div class="model-number" style="font-size: 16px; font-weight: bold;">Model No: 1805</div>
+          </div>
+          <!-- Model 2 -->
+          <div class="model-loaded-item" style="min-width: 200px; flex: 0 0 auto; margin-right: 16px; display: flex; align-items: center; border: 1px solid #ccc; border-radius: 8px; padding: 8px;">
+            <button class="model-image-btn" style="border: none; background: none; padding: 0; margin-right: 8px;">
+              <img src="{% static 'assets/images/imagePlaceholder.png' %}" alt="Model Image" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+            </button>
+            <div class="model-number" style="font-size: 16px; font-weight: bold;">Model No: 1904</div>
+          </div>
+          <!-- Model 3 -->
+          <div class="model-loaded-item" style="min-width: 200px; flex: 0 0 auto; margin-right: 16px; display: flex; align-items: center; border: 1px solid #ccc; border-radius: 8px; padding: 8px;">
+            <button class="model-image-btn" style="border: none; background: none; padding: 0; margin-right: 8px;">
+              <img src="{% static 'assets/images/imagePlaceholder.png' %}" alt="Model Image" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+            </button>
+            <div class="model-number" style="font-size: 16px; font-weight: bold;">Model No: 2001</div>
+          </div>
+          <!-- Model 4 -->
+          <div class="model-loaded-item" style="min-width: 200px; flex: 0 0 auto; margin-right: 16px; display: flex; align-items: center; border: 1px solid #ccc; border-radius: 8px; padding: 8px;">
+            <button class="model-image-btn" style="border: none; background: none; padding: 0; margin-right: 8px;">
+              <img src="{% static 'assets/images/imagePlaceholder.png' %}" alt="Model Image" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+            </button>
+            <div class="model-number" style="font-size: 16px; font-weight: bold;">Model No: 1805</div>
+          </div>
+          <!-- Model 5 -->
+          <div class="model-loaded-item" style="min-width: 200px; flex: 0 0 auto; margin-right: 16px; display: flex; align-items: center; border: 1px solid #ccc; border-radius: 8px; padding: 8px;">
+            <button class="model-image-btn" style="border: none; background: none; padding: 0; margin-right: 8px;">
+              <img src="{% static 'assets/images/imagePlaceholder.png' %}" alt="Model Image" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+            </button>
+            <div class="model-number" style="font-size: 16px; font-weight: bold;">Model No: 1904</div>
+          </div>
+          <!-- Model 6 -->
+          <div class="model-loaded-item" style="min-width: 200px; flex: 0 0 auto; margin-right: 16px; display: flex; align-items: center; border: 1px solid #ccc; border-radius: 8px; padding: 8px;">
+            <button class="model-image-btn" style="border: none; background: none; padding: 0; margin-right: 8px;">
+              <img src="{% static 'assets/images/imagePlaceholder.png' %}" alt="Model Image" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+            </button>
+            <div class="model-number" style="font-size: 16px; font-weight: bold;">Model No: 2001</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Next Button -->
+      <button class="slider-btn next-btn" style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); z-index: 2; background: rgba(0,0,0,0.5); border: none; color: #fff; padding: 8px; cursor: pointer;">&#10095;</button>
+    </div>
+
+    <script nonce="{{ csp_nonce }}">
+    (function() {
+      const slider = document.querySelector('.model-slider');
+      const prevBtn = document.querySelector('.prev-btn');
+      const nextBtn = document.querySelector('.next-btn');
+      let sliderIndex = 0;
+      const itemWidth = document.querySelector('.model-loaded-item').offsetWidth + 16; // includes margin
+      const totalItems = slider.children.length;
+
+      function updateSlider() {
+        const containerWidth = document.querySelector('.model-slider-container').offsetWidth;
+        const visibleItems = Math.floor(containerWidth / itemWidth);
+        prevBtn.style.display = sliderIndex > 0 ? 'block' : 'none';
+        nextBtn.style.display = (sliderIndex + visibleItems < totalItems) ? 'block' : 'none';
+      }
+
+      prevBtn.addEventListener('click', function() {
+        sliderIndex = Math.max(sliderIndex - 1, 0);
+        slider.style.transform = 'translateX(' + (-sliderIndex * itemWidth) + 'px)';
+        updateSlider();
+      });
+
+      nextBtn.addEventListener('click', function() {
+        sliderIndex = Math.min(sliderIndex + 1, totalItems - 1);
+        slider.style.transform = 'translateX(' + (-sliderIndex * itemWidth) + 'px)';
+        updateSlider();
+      });
+
+      window.addEventListener('resize', updateSlider);
+      updateSlider();
+    })();
+    </script>
+    <!-- Tray Table Heading -->
+    <h4>De-link Tray:</h4>
+    <div class="tray-table">
+      <div>S.No</div>
+      <div>Tray ID</div>
+      <div>Tray Quantity</div>
+      <div>1 (Top Tray)</div>
+      <div><input type="text" value="1805 - Tray ID" style="width:100%; border:none; background:transparent;" /></div>
+      <div style="padding: 10px; text-align: center;">12         
+        <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit" style="width: 20px;margin-left: 4px;height: auto;vertical-align: middle;margin-top: -6px;"/>
+      </div>
+      <div>2</div>
+      <div><input type="text" value="1805 - Tray ID" style="width:100%; border:none; background:transparent;" /></div>
+      <div>12</div>
+      <div>3</div>
+      <div><input type="text" value="1904 - Tray ID" style="width:100%; border:none; background:transparent;" /></div>
+      <div>10</div>
+      <div>4</div>
+      <div><input type="text" value="1904 - Tray ID" style="width:100%; border:none; background:transparent;" /></div>
+      <div>10</div>
+    </div>
+
+    <!-- Footer Buttons -->
+    <div class="action-buttons">
+      <button class="btn-twitter">Add Jig</button>
+      <button class="btn-success">Submit</button>
+      <button class="btn-warning">Draft</button>
+      <button class="btn-danger">Cancel</button>
+    </div>
+  </div>
+</div>
+
+                  <!-- Tray Scan (hyperlink) - Right side modal -->
                   <div
                      id="trayScanModal_Jig"
                      class="tray-scan-modal-Jig active"
@@ -1080,7 +2036,7 @@ thead th {
                         <!-- Redo icon for clearing "tray ID" -->
                         <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
                            <h5 style="text-align: center; margin: 0; flex: 1; font-weight: 600; color:#595959">
-                              Jig Loading - Tray Scan
+                              Jig Loading- Tray Scan
                            </h5>
                            <!-- Tray Validate Button (NEW) -->
                            <button id="trayValidateBtn" type="button" style="display: flex; align-items: center; gap: 6px; background: #f5faff; border: 1px solid #028084; color: #028084; border-radius: 20px; padding: 4px 14px; font-size: 13px; font-weight: 500; cursor: pointer;">
@@ -1160,105 +2116,9 @@ thead th {
                   <span id="closeTrayScanModal" class="tray-scan-close"
                     >&times;</span
                   >
-                  <h3>Tray Scan Details:</h3><p>Input Screening / Model No. / Rejection Window </p>
+                  <h3>Tray Scan Details:</h3><p>Jig Loading / Model No. / Rejection Window </p>
                   <div id="trayScanDetails">
                     <!-- Dynamic content will be loaded here -->
-                  </div>
-                </div>
-              </div>
-              <!-- New Popup Modal (Right Popup) -->
-              <div id="newPopupModal" class="new-popup-modal">
-                <div class="tray-scan-modal-content">
-                  <span id="closeNewPopupModal" class="tray-scan-close"
-                    >&times;</span
-                  >
-                  <!-- New top header container: title + user profile aligned left -->
-                  <div
-                    class="modal-top-header"
-                    style="
-                      display: flex;
-                      align-items: center;
-                      gap: 20px;
-                      padding-bottom: 10px;
-                    "
-                  >
-                    <div
-                      class="user-profile"
-                      style="display: flex; align-items: center; gap: 8px"
-                    >
-                      <img
-                        src="{% static 'assets/images/userProfile.png' %}"
-                        alt="User Profile"
-                        style="
-                          border-radius: 50%;
-                          width: 50px;
-                          height: 50px;
-                          object-fit: cover;
-                        "
-                      />
-                      <span>Model No:</span>
-                      <h6>(Fetch Dynamically) / Accepted Tray Rescan</h6>
-                    </div>
-                  </div>
-                  <!-- Existing centered h3 title -->
-                  <!-- Redo icon for clearing "tray ID" -->
-                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
-                    <h5 style="text-align: center; margin: 0; flex: 1; font-weight: 600; color:#595959">
-                      Input Screening - Accepted case tray scan table
-                    </h5>
-                    <img
-                      src="{% static 'assets/icons/redo2.png' %}"
-                      alt="Redo"
-                      id="trayScanRedoBtn"
-                      style="width: 24px; height: 24px; cursor: pointer; margin-right: 14px;"
-                      title="Clear Tray IDs"
-                    />
-                  </div>
-                  <!-- Accepted Case Tray Scan Table - Grid View with Visible Borders -->
-                  <div id="trayScanDetails" class="table-grid">
-                    <div style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">S.no</div>
-                    <div style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">Tray ID</div>
-                    <div style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">Tray Qty</div>
-
-                    <div style="border: 1px solid #ccc; padding: 8px;">1</div>
-                    <div style="border: 1px solid #ccc; padding: 8px;">Tray0012345</div>
-                    <div style="border: 1px solid #ccc; padding: 8px;">
-                      <div style="display: flex; align-items: center; gap: 14px;">
-                        <span>10</span>
-                        <div style="display: flex; gap: 4px;">
-                          <input type="checkbox" style="width: 15px; height: 15px; cursor: pointer;" />
-                          <img src="/static/assets/icons/edit2.png" alt="Edit" style="width: 15px; height: 15px; cursor: pointer;" />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div style="border: 1px solid #ccc; padding: 8px;">2</div>
-                    <div style="border: 1px solid #ccc; padding: 8px;">Tray002</div>
-                    <div style="border: 1px solid #ccc; padding: 8px;">20</div>
-
-                    <div style="border: 1px solid #ccc; padding: 8px;">3</div>
-                    <div style="border: 1px solid #ccc; padding: 8px;">Tray003</div>
-                    <div style="border: 1px solid #ccc; padding: 8px;">15</div>
-
-                    <div style="border: 1px solid #ccc; padding: 8px;">4</div>
-                    <div style="border: 1px solid #ccc; padding: 8px;">Tray004</div>
-                    <div style="border: 1px solid #ccc; padding: 8px;">15</div>
-
-                    <!-- NEW BUTTONS SECTION -->
-                    <div class="tray-scan-modal-buttons" style="grid-column: 1 / -1; display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
-                       <button
-                    style="padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 30px;">
-                    Draft
-                  </button>
-                  <button
-                    style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 30px;">
-                    Submit
-                  </button>
-                  <button
-                    style="padding: 8px 16px; background: #dc3545; color: white; border: none; border-radius: 30px;">
-                    Cancel
-                  </button>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -1289,7 +2149,7 @@ thead th {
   </div>
   <!-- Image Slider Modal (popup) -->
   <div id="imageSliderModal" class="image-slider-modal">
-    <span id="closeImageSliderModal" class="modal-close">&times;</span>
+    <span id="closeImageSliderModal" class="modal-close-Jig">&times;</span>
     <h3>Visual Aid</h3>
     <div class="slider" id="slider">
       <div class="slides" id="slidesContainer">
@@ -1309,179 +2169,98 @@ thead th {
   </div>
   <!-- Image Slider Modal -->
   <div id="imageSliderModal" class="image-slider-modal">
-    <span id="closeImageSliderModal" class="modal-close">&times;</span>
+    <span id="closeImageSliderModal" class="modal-close-Jig">&times;</span>
     <div class="slider" id="slider">
       <button class="prev" id="prevBtn">&#8592;</button>
       <div class="slides"></div>
       <button class="next" id="nextBtn">&#8594;</button>
     </div>
   </div>
+
+            
   {% block script %}
-  
-   <script nonce="{{ csp_nonce }}">
-      document.addEventListener("DOMContentLoaded", function () {
-      
-        const cancelBtn = document.getElementById("trayScanCancelBtn");
-        if (cancelBtn) {
-          cancelBtn.addEventListener("click", function () {
-            const modal = document.getElementById("trayScanModal_Jig");
-            if (modal) modal.classList.remove("open");
-          });
-        }
-      
-         // DELETE BUTTON HANDLER
-        document.querySelectorAll('a[title="Delete"]').forEach(function(btn) {
-          btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const row = btn.closest('tr');
-            if (!row) return;
-            const trayScanLink = row.querySelector('.tray-scan-btn-Jig');
-            if (!trayScanLink) return;
-            const batchId = trayScanLink.getAttribute('data-batch-id');
-            if (!batchId) {
-              Swal.fire('Error', 'Batch ID not found!', 'error');
-              return;
-            }
-            Swal.fire({
-              title: 'Are you sure?',
-              text: 'Do you really want to delete this batch?',
-              icon: 'warning',
-              showCancelButton: true,
-              confirmButtonColor: '#d33',
-              cancelButtonColor: '#3085d6',
-              confirmButtonText: 'Yes, delete it!',
-              cancelButtonText: 'Cancel'
-            }).then((result) => {
-              if (result.isConfirmed) {
-                fetch('/dayplanning/delete_batch/', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken')
-                  },
-                  body: JSON.stringify({ batch_id: batchId })
-                })
-                .then(res => res.json())
-                .then(data => {
-                  if (data.success) {
-                    row.remove();
-                    Swal.fire({
-                      icon: 'success',
-                      title: 'Deleted!',
-                      text: 'Batch has been deleted.',
-                      timer: 1200,
-                      showConfirmButton: false
-                    });                  
-                  } else {
-                    Swal.fire('Error', data.error || 'Delete failed', 'error');
-                  }
-                });
-              }
-            });
-          });
-        });
-      
-        document.querySelectorAll('.edit-qty-btn').forEach(function(btn) {
-          btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const row = btn.closest('tr');
-            if (!row) return;
-            const qtyCell = row.querySelector('td:nth-child(10)');
-            if (!qtyCell) return;
-            const batchId = btn.getAttribute('data-batch-id');
-            const oldValue = qtyCell.textContent.trim();
-            // Prevent multiple inputs
-            if (qtyCell.querySelector('input')) return;
-            qtyCell.innerHTML = `<input type="number" min="1" class="form-control" value="${oldValue}" style="width: 80px; display:inline-block;" />`;
-            const input = qtyCell.querySelector('input');
-            input.focus();
-            input.select();
-        
-            input.addEventListener('keydown', function(ev) {
-              if (ev.key === 'Enter') {
-                const newValue = input.value.trim();
-                if (!newValue || isNaN(newValue) || parseInt(newValue) <= 0) {
-                  Swal.fire('Error', 'Enter a valid quantity.', 'error');
-                  return;
-                }
-                fetch('/dayplanning/update_batch_quantity/', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken')
-                  },
-                  body: JSON.stringify({ batch_id: batchId, total_batch_quantity: newValue })
-                })
-                .then(res => res.json())
-                .then(data => {
-                  if (data.success) {
-                    qtyCell.textContent = newValue;
-                    Swal.fire({
-                      icon: 'success',
-                      title: 'Quantity updated!',
-                      timer: 1200,
-                      showConfirmButton: false
-                    }).then(() => {
-                      location.reload();
-                    });
-                                 } else {
-                    Swal.fire('Error', data.error || 'Update failed', 'error');
-                    qtyCell.textContent = oldValue;
-                  }
-                })
-                .catch(() => {
-                  Swal.fire('Error', 'Network error', 'error');
-                  qtyCell.textContent = oldValue;
-                });
-              }
-              if (ev.key === 'Escape') {
-                qtyCell.textContent = oldValue;
-              }
-            });
-        
-            input.addEventListener('blur', function() {
-              qtyCell.textContent = oldValue;
-            });
-          });
-        });
-      
-        const table = document.getElementById("order-listing");
-        if (!table) {
-          console.warn("Table with ID 'order-listing' not found.");
-          return;
-        }
-      
-        const headers = table.querySelectorAll("thead th");
-        const tbody = table.querySelector("tbody");
-      
-        let sortDirection = {};
-      
-        headers.forEach((header, index) => {
-          header.style.cursor = "pointer";
-      
-          header.addEventListener("click", function () {
-            const rows = Array.from(tbody.querySelectorAll("tr"));
-            const dir = sortDirection[index] === "asc" ? "desc" : "asc";
-            sortDirection[index] = dir;
-      
-            rows.sort((a, b) => {
-              const cellA = a.children[index].textContent.trim();
-              const cellB = b.children[index].textContent.trim();
-              const valA = isNaN(cellA) ? cellA : parseFloat(cellA);
-              const valB = isNaN(cellB) ? cellB : parseFloat(cellB);
-      
-              if (valA < valB) return dir === "asc" ? -1 : 1;
-              if (valA > valB) return dir === "asc" ? 1 : -1;
-              return 0;
-            });
-      
-            tbody.innerHTML = "";
-            rows.forEach((row) => tbody.appendChild(row));
-          });
-        });
+  <!-- Include any additional scripts here -->
+
+<script nonce="{{ csp_nonce }}">
+  const btnMsg = {
+    "Draft": "Drafted successfully",
+    "Submit": "Submitted successfully",
+    "Cancel": "Cancelled successfully",
+    "Add Jig": "Jig added successfully"
+  };
+  const btnBg = {
+    "Draft": "#d1eaff",
+    "Submit": "#d4f7d4",
+    "Cancel": "#ffd6d6",
+    "Add Jig": "#e5faff"
+  };
+  const btnColor = {
+    "Draft": "#0056b3",
+    "Submit": "#218838",
+    "Cancel": "#b30000",
+    "Add Jig": "#017c80"
+  };
+
+  document.querySelectorAll('.action-buttons button').forEach(button => {
+    button.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      const action = button.textContent.trim();
+
+      // 1. Close the modal
+      document.querySelectorAll('.right-slide-modal').forEach(modal => {
+        modal.classList.remove('open');
       });
-   </script>
-      <!-- Script for Tray Scan - Modal Popup -->
+
+      // 2. Delay highlight slightly to ensure modal has closed
+      setTimeout(() => {
+        const row = document.querySelector('tr.highlighted-tray-scan');
+        if (row) {
+          row.classList.add('dp-row-action-highlight');
+          setTimeout(() => {
+            row.classList.remove('dp-row-action-highlight');
+          }, 2500);
+        }
+      }, 150); // small delay to allow layout repaint
+
+      // 3. Show the message bar
+      let msgBar = document.getElementById('actionMsgBar');
+      if (!msgBar) {
+        msgBar = document.createElement('div');
+        msgBar.id = 'actionMsgBar';
+        msgBar.style.position = "fixed";
+        msgBar.style.top = "10px";
+        msgBar.style.left = "50%";
+        msgBar.style.transform = "translateX(-50%)";
+        msgBar.style.padding = "10px 20px";
+        msgBar.style.borderRadius = "8px";
+        msgBar.style.fontSize = "14px";
+        msgBar.style.zIndex = "11000";
+        msgBar.style.transition = "opacity 0.3s ease";
+        document.body.appendChild(msgBar);
+      }
+
+      msgBar.textContent = btnMsg[action] || "Action completed";
+      msgBar.style.background = btnBg[action] || "#d1eaff";
+      msgBar.style.color = btnColor[action] || "#0056b3";
+      msgBar.style.display = "block";
+      msgBar.style.opacity = "1";
+
+      // 4. Hide message and redirect
+      setTimeout(() => {
+        msgBar.style.opacity = "0";
+        setTimeout(() => {
+          msgBar.style.display = "none";
+          window.location.href = "/jigloading/JigView/";
+        }, 300);
+      }, 2600);
+    });
+  });
+</script>
+
+
+ 
+   <!-- Script for Tray Scan - Modal Popup -->
    <script nonce="{{ csp_nonce }}">
       // Helper to get CSRF token
       function getCookie(name) {
@@ -1993,81 +2772,8 @@ thead th {
       
       
    </script>
-     <!-- Script for clearing "Tray ID" while hitting "Redo" icon -->
-  <script nonce="{{ csp_nonce }}">
-  document.addEventListener("DOMContentLoaded", function () {
-    const redoBtn = document.getElementById("trayScanRedoBtn");
-    if (redoBtn) {
-      redoBtn.title = "Redo"; // Set tooltip on mouse hover
-    }
-  
-    const detailsDiv = document.getElementById("trayScanDetails");
-    const table = document.getElementById('order-listing');
-    let msgBar = document.getElementById('dp-table-msg-bar');
-  
-    // Create message bar if not present
-    if (!msgBar && table) {
-      msgBar = document.createElement('div');
-      msgBar.id = 'dp-table-msg-bar';
-      msgBar.style.display = 'none';
-      msgBar.style.width = '100%';
-      msgBar.style.margin = '0 0 8px 0';
-      msgBar.style.padding = '10px 24px';
-      msgBar.style.background = '#d1eaff';
-      msgBar.style.color = '#0056b3';
-      msgBar.style.fontWeight = 'bold';
-      msgBar.style.borderRadius = '8px';
-      msgBar.style.fontSize = '1.1rem';
-      msgBar.style.textAlign = 'center';
-      msgBar.style.transition = 'opacity 0.3s, background 0.3s, color 0.3s';
-      table.parentNode.insertBefore(msgBar, table);
-    }
-  
-    // --- FIX: Show alert inside modal form, not on table ---
-    let formMsgBar = document.getElementById('tray-id-clear-msg-bar');
-    const modal = document.getElementById('trayScanModal');
-    if (!formMsgBar && modal) {
-      formMsgBar = document.createElement('div');
-      formMsgBar.id = 'tray-id-clear-msg-bar';
-      formMsgBar.style.display = 'none';
-      formMsgBar.style.width = '100%';
-      formMsgBar.style.margin = '0 0 8px 0';
-      formMsgBar.style.padding = '8px 16px';
-      formMsgBar.style.background = '#ffd6d6';
-      formMsgBar.style.color = '#b30000';      // red text
-      formMsgBar.style.fontWeight = 'bold';
-      formMsgBar.style.borderRadius = '8px';
-      formMsgBar.style.fontSize = '14px';      // 14px font
-      formMsgBar.style.textAlign = 'center';
-      formMsgBar.style.transition = 'opacity 0.3s, background 0.3s, color 0.3s';
-      const modalContent = modal.querySelector('.tray-scan-modal-content');
-      if (modalContent) {
-        modalContent.insertBefore(formMsgBar, modalContent.firstChild);
-      }
-    }
-    // -------------------------------------------------------
-  
-    if (redoBtn && detailsDiv) {
-      redoBtn.addEventListener("click", function () {
-        detailsDiv.querySelectorAll('input[type="text"]').forEach(function(input) {
-          input.value = "";
-        });
-        // Show line alert INSIDE MODAL FORM
-        if (formMsgBar) {
-          formMsgBar.textContent = "Tray ID Cleared Successfully";
-          formMsgBar.style.display = 'block';
-          formMsgBar.style.opacity = '1';
-          formMsgBar.style.background = '#d1eaff';
-          formMsgBar.style.color = '#0056b3';
-          setTimeout(function () {
-            formMsgBar.style.opacity = '0';
-            setTimeout(function () { formMsgBar.style.display = 'none'; }, 300);
-          }, 2000);
-        }
-      });
-    }
-  });
-  </script>
+
+
   <!-- Table Sorting Script -->
   <script nonce="{{ csp_nonce }}">
     document.addEventListener("DOMContentLoaded", function () {
@@ -2097,176 +2803,8 @@ thead th {
       });
     });
   </script>
-  <!-- Tray Scan Modal & New Popup Script -->
-  <script nonce="{{ csp_nonce }}">
-    document.addEventListener("DOMContentLoaded", () => {
-      const trayScanLinks = document.querySelectorAll(".tray-scan-btn");
-      const trayModal = document.getElementById("trayScanModal");
-      const closeTrayBtn = document.getElementById("closeTrayScanModal");
-      const detailsDiv = document.getElementById("trayScanDetails");
-      const newPopupModal = document.getElementById("newPopupModal");
-      const closeNewPopupBtn = document.getElementById("closeNewPopupModal");
 
-      trayScanLinks.forEach((link) => {
-        link.addEventListener("click", (event) => {
-          event.preventDefault();
-          const row = event.target.closest("tr");
-          if (!row) return;
-          const modelStockNo = row.cells[2].textContent.trim();
-          const dateTime = row.cells[1].textContent.trim();
-          const totalQuantity = row.cells[9].textContent.trim();
 
-          // Set the inner HTML with Proceed and Cancel buttons tagged with IDs
-          detailsDiv.innerHTML = `
-
-         <div class="d-flex justify-content-between align-items-center mb-2">
-           <h4 class="mb-0">Rejection Reason List</h4>
-           <div class="form-check d-flex align-items-center">
-               <input class="form-check-input" type="checkbox" id="batchRejection" />
-               <label class="form-check-label ms-2" for="batchRejection">Batch Rejection</label>
-           </div>
-         </div>
-   
-         <div class="table-responsive" style="border: solid 1px black;">
-           <table class="table table-bordered text-center" style="border: solid 2px black; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-             <thead style="border: solid 2px black; background-color: #007bff; color: #fff;">
-             <tr style="border: solid 1px black; background-color: #007bff; color: #fff;">
-                 <th style="padding: 12px;">S.No</th>
-                 <th style="padding: 12px;">Reason ID</th>
-                 <th style="padding: 12px;">Rejection Reason</th>
-                 <th style="padding: 12px;">Quantity</th>
-                 <th style="padding: 12px;">Tray</th>
-             </tr>
-             </thead>
-             <tbody style="border: solid 1px black;">
-               <tr>
-             <td style="padding: 10px;">1</td>
-             <td style="padding: 10px;">001</td>
-             <td style="padding: 10px;"><a href="#" style="color:#007bff; text-decoration: none;">Model Mix up</a></td>
-             <td style="padding: 10px;">5</td>
-             <td style="padding: 10px;"><a href="#" style="color:#007bff; text-decoration: none;">NT0011</a></td>
-               </tr>
-               <tr>
-             <td style="padding: 10px;">2</td>
-             <td style="padding: 10px;">002</td>
-             <td style="padding: 10px;"><a href="#" style="color:#007bff; text-decoration: none;">Version Mix up</a></td>
-             <td style="padding: 10px;">2</td>
-             <td style="padding: 10px;"><a href="#" style="color:#007bff; text-decoration: none;">NT0011</a></td>
-               </tr>
-               <tr>
-             <td style="padding: 10px;">3</td>
-             <td style="padding: 10px;">003</td>
-             <td style="padding: 10px;">Rejection Reason - 3</td>
-             <td style="padding: 10px;">8</td>
-             <td style="padding: 10px;"><strong>NT001</strong></td>
-               </tr>
-               <tr>
-             <td style="padding: 10px;">4</td>
-             <td style="padding: 10px;">004</td>
-             <td style="padding: 10px;">Rejection Reason - 4</td>
-             <td style="padding: 10px;">1</td>
-             <td style="padding: 10px;"><strong>NT001</strong></td>
-               </tr>
-               <tr>
-             <td style="padding: 10px;">5</td>
-             <td style="padding: 10px;">005</td>
-             <td style="padding: 10px;">Rejection Reason - 5</td>
-             <td style="padding: 10px;">2</td>
-             <td style="padding: 10px;"><strong>NT001</strong></td>
-               </tr>
-               <tr>
-             <td style="padding: 10px;">6</td>
-             <td style="padding: 10px;">006</td>
-             <td style="padding: 10px; color: green;">Rejection Reason - 6</td>
-             <td style="padding: 10px;">6</td>
-             <td style="padding: 10px; color: green;"><strong>NT0021</strong></td>
-               </tr>
-               <tr>
-             <td style="padding: 10px;">7</td>
-             <td style="padding: 10px;">007</td>
-             <td style="padding: 10px; color: red;">Rejection Reason - 7</td>
-             <td style="padding: 10px;">4</td>
-             <td style="padding: 10px; color: red;"><strong>NT00211</strong></td>
-               </tr>
-               <tr style="background-color: #f0f0f0;">
-             <td colspan="3" style="padding: 12px; font-weight: bold; text-align: right;">Total Qty</td>
-             <td style="padding: 12px; font-weight: bold; background-color:#E0E0E0;">28</td>
-             <td style="padding: 12px;"></td>
-               </tr>
-             </tbody>
-           </table>
-         </div>
-          <br>
-           <div
-                      style="
-                        display: flex;
-                        justify-content: center;
-                        gap: 10px;
-                        margin-top: 20px;
-                      "
-                    >
-                    <button id="proceedButton" style="
-                          padding: 8px 16px;
-                          background: #28a745;
-                          color: white;
-                          border: none;
-                          border-radius: 30px;
-                        "
-                      > 
-                        Proceed
-                      </button>
-                      <a href="{% url 'IS_PickTable' %}" style="
-                          padding: 8px 16px;
-                          background: #dc3545;
-                          color: white;
-                          border: none;
-                          border-radius: 30px;
-                        "
-                      >
-                        Cancel
-                      </a>
-                    </div>
-           
-         `;
-
-          trayModal.classList.add("open");
-
-          // Attach event listener for Proceed to open new popup modal
-          const proceedButton = document.getElementById("proceedButton");
-          const cancelButton = document.getElementById("cancelRejection");
-
-          if (proceedButton) {
-            proceedButton.addEventListener("click", () => {
-              newPopupModal.classList.add("open");
-            });
-          }
-          if (cancelButton) {
-            cancelButton.addEventListener("click", () => {
-              trayModal.classList.remove("open");
-            });
-          }
-        });
-      });
-
-      closeTrayBtn.addEventListener("click", () => {
-        trayModal.classList.remove("open");
-      });
-      trayModal.addEventListener("click", (event) => {
-        if (event.target === trayModal) {
-          trayModal.classList.remove("open");
-        }
-      });
-      // New Popup Modal close events
-      closeNewPopupBtn.addEventListener("click", () => {
-        newPopupModal.classList.remove("open");
-      });
-      newPopupModal.addEventListener("click", (event) => {
-        if (event.target === newPopupModal) {
-          newPopupModal.classList.remove("open");
-        }
-      });
-    });
-  </script>
   <!-- Script for Text Remarks (unchanged) -->
   <script nonce="{{ csp_nonce }}">
     document.addEventListener("DOMContentLoaded", function () {
@@ -2320,224 +2858,205 @@ thead th {
       });
     });
   </script>
+
   <!-- Image Slider Script -->
   <!-- Script for Model / Stock No - Image Mouse Hover -->
 <script nonce="{{ csp_nonce }}">
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.model-hover-trigger').forEach(function(trigger) {
-    const tooltip = trigger.querySelector('.model-image-tooltip');
-    let currentIndex = 0;
-    let tooltipPinned = false;
-    const images = Array.from(tooltip.querySelectorAll('.img-gallery img'));
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.model-hover-trigger').forEach(function(trigger) {
+      const tooltip = trigger.querySelector('.model-image-tooltip');
+      let currentIndex = 0;
+      let tooltipPinned = false;
+      const images = Array.from(tooltip.querySelectorAll('.img-gallery img'));
 
-    function showImages(start) {
-      images.forEach((img, i) => {
-        img.style.display = (i >= start && i < start + 3) ? 'block' : 'none';
+      function showImages(start) {
+        images.forEach((img, i) => {
+          img.style.display = (i >= start && i < start + 3) ? 'block' : 'none';
+        });
+      }
+      showImages(currentIndex);
+
+      trigger.addEventListener('mouseenter', function() {
+        if (!tooltipPinned) {
+          tooltip.style.opacity = '1';
+          tooltip.style.pointerEvents = 'auto';
+        }
       });
-    }
-    showImages(currentIndex);
+      trigger.addEventListener('mouseleave', function() {
+        if (!tooltipPinned) {
+          tooltip.style.opacity = '0';
+          tooltip.style.pointerEvents = 'none';
+        }
+      });
+      tooltip.addEventListener('mouseenter', function() {
+        if (!tooltipPinned) {
+          tooltip.style.opacity = '1';
+          tooltip.style.pointerEvents = 'auto';
+        }
+      });
+      tooltip.addEventListener('mouseleave', function() {
+        if (!tooltipPinned) {
+          tooltip.style.opacity = '0';
+          tooltip.style.pointerEvents = 'none';
+        }
+      });
 
-    trigger.addEventListener('mouseenter', function() {
-      if (!tooltipPinned) {
+      // Pin tooltip on click
+      trigger.addEventListener('click', function(e) {
+        e.preventDefault();
+        tooltipPinned = true;
         tooltip.style.opacity = '1';
         tooltip.style.pointerEvents = 'auto';
-      }
-    });
-    trigger.addEventListener('mouseleave', function() {
-      if (!tooltipPinned) {
-        tooltip.style.opacity = '0';
-        tooltip.style.pointerEvents = 'none';
-      }
-    });
-    tooltip.addEventListener('mouseenter', function() {
-      if (!tooltipPinned) {
-        tooltip.style.opacity = '1';
-        tooltip.style.pointerEvents = 'auto';
-      }
-    });
-    tooltip.addEventListener('mouseleave', function() {
-      if (!tooltipPinned) {
-        tooltip.style.opacity = '0';
-        tooltip.style.pointerEvents = 'none';
-      }
-    });
+      });
 
-    // Pin tooltip on click
-    trigger.addEventListener('click', function(e) {
-      e.preventDefault();
-      tooltipPinned = true;
-      tooltip.style.opacity = '1';
-      tooltip.style.pointerEvents = 'auto';
-    });
+      // Unpin tooltip if user clicks outside
+      document.addEventListener('mousedown', function(e) {
+        if (!trigger.contains(e.target) && !tooltip.contains(e.target)) {
+          tooltipPinned = false;
+          tooltip.style.opacity = '0';
+          tooltip.style.pointerEvents = 'none';
+        }
+      });
 
-    // Unpin tooltip if user clicks outside
-    document.addEventListener('mousedown', function(e) {
-      if (!trigger.contains(e.target) && !tooltip.contains(e.target)) {
-        tooltipPinned = false;
-        tooltip.style.opacity = '0';
-        tooltip.style.pointerEvents = 'none';
-      }
-    });
-
-    tooltip.querySelector('.img-scroll-left').addEventListener('click', function(e) {
-      e.stopPropagation();
-      if (currentIndex > 0) {
-        currentIndex--;
-        showImages(currentIndex);
-      }
-    });
-    tooltip.querySelector('.img-scroll-right').addEventListener('click', function(e) {
-      e.stopPropagation();
-      if (currentIndex < images.length - 3) {
-        currentIndex++;
-        showImages(currentIndex);
-      }
-    });
-
-    // Add click event to images for modal slider
-    images.forEach(function(img, idx) {
-      img.style.cursor = 'pointer';
-      img.addEventListener('click', function(e) {
+      tooltip.querySelector('.img-scroll-left').addEventListener('click', function(e) {
         e.stopPropagation();
-        openImageSlider(images.map(i => i.src), idx);
+        if (currentIndex > 0) {
+          currentIndex--;
+          showImages(currentIndex);
+        }
+      });
+      tooltip.querySelector('.img-scroll-right').addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (currentIndex < images.length - 3) {
+          currentIndex++;
+          showImages(currentIndex);
+        }
+      });
+
+      // Add click event to images for modal slider
+      images.forEach(function(img, idx) {
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', function(e) {
+          e.stopPropagation();
+          openImageSlider(images.map(i => i.src), idx);
+        });
       });
     });
-  });
 
-  // Modal slider functions
-  const modal = document.getElementById("imageSliderModal");
-  const closeModal = document.getElementById("closeImageSliderModal");
-  const slidesContainer = modal.querySelector(".slides");
-  let sliderImages = [];
-  let currentSlide = 0;
+    // Modal slider functions
+    const modal = document.getElementById("imageSliderModal");
+    const closeModal = document.getElementById("closeImageSliderModal");
+    const slidesContainer = modal.querySelector(".slides");
+    let sliderImages = [];
+    let currentSlide = 0;
 
-  function openImageSlider(srcArray, startIdx) {
-    sliderImages = srcArray;
-    slidesContainer.innerHTML = '';
-    sliderImages.forEach(src => {
-      const slide = document.createElement('div');
-      slide.className = 'slide';
-      const img = document.createElement('img');
-      img.src = src;
-      slide.appendChild(img);
-      slidesContainer.appendChild(slide);
+    function openImageSlider(srcArray, startIdx) {
+      sliderImages = srcArray;
+      slidesContainer.innerHTML = '';
+      sliderImages.forEach(src => {
+        const slide = document.createElement('div');
+        slide.className = 'slide';
+        const img = document.createElement('img');
+        img.src = src;
+        slide.appendChild(img);
+        slidesContainer.appendChild(slide);
+      });
+      currentSlide = startIdx;
+      showSlide(currentSlide);
+      modal.classList.add('open');
+    }
+
+    function showSlide(n) {
+      const slides = slidesContainer.querySelectorAll('.slide');
+      if (!slides.length) return;
+      currentSlide = (n + slides.length) % slides.length;
+      slides.forEach((slide, idx) => {
+        slide.classList.toggle('active', idx === currentSlide);
+      });
+    }
+
+    modal.querySelector("#prevBtn").addEventListener("click", function(e) {
+      e.stopPropagation();
+      showSlide(currentSlide - 1);
     });
-    currentSlide = startIdx;
-    showSlide(currentSlide);
-    modal.classList.add('open');
-  }
-
-  function showSlide(n) {
-    const slides = slidesContainer.querySelectorAll('.slide');
-    if (!slides.length) return;
-    currentSlide = (n + slides.length) % slides.length;
-    slides.forEach((slide, idx) => {
-      slide.classList.toggle('active', idx === currentSlide);
+    modal.querySelector("#nextBtn").addEventListener("click", function(e) {
+      e.stopPropagation();
+      showSlide(currentSlide + 1);
     });
-  }
-
-  modal.querySelector("#prevBtn").addEventListener("click", function(e) {
-    e.stopPropagation();
-    showSlide(currentSlide - 1);
+    closeModal.addEventListener("click", function() {
+      modal.classList.remove("open");
+    });
+    modal.addEventListener("click", function(e) {
+      if (e.target === modal) modal.classList.remove("open");
+    });
   });
-  modal.querySelector("#nextBtn").addEventListener("click", function(e) {
-    e.stopPropagation();
-    showSlide(currentSlide + 1);
-  });
-  closeModal.addEventListener("click", function() {
-    modal.classList.remove("open");
-  });
-  modal.addEventListener("click", function(e) {
-    if (e.target === modal) modal.classList.remove("open");
-  });
-});
 </script>
+
+<!-- Pagination Script -->
   <script nonce="{{ csp_nonce }}">
-  document.addEventListener("DOMContentLoaded", function () {
-    const table = document.getElementById("order-listing");
-    if (!table) return;
-    const tbody = table.querySelector("tbody");
-    const rows = Array.from(tbody.querySelectorAll("tr"));
-    const rowsPerPage = 10;
-    let currentPage = 1;
-  
-    function renderTable(page) {
-      tbody.innerHTML = "";
-      const start = (page - 1) * rowsPerPage;
-      const end = start + rowsPerPage;
-      rows.slice(start, end).forEach(row => tbody.appendChild(row));
-      renderPagination(page);
-    }
-  
-    function renderPagination(page) {
-      let totalPages = Math.ceil(rows.length / rowsPerPage);
-      const pagination = document.querySelector(".pagination");
-      if (!pagination) return;
-      pagination.innerHTML = "";
-  
-      // Previous
-      const prev = document.createElement("li");
-      prev.className = "page-item" + (page === 1 ? " disabled" : "");
-      prev.innerHTML = `<a class="page-link" href="#">Previous</a>`;
-      prev.onclick = function(e) { e.preventDefault(); if(page > 1) renderTable(page - 1); };
-      pagination.appendChild(prev);
-  
-      // Page numbers
-      for (let i = 1; i <= totalPages; i++) {
-        const li = document.createElement("li");
-        li.className = "page-item" + (i === page ? " active" : "");
-        li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
-        li.onclick = function(e) { e.preventDefault(); renderTable(i); };
-        pagination.appendChild(li);
+    document.addEventListener("DOMContentLoaded", function () {
+      const table = document.getElementById("order-listing");
+      if (!table) return;
+      const tbody = table.querySelector("tbody");
+      const rows = Array.from(tbody.querySelectorAll("tr"));
+      const rowsPerPage = 10;
+      let currentPage = 1;
+    
+      function renderTable(page) {
+        tbody.innerHTML = "";
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        rows.slice(start, end).forEach(row => tbody.appendChild(row));
+        renderPagination(page);
       }
-  
-      // Next
-      const next = document.createElement("li");
-      next.className = "page-item" + (page === totalPages ? " disabled" : "");
-      next.innerHTML = `<a class="page-link" href="#">Next</a>`;
-      next.onclick = function(e) { e.preventDefault(); if(page < totalPages) renderTable(page + 1); };
-      pagination.appendChild(next);
-    }
-  
-    renderTable(currentPage);
-  });
+    
+      function renderPagination(page) {
+        let totalPages = Math.ceil(rows.length / rowsPerPage);
+        const pagination = document.querySelector(".pagination");
+        if (!pagination) return;
+        pagination.innerHTML = "";
+    
+        // Previous
+        const prev = document.createElement("li");
+        prev.className = "page-item" + (page === 1 ? " disabled" : "");
+        prev.innerHTML = `<a class="page-link" href="#">Previous</a>`;
+        prev.onclick = function(e) { e.preventDefault(); if(page > 1) renderTable(page - 1); };
+        pagination.appendChild(prev);
+    
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+          const li = document.createElement("li");
+          li.className = "page-item" + (i === page ? " active" : "");
+          li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+          li.onclick = function(e) { e.preventDefault(); renderTable(i); };
+          pagination.appendChild(li);
+        }
+    
+        // Next
+        const next = document.createElement("li");
+        next.className = "page-item" + (page === totalPages ? " disabled" : "");
+        next.innerHTML = `<a class="page-link" href="#">Next</a>`;
+        next.onclick = function(e) { e.preventDefault(); if(page < totalPages) renderTable(page + 1); };
+        pagination.appendChild(next);
+      }
+    
+      renderTable(currentPage);
+    });
   </script>
-  <!-- script for buttons in form & highlight -->
 
+
+
+<!-- Active table row highlight -->
 <script nonce="{{ csp_nonce }}">
-// filepath: a:\Workspace\Track_and_Trace_v2\static\templates\Day_Planning\DP_PickTable.html
+// Row highlight & position swap for tray-scan-btn-Jig (like DP_PickTable.html)
 document.addEventListener("DOMContentLoaded", function() {
-  const table = document.getElementById('order-listing');
-  const modal = document.getElementById('trayScanModal');
-  const msgBarId = 'dp-table-msg-bar';
-  let msgBar = document.getElementById(msgBarId);
-
-  // Create message bar if not present
-  if (!msgBar && table) {
-    msgBar = document.createElement('div');
-    msgBar.id = msgBarId;
-    msgBar.style.display = 'none';
-    msgBar.style.width = '100%';
-    msgBar.style.margin = '0 0 8px 0';
-    msgBar.style.padding = '10px 24px';
-    msgBar.style.background = '#d1eaff';
-    msgBar.style.color = '#0056b3';
-    msgBar.style.fontWeight = 'bold';
-    msgBar.style.borderRadius = '8px';
-    msgBar.style.fontSize = '1.1rem';
-    msgBar.style.textAlign = 'center';
-    msgBar.style.transition = 'opacity 0.3s, background 0.3s, color 0.3s';
-    table.parentNode.insertBefore(msgBar, table);
-  }
-
-  // Highlight style (if not present)
+  // Add highlight style if not present
   if (!document.getElementById('dp-row-action-highlight-style')) {
     var style = document.createElement('style');
     style.id = 'dp-row-action-highlight-style';
     style.innerHTML = `
       .dp-row-action-highlight {
-        box-shadow: 0 0 0 3px #007bff, 0 0 10px #007bff55 !important;
-        transition: box-shadow 9.3s;
+        transition: box-shadow 1.3s;
         background-color: #f0f8ff !important;
         animation: highlightAnimation 2s ease-in-out;
       }
@@ -2545,102 +3064,66 @@ document.addEventListener("DOMContentLoaded", function() {
     document.head.appendChild(style);
   }
 
-  const btnMsg = {
-    "Draft": "Drafted successfully",
-    "Submit": "Submitted successfully",
-    "Cancel": "Cancelled successfully"
-  };
-  const btnBg = {
-    "Draft": "#d1eaff",    // blue
-    "Submit": "#d4f7d4",   // green
-    "Cancel": "#ffd6d6"    // red
-  };
-  const btnColor = {
-    "Draft": "#0056b3",
-    "Submit": "#218838",
-    "Cancel": "#b30000"
-  };
+  let originalRowIndex = null;
+  let movedRow = null;
+  let placeholderRow = null;
 
-  document.querySelectorAll('.tray-scan-modal-buttons button').forEach(function(btn) {
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-
-      // 1. Close the modal immediately
-      if (modal) modal.classList.remove('open');
-
-      // 2. Show alert and highlight row
-      let btnText = btn.textContent.trim();
-      let msg = btnMsg[btnText] || "Action successful";
-      let bg = btnBg[btnText] || "#d1eaff";
-      let color = btnColor[btnText] || "#0056b3";
-      if (msgBar) {
-        msgBar.textContent = msg;
-        msgBar.style.display = 'block';
-        msgBar.style.opacity = '1';
-        msgBar.style.background = bg;
-        msgBar.style.color = color;
-      }
-      document.querySelectorAll('tr.highlighted-tray-scan').forEach(function(row) {
-        row.classList.add('dp-row-action-highlight');
-        setTimeout(function() {
-          row.classList.remove('dp-row-action-highlight');
-        }, 2000);
+  document.querySelectorAll('.tray-scan-btn-Jig').forEach(function(link) {
+    link.addEventListener('click', function(event) {
+      // Remove highlight from all rows
+      document.querySelectorAll('tbody tr').forEach(function(row) {
+        row.classList.remove('dp-row-action-highlight');
       });
-
-      // 3. Hide alert after 2s (and redirect if needed)
-      setTimeout(function() {
-        if (msgBar) {
-          msgBar.style.opacity = '0';
-          setTimeout(function() { msgBar.style.display = 'none'; }, 300);
+      // Move the clicked row to the top and highlight
+      var row = event.target.closest('tr');
+      if (row && row.parentNode) {
+        const tbody = row.parentNode;
+        // Only move if not already at top
+        if (tbody.firstElementChild !== row) {
+          // If a previous move exists, restore it first
+          if (movedRow && placeholderRow && placeholderRow.parentNode) {
+            placeholderRow.parentNode.insertBefore(movedRow, placeholderRow);
+            placeholderRow.parentNode.removeChild(placeholderRow);
+            movedRow.classList.remove('dp-row-action-highlight');
+            movedRow = null;
+            placeholderRow = null;
+            originalRowIndex = null;
+          }
+          // Store original index and row
+          originalRowIndex = Array.from(tbody.children).indexOf(row);
+          movedRow = row;
+          // Insert a placeholder at the original position
+          placeholderRow = document.createElement('tr');
+          placeholderRow.style.display = 'none';
+          tbody.insertBefore(placeholderRow, tbody.children[originalRowIndex]);
+          // Move row to top
+          tbody.insertBefore(row, tbody.firstElementChild);
         }
-        // Uncomment below if you want to redirect after alert
-        // window.location.href = "{% url 'dp_pick_table' %}";
-      }, 3000);
-    });
-  });
-});
-</script>
-<script nonce="{{ csp_nonce }}">
-document.addEventListener("DOMContentLoaded", function () {
-  // 1. Save the active row when clicking a tray scan trigger.
-  document.querySelectorAll(".tray-scan-btn").forEach(function(btn) {
-    btn.addEventListener("click", function(e) {
-      const row = e.target.closest("tr");
-      if (row) {
-        window.activeRow = row;
-      }
-      // Open the left modal (trayScanModal) as needed.
-      const trayModal = document.getElementById("trayScanModal");
-      if (trayModal) {
-        trayModal.classList.add("open");
+        row.classList.add('dp-row-action-highlight');
       }
     });
   });
 
-  // 2. Attach click event handlers to popup action buttons (Draft, Submit, Cancel)
-  document.querySelectorAll('.tray-scan-modal-buttons button').forEach(function(btn) {
-    btn.addEventListener("click", function(e) {
-      e.preventDefault();
-      
-      // Close both modals
-      const newPopupModal = document.getElementById("newPopupModal");
-      const trayScanModal = document.getElementById("trayScanModal");
-      if (newPopupModal) newPopupModal.classList.remove("open");
-      if (trayScanModal) trayScanModal.classList.remove("open");
-
-      // Highlight the active row for a few seconds.
-      document.querySelectorAll('#order-listing tbody tr').forEach(function(row) {
-  row.classList.remove("dp-row-action-highlight");
-});
-
-if (window.activeRow) {
-  window.activeRow.classList.add("dp-row-action-highlight");
-  setTimeout(() => {
-    window.activeRow.classList.remove("dp-row-action-highlight");
-  }, 2000);
-}
+  // On modal close, restore row to original position and remove highlight
+  var closeBtn = document.getElementById('closetrayScanModal_Jig');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', function() {
+      if (movedRow && placeholderRow && placeholderRow.parentNode) {
+        placeholderRow.parentNode.insertBefore(movedRow, placeholderRow);
+        placeholderRow.parentNode.removeChild(placeholderRow);
+        movedRow.classList.remove('dp-row-action-highlight');
+        movedRow = null;
+        placeholderRow = null;
+        originalRowIndex = null;
+      }
+      // Also remove highlight from any row just in case
+      document.querySelectorAll('tbody tr').forEach(function(row) {
+        row.classList.remove('dp-row-action-highlight');
+        row.classList.remove('highlighted-tray-scan');
+      });
     });
-  });
+  }
 });
 </script>
+
 {% endblock %} {% endblock content %}

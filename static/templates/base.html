@@ -636,6 +636,9 @@ body {
 
   <!-- Titan Global Stlyes -->
   <link rel="stylesheet" href="{% static 'assets/css/titan-style.css' %}">
+  
+  <!-- Color Mapping -->
+  <script src="{% static 'js/colormapping.js' %}" nonce="{{ csp_nonce }}"></script>
   <!-- endinject -->
   <link rel="shortcut icon" href="assets/images/favicon.png" />
  
@@ -1107,20 +1110,26 @@ body {
 
 
 <!-- Jig Loading Menu -->
-<li class="nav-item">
-  <a class="nav-link" data-bs-toggle="collapse" href="#jig-loading" aria-expanded="false" aria-controls="jig-loading">
-    <i class="ti-package menu-icon"></i>
-    <span class="menu-title">Jig Loading</span>
-    <i class="menu-arrow"></i>
-  </a>
-  <div class="collapse" id="jig-loading">
-    <ul class="nav flex-column sub-menu">
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'jig_composition' %}">Jig Composition</a>
-      </li>
-    </ul>
-  </div>
-</li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#jig-loading" aria-expanded="false" aria-controls="jig-loading">
+              <i class="ti-package menu-icon"></i>
+              <span class="menu-title">Jig Loading</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="jig-loading">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'JigView' %}">Pick Table</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'JigCompletedTable' %}">Completed Table</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'jig_composition' %}">Jig Composition</a>
+                </li>
+              </ul>
+            </div>
+          </li>
 
 <!-- Recovery Brass QC Menu -->
           <li class="nav-item">

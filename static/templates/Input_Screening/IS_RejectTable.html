@@ -175,6 +175,9 @@
     border-radius: 6px;
     font-size: 14px;
   }
+  .highlighted-tray-scan {
+    background-color: #88c4e3 !important;
+  }
   /* Responsive adjustments for screens below 768px */
   @media (max-width: 767px) {
     .tray-scan-modal,
@@ -255,7 +258,7 @@
   thead th {
     position: sticky;
     top: 0;
-    background-color: #028084!important;
+    background-color: #117057 !important;
     color: #fff !important;
     z-index: 10;
     box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
@@ -461,7 +464,7 @@
 </style>
 
 <div class="content-wrapper">
-  <h5 class="text-left mt-0 mb-3">Input Screening / Rejected Table</h5>
+  <h5 class="text-left mt-0 mb-3">Input Screening / Input Screening Reject Table</h5>
   <div class="row">
     <div class="col-12 grid-margin stretch-card">
       <div class="card">
@@ -513,115 +516,58 @@
                       Reject Reason
                       <i class="fa fa-filter" aria-hidden="true"></i>
                     </th>
+                    <th>
+  Lot ID <i class="fa fa-filter" aria-hidden="true"></i>
+</th>
                    
                   </tr>
                 </thead>
                 <tbody>
-                  <!-- Row 1 - Highlighted -->
-                  <tr class="highlighted-tray-scan">
-                    <td>1</td>
-                    <td>2025-05-22 10:00 AM</td>
-                    <!-- Model/Stock No - Image hover -->  
+                  {% for row in master_data %}
+                  <tr{% if forloop.first %} class="highlighted-tray-scan"{% endif %}>
+                    <td>{{ row.sno }}</td>
+                    <td>{{ row.date_time }}</td>
                     <td style="position: relative;">
-                      <span class="model-hover-trigger" style="cursor: pointer;">1805
+                      <span class="model-hover-trigger" style="cursor: pointer;">
+                        {{ row.model_stock_no }}
                         <div class="model-image-tooltip" style="position: absolute; left: 50%; top: 110%; transform: translateX(-50%); background: #fff; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 12px 18px; z-index: 9999; display: flex; align-items: center; gap: 8px; opacity: 0; pointer-events: none; transition: opacity 0.2s;">
                           <button class="img-scroll-left" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8592;</button>
                           <div class="img-gallery" style="display: flex; gap: 6px; overflow: hidden; width: 180px;">
-                            <img src="/static/assets/images/imagePlaceholder.png" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
-                            <img src="/static/assets/images/imagePlaceholder.png" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
-                            <img src="/static/assets/images/imagePlaceholder.png" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
-                            <img src="/static/assets/images/dashboard.jpg" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
-
+                            {% for img_url in row.model_images %}
+                              <img src="{{ img_url }}" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
+                            {% endfor %}
                           </div>
-
-
                           <button class="img-scroll-right" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8594;</button>
                         </div>
                       </span>
                     </td>
-                    <td>ISP</td>
-                    <td>A - Buffed</td>
-                    <td>A</td>
-                    <td>Nil</td>
-                    <td>Normal 16</td>
-                    <td>10</td>
-                    <td>
-                      50
-                    </td>
-                    <td>
-                        <div class="avatar-group rejection-popup-trigger" style="cursor:pointer;">
-                            <div class="avatar blue">D</div>
-                            <div class="avatar green">S</div>
-                            <div class="avatar purple">T</div>
-                            <div class="avatar orange">F</div>
-                            <div class="avatar teal">A</div>
-                            <div class="avatar gray">
-                                <span class="arrow">&rsaquo;</span>
-                            </div>
-                        </div>
-
-                       
-
-                        
-                    </td>
-                    
+                    <td>{{ row.plating_color }}</td>
+                    <td>{{ row.polish_finish }}</td>
+                    <td>{{ row.version }}</td>
+                    <td>{{ row.vendor_location }}</td>
+                    <td>{{ row.tray_type_capacity }}</td>
+                    <td>{{ row.no_of_trays }}</td>
+                    <td>{{ row.reject_quantity }}</td>
+                        <td>{{ row.lot_id }}</td> <!-- Added -->
+<td>
+  <div class="avatar-group rejection-popup-trigger"
+       style="cursor:pointer;"
+       data-reasons='{{ row.reasons|escapejs }}'
+       data-lotid="{{ row.lot_id }}">
+    {% if row.reasons %}
+      {% for reason in row.reasons %}
+        <div class="avatar" style="background: {{ reason.color }}">{{ reason.letter }}</div>
+      {% endfor %}
+      <div class="avatar gray">
+        <span class="arrow">&rsaquo;</span>
+      </div>
+    {% else %}
+      <span style="color: #888; font-size: 13px; padding-left: 6px;">No reasons</span>
+    {% endif %}
+  </div>
+</td>
                   </tr>
-                  <!-- Row 2 -->
-                  <tr>
-                    <td>2</td>
-                    <td>2025-05-22 10:00 AM</td>
-                    <td>2565</td>
-                    <td>ISP</td>
-                    <td>A - Buffed</td>
-                    <td>A</td>
-                    <td>Nil</td>
-                    <td>Jumbo 14</td>
-                    <td>10</td>
-                    <td>
-                      80
-                    </td>
-                    <td>
-                        <div class="avatar-group rejection-popup-trigger">
-                            <div class="avatar blue">D</div>
-                            <div class="avatar green">S</div>
-                            <div class="avatar purple">T</div>
-                            <div class="avatar orange">F</div>
-                            <div class="avatar teal">A</div>
-                            <div class="avatar gray">
-                                <span class="arrow">&rsaquo;</span>
-                            </div>
-                        </div>
-                    </td>
-                    
-                  </tr>
-                  <!-- Row 3 (new, same static data) -->
-                  <tr>
-                    <td>3</td>
-                    <td>2025-05-22 10:00 AM</td>
-                    <td>7346</td>
-                    <td>ISP</td>
-                    <td>A - Buffed</td>
-                    <td>A</td>
-                    <td>Nil</td>
-                    <td>Jumbo 14</td>
-                    <td>10</td>
-                    <td>
-                      80
-                    </td>
-                    <td>
-                        <div class="avatar-group rejection-popup-trigger">
-                            <div class="avatar blue">D</div>
-                            <div class="avatar green">S</div>
-                            <div class="avatar purple">T</div>
-                            <div class="avatar orange">F</div>
-                            <div class="avatar teal">A</div>
-                            <div class="avatar gray">
-                                <span class="arrow">&rsaquo;</span>
-                            </div>
-                        </div>
-                    </td>
-                   
-                  </tr>
+                  {% endfor %}
                 </tbody>
               </table>
               <!-- Rejection Popup Modal -->
@@ -636,27 +582,8 @@
                                     <th>Rejection Qty</th>
                                   </tr>
                                 </thead>
-                                <tbody>
-                                  <tr>
-                                    <td>Reason - A</td>
-                                    <td>50</td>
-                                  </tr>
-                                  <tr>
-                                    <td>Reason - B</td>
-                                    <td>50</td>
-                                  </tr>
-                                  <tr>
-                                    <td>Reason - C</td>
-                                    <td>50</td>
-                                  </tr>
-                                  <tr>
-                                    <td>Reason - D</td>
-                                    <td>50</td>
-                                  </tr>
-                                  <tr>
-                                    <td>Reason - E</td>
-                                    <td>50</td>
-                                  </tr>
+                                <tbody id="rejection-table-body">
+                                  <!-- Will be filled by JS -->
                                 </tbody>
                               </table>
                             </div>
@@ -742,25 +669,39 @@
       });
     });
   </script>
-                        <script nonce="{{ csp_nonce }}">
-                          document.addEventListener("DOMContentLoaded", function() {
-                            var rejectionTrigger = document.querySelector('.rejection-popup-trigger');
-                            var rejectionModal = document.getElementById('rejectionPopupModal');
-                            var closeRejection = document.getElementById('closeRejectionPopup');
+<script nonce="{{ csp_nonce }}">
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll('.rejection-popup-trigger').forEach(function(trigger) {
+    trigger.addEventListener('click', function() {
+      var reasons = [];
+      try {
+        reasons = JSON.parse(this.getAttribute('data-reasons'));
+          console.log('Parsed reasons:', reasons);
 
-                            if (rejectionTrigger) {
-                              rejectionTrigger.addEventListener('click', function() {
-                                rejectionModal.classList.add("open");
-                              });
-                            }
-
-                            if (closeRejection) {
-                              closeRejection.addEventListener('click', function() {
-                                rejectionModal.classList.remove("open");
-                              });
-                            }
-                          });
-                        </script>
+      } catch(e) {
+  console.log('JSON parse error:', e);
+}
+      var tbody = document.getElementById('rejection-table-body');
+      tbody.innerHTML = '';
+      if (reasons && reasons.length) {
+        reasons.forEach(function(reason) {
+          var row = document.createElement('tr');
+          row.innerHTML = `<td>${reason.text}</td><td>${reason.rejected_tray_quantity}</td>`;
+          tbody.appendChild(row);
+        });
+      } else {
+        var row = document.createElement('tr');
+        row.innerHTML = `<td colspan="2">No reasons</td>`;
+        tbody.appendChild(row);
+      }
+      document.getElementById('rejectionPopupModal').classList.add("open");
+    });
+  });
+  document.getElementById('closeRejectionPopup').addEventListener('click', function() {
+    document.getElementById('rejectionPopupModal').classList.remove("open");
+  });
+});
+</script>
 <!-- Script for Model / Stock No - Image Mouse Hover -->
 <script nonce="{{ csp_nonce }}">
 document.addEventListener('DOMContentLoaded', function() {

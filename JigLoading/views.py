@@ -1,5 +1,13 @@
 from django.views.generic import TemplateView
 
+
+
+class JigView(TemplateView):
+    template_name = "JigLoading/Jig_Picktable.html"
+
+class JigCompletedTable(TemplateView):
+    template_name = "JigLoading/Jig_Completedtable.html"
+
 def chunk_list(lst, n):
     """Yield successive n-sized chunks from lst."""
     for i in range(0, len(lst), n):

@@ -2,6 +2,12 @@
 
 
 <style>
+
+  .spider-row-action-highlight {
+  transition: box-shadow 1.3s;
+  background-color: #f0f8ff !important;
+  animation: highlightAnimation 2s ease-in-out;
+}
   
        #viewJigModal .tray-scan-modal-header {
       margin-top: 20px !important;  /* Move image, title, and close icon down together */
@@ -1192,5 +1198,95 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+</script>
+
+<!-- Script for active table row highlight -->
+ <script nonce="{{ csp_nonce }}">
+// Row highlight & move active row to top for Spider Pick Table
+document.addEventListener("DOMContentLoaded", function() {
+  let originalRowIndex = null;
+  let movedRow = null;
+  let placeholderRow = null;
+
+  document.querySelectorAll('#order-listing button, #order-listing img[alt="View"]').forEach(function(btn) {
+    btn.addEventListener('click', function(event) {
+      // Only for Add Jig/View actions
+      if (
+        (btn.tagName === "BUTTON" && (btn.textContent.trim() === "Add Jig" || btn.textContent.trim() === "Added")) ||
+        (btn.tagName === "IMG" && btn.getAttribute("alt") === "View")
+      ) {
+        // Remove highlight from all rows
+        document.querySelectorAll('#order-listing tbody tr').forEach(function(row) {
+          row.classList.remove('spider-row-action-highlight');
+        });
+        // Move the clicked row to the top and highlight
+        var row = btn.closest('tr');
+        if (row && row.parentNode) {
+          const tbody = row.parentNode;
+          // Only move if not already at top
+          if (tbody.firstElementChild !== row) {
+            // If a previous move exists, restore it first
+            if (movedRow && placeholderRow && placeholderRow.parentNode) {
+              placeholderRow.parentNode.insertBefore(movedRow, placeholderRow);
+              placeholderRow.parentNode.removeChild(placeholderRow);
+              movedRow.classList.remove('spider-row-action-highlight');
+              movedRow = null;
+              placeholderRow = null;
+              originalRowIndex = null;
+            }
+            // Store original index and row
+            originalRowIndex = Array.from(tbody.children).indexOf(row);
+            movedRow = row;
+            // Insert a placeholder at the original position
+            placeholderRow = document.createElement('tr');
+            placeholderRow.style.display = 'none';
+            tbody.insertBefore(placeholderRow, tbody.children[originalRowIndex]);
+            // Move row to top
+            tbody.insertBefore(row, tbody.firstElementChild);
+          }
+          row.classList.add('spider-row-action-highlight');
+        }
+      }
+    });
+  });
+
+  // On modal close, restore row to original position and remove highlight
+  function restoreRow() {
+    if (movedRow && placeholderRow && placeholderRow.parentNode) {
+      placeholderRow.parentNode.insertBefore(movedRow, placeholderRow);
+      placeholderRow.parentNode.removeChild(placeholderRow);
+      movedRow.classList.remove('spider-row-action-highlight');
+      movedRow = null;
+      placeholderRow = null;
+      originalRowIndex = null;
+    }
+    // Remove highlight from any row just in case
+    document.querySelectorAll('#order-listing tbody tr').forEach(function(row) {
+      row.classList.remove('spider-row-action-highlight');
+    });
+  }
+
+  // Attach to modal close buttons
+  var closeBtns = [
+    document.getElementById('closeViewJigModal'),
+    document.querySelector('#addJigButton .close-modal-btn')
+  ];
+  closeBtns.forEach(function(btn) {
+    if (btn) {
+      btn.addEventListener('click', restoreRow);
+    }
+  });
+  // Also restore on clicking outside modal
+  ['viewJigModal', 'addJigButton'].forEach(function(id) {
+    var modal = document.getElementById(id);
+    if (modal) {
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) restoreRow();
+      });
+    }
+  });
+});
+</script>
+
   {% endblock %}
 </div>
