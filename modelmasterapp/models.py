@@ -118,6 +118,8 @@ class ModelMasterCreation(models.Model):
     top_tray_qty_modify=models.IntegerField(default=0, help_text="Top Tray Quantity Modified")
     Draft_Saved=models.BooleanField(default=False,help_text="Draft Save")
     dp_pick_remarks=models.CharField(max_length=100,null=True, blank=True)
+    category=models.CharField(max_length=100, null=True, blank=True, help_text="Category of the model")
+    
     
     def save(self, *args, **kwargs):
         
@@ -255,6 +257,13 @@ class TotalStockModel(models.Model):
     brass_physical_qty= models.IntegerField(help_text="Original physical quantity in Brass QC", default=0)  # New field
     brass_physical_qty_edited = models.BooleanField(default=False, help_text="Qunatity Edited in Brass")
 
+    iqf_missing_qty = models.IntegerField(default=0, help_text="Missing quantity in IQF")
+    iqf_physical_qty = models.IntegerField(help_text="Original physical quantity in IQF", default=0)  # New field
+    iqf_physical_qty_edited= models.BooleanField(default=False, help_text="Qunatity Edited in IQF")
+    
+    jig_physical_qty = models.IntegerField(help_text="Original physical quantity in JIG", default=0)  # New field
+    jig_physical_qty_edited = models.BooleanField(default=False, help_text="Qunatity Edited in JIG")    
+    
     # New fields for process tracking
     last_process_date_time = models.DateTimeField(null=True, blank=True, help_text="Last Process Date/Time")
     last_process_module = models.CharField(max_length=255, null=True, blank=True, help_text="Last Process Module")
@@ -282,10 +291,13 @@ class TotalStockModel(models.Model):
     wiping_status = models.BooleanField(default=False, help_text="Wiping Status")  # New field
     IP_pick_remarks=models.CharField(max_length=100, null=True, blank=True, help_text="IP Pick Remarks")
     Bq_pick_remarks= models.CharField(max_length=100, null=True, blank=True, help_text="BQ Pick Remarks")  # New field
+    IQF_pick_remarks= models.CharField(max_length=100, null=True, blank=True, help_text="IQF Pick Remarks")  # New field
+    jig_pick_remarks= models.CharField(max_length=100, null=True, blank=True, help_text="JIG Pick Remarks")  # New field
     brass_qc_accepted_qty_verified= models.BooleanField(default=False, help_text="Brass QC Accepted Quantity Verified")  # New field
     
     rejected_tray_scan_status=models.BooleanField(default=False)
     accepted_tray_scan_status=models.BooleanField(default=False)
+    ip_onhold_picking =models.BooleanField(default=False)
     
     #Brass QC Module accept and rejection
     brass_qc_accptance=models.BooleanField(default=False)
@@ -296,11 +308,13 @@ class TotalStockModel(models.Model):
     brass_onhold_picking=models.BooleanField(default=False, help_text="Brass QC On Hold Picking")
     
     #IQF Module accept and rejection
+    iqf_accepted_qty_verified=models.BooleanField(default=False, help_text="IQF Accepted Quantity Verified")  # New field
     iqf_acceptance=models.BooleanField(default=False)
     iqf_few_cases_acceptance=models.BooleanField(default=False)
     iqf_rejection=models.BooleanField(default=False)
     iqf_rejection_tray_scan_status=models.BooleanField(default=False)
     iqf_accepted_tray_scan_status=models.BooleanField(default=False)
+    iqf_onhold_picking=models.BooleanField(default=False, help_text="IQF On Hold Picking")
     
     #Module is IQF - Acceptance - Send to Brass QC 
     send_brass_qc=models.BooleanField(default=False, help_text="Send to Brass QC")
@@ -315,7 +329,29 @@ class TotalStockModel(models.Model):
     def __str__(self):
         return f"{self.model_stock_no.model_no} - {self.version.version_name} - {self.lot_id}"
 
-
+    def delete(self, *args, **kwargs):
+        if self.lot_id:
+            # Delete related records with the same lot_id
+            TrayId.objects.filter(lot_id=self.lot_id).delete()
+            DraftTrayId.objects.filter(lot_id=self.lot_id).delete()
+            DP_TrayIdRescan.objects.filter(lot_id=self.lot_id).delete()
+            IP_Rejection_ReasonStore.objects.filter(lot_id=self.lot_id).delete()
+            Brass_QC_Rejection_ReasonStore.objects.filter(lot_id=self.lot_id).delete()
+            IQF_Rejection_ReasonStore.objects.filter(lot_id=self.lot_id).delete()
+            IP_Rejected_TrayScan.objects.filter(lot_id=self.lot_id).delete()
+            Brass_QC_Rejected_TrayScan.objects.filter(lot_id=self.lot_id).delete()
+            IQF_Rejected_TrayScan.objects.filter(lot_id=self.lot_id).delete()
+            IP_Accepted_TrayScan.objects.filter(lot_id=self.lot_id).delete()
+            Brass_Qc_Accepted_TrayScan.objects.filter(lot_id=self.lot_id).delete()
+            IQF_Accepted_TrayScan.objects.filter(lot_id=self.lot_id).delete()
+            IP_Accepted_TrayID_Store.objects.filter(lot_id=self.lot_id).delete()
+            Brass_Qc_Accepted_TrayID_Store.objects.filter(lot_id=self.lot_id).delete()
+            IQF_Accepted_TrayID_Store.objects.filter(lot_id=self.lot_id).delete()
+            JigDetails.objects.filter(lot_id=self.lot_id).delete()
+            InspectionAccept.objects.filter(lot_id=self.lot_id).delete()
+            InspectionReject.objects.filter(lot_id=self.lot_id).delete()
+        
+        super().delete(*args, **kwargs)
 
 class DP_TrayIdRescan(models.Model):
     """
@@ -378,13 +414,26 @@ class Brass_QC_Rejection_Table(models.Model):
 
     def __str__(self):
         return f"{self.rejection_reason} - {self.rejection_count}"
-    
+ 
 class IQF_Rejection_Table(models.Model):
-    iqf_rejection_reason = models.TextField(help_text="Reason for rejection")
-    iqf_rejection_count = models.PositiveIntegerField(help_text="Count of rejected items")
+    group = models.ForeignKey(IP_RejectionGroup, on_delete=models.SET_NULL, null=True, blank=True, related_name='iqf_rejection_reasons')
+    rejection_reason_id = models.CharField(max_length=10, null=True, blank=True, editable=False)
+    rejection_reason = models.TextField(help_text="Reason for rejection")
+    rejection_count = models.PositiveIntegerField(help_text="Count of rejected items")
+
+    def save(self, *args, **kwargs):
+        if not self.rejection_reason_id:
+            last = IQF_Rejection_Table.objects.order_by('-rejection_reason_id').first()
+            if last and last.rejection_reason_id.startswith('R'):
+                last_num = int(last.rejection_reason_id[1:])
+                new_num = last_num + 1
+            else:
+                new_num = 1
+            self.rejection_reason_id = f"R{new_num:02d}"
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.iqf_rejection_reason} - {self.iqf_rejection_count}"
+        return f"{self.rejection_reason} - {self.rejection_count}"
     
 #rejection reasons stored tabel , fields ared rejection resoon multiple slection from RejectionTable an dlot_id , user, Total_rejection_qunatity
 class IP_Rejection_ReasonStore(models.Model):
@@ -442,6 +491,7 @@ class Brass_QC_Rejected_TrayScan(models.Model):
 class IQF_Rejected_TrayScan(models.Model):
     lot_id = models.CharField(max_length=50, null=True, blank=True, help_text="Lot ID")
     rejected_tray_quantity = models.CharField(help_text="Rejected Tray Quantity")
+    rejected_tray_id= models.CharField(max_length=100, null=True, blank=True, help_text="Rejected Tray ID")
     rejection_reason = models.ForeignKey(IQF_Rejection_Table, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
@@ -479,7 +529,9 @@ class IP_Accepted_TrayID_Store(models.Model):
     tray_id = models.CharField(max_length=100, unique=True)
     tray_qty = models.IntegerField(null=True, blank=True, help_text="Quantity in the tray")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    
+    is_draft = models.BooleanField(default=False, help_text="Draft Save")
+    is_save= models.BooleanField(default=False, help_text="Save")
+     
     def __str__(self):
         return f"{self.tray_id} - {self.lot_id}"
     
@@ -488,6 +540,8 @@ class Brass_Qc_Accepted_TrayID_Store(models.Model):
     tray_id = models.CharField(max_length=100, unique=True)
     tray_qty = models.IntegerField(null=True, blank=True, help_text="Quantity in the tray")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    is_draft = models.BooleanField(default=False, help_text="Draft Save")
+    is_save= models.BooleanField(default=False, help_text="Save")
     
     def __str__(self):
         return f"{self.tray_id} - {self.lot_id}"
@@ -497,6 +551,8 @@ class IQF_Accepted_TrayID_Store(models.Model):
     tray_id = models.CharField(max_length=100, unique=True)
     tray_qty = models.IntegerField(null=True, blank=True, help_text="Quantity in the tray")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    is_draft = models.BooleanField(default=False, help_text="Draft Save")
+    is_save= models.BooleanField(default=False, help_text="Save")
     
     def __str__(self):
         return f"{self.tray_id} - {self.lot_id}"
@@ -511,21 +567,20 @@ class JigLoadingMaster(models.Model):
     
     def __str__(self):
         return f"{self.model_stock_no} - {self.jig_type} - {self.jig_capacity}"
-    
-class BathNumber(models.Model):
-    bath_number = models.CharField(max_length=100, unique=True, help_text="Bath Number")
-    bath_tub = models.CharField(max_length=100, help_text="Bath Tub",blank=True, null=True)
-    
-    def __str__(self):
-        return self.bath_number
 
+class BathNumbers(models.Model):
+    bath_number=models.CharField(max_length=100)
 
 class JigDetails(models.Model):
+    JIG_POSITION_CHOICES = [
+        ('Top', 'Top'),
+        ('Middle', 'Middle'),
+        ('Bottom', 'Bottom'),
+    ]
     jig_qr_id = models.CharField(max_length=100)
     faulty_slots = models.IntegerField(default=0)
     jig_type = models.CharField(max_length=50)  # New field
     jig_capacity = models.IntegerField()        # New field
-    bath_number = models.CharField(max_length=50)
     bath_tub = models.CharField(max_length=100, help_text="Bath Tub",blank=True, null=True)
     plating_color = models.CharField(max_length=50)
     empty_slots = models.IntegerField(default=0)
@@ -536,16 +591,74 @@ class JigDetails(models.Model):
 
     forging = models.CharField(max_length=100)
     no_of_model_cases = ArrayField(models.CharField(max_length=50), blank=True, default=list)  # Correct ArrayField
-    no_of_cycle=models.IntegerField(default=30)
+    no_of_cycle=models.IntegerField(default=1)
     lot_id = models.CharField(max_length=100)
     new_lot_ids = ArrayField(models.CharField(max_length=50), blank=True, default=list)  # Correct ArrayField
     electroplating_only = models.BooleanField(default=False)
     lot_id_quantities = JSONField(blank=True, null=True)
-
-
+    draft_save = models.BooleanField(default=False, help_text="Draft Save")
+    delink_tray_data = models.JSONField(default=list, blank=True, null=True)  # Add this field
+    date_time = models.DateTimeField(default=timezone.now)
+    bath_numbers = models.ForeignKey(
+            BathNumbers,
+            on_delete=models.SET_NULL,  
+            null=True,                  
+            blank=True,
+            help_text="Related Bath Numbers"
+        )   
+    
+    jig_position = models.CharField(
+        max_length=10,
+        choices=JIG_POSITION_CHOICES,
+        default='Top',
+        help_text="Jig position: Top, Middle, or Bottom"
+    )
+    remarks = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text="Remarks (max 50 words)"
+    )
+    pick_remarks=models.CharField(
+        max_length=50,
+        blank=True,
+        help_text="Remarks (max 50 words)"
+    )
+     
+    jig_unload_draft = models.BooleanField(default=False)
+    combined_lot_ids = ArrayField(models.CharField(max_length=50), blank=True, default=list)  # Correct ArrayField
+    
     def __str__(self):
         return f"{self.jig_qr_id} - {self.lot_id} - {self.no_of_cycle}"
+    
 
+class JigUnload_TrayId(models.Model):
+    tray_id = models.CharField(max_length=100, help_text="Tray ID")
+    tray_qty = models.IntegerField(help_text="Quantity in the tray")
+    lot_id = models.CharField(max_length=100, help_text="Lot ID")
+    draft_save=models.BooleanField(default=False)
+    
+    def __str__(self):
+        return f"{self.tray_id} - {self.tray_qty} - {self.lot_id}"
+    
+import uuid
+class JigUnloadFTERTABLE(models.Model):
+    combine_lot_ids = ArrayField(
+        models.CharField(max_length=100),
+        blank=True,
+        default=list,
+        help_text="List of combined lot IDs"
+    )
+    lot_id = models.CharField(
+        max_length=50,
+        unique=True,
+        default=uuid.uuid4,
+        editable=False,
+        help_text="Auto-generated unique lot ID"
+    )
+    total_case_qty = models.IntegerField(help_text="Total case quantity")
+
+    def __str__(self):
+        return f"{self.lot_id} - {self.total_case_qty}"
 
 from django.db import models
 
@@ -583,3 +696,12 @@ class InspectionReject(models.Model):
         return f"Inspection for Lot {self.lot_id} at {self.position}"   
 
   
+  
+  
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+
+@receiver(post_delete, sender=ModelMasterCreation)
+def delete_related_trayids(sender, instance, **kwargs):
+    TrayId.objects.filter(batch_id=instance).delete()
+    DraftTrayId.objects.filter(batch_id=instance).delete()

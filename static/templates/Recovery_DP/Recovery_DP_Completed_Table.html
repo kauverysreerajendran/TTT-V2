@@ -1,27 +1,92 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 <style>
- #order-listing thead th {
-  height: 38px !important; /* Increase as needed */
-  background: #023E4DCC !important; /* existing bg */
-  color: #e5fcff !important;      /* existing color */
-  vertical-align: middle !important;
-  
-}
-  .content-wrapper > h5 {
-  margin-top: -35px !important;
-  margin-bottom: 5px !important;
-  font-size: 18px;
-  font-weight: 700;
-}
-  /* Table heading font size */
-  #order-listing th {
-    font-size: 14px !important;
-    font-weight: 600;
+  .tray-scan-modal {
+    position: fixed;
+    top: 20px;
+    right: -600px;
+    width: 600px;
+    max-width: 98vw;
+    height: calc(100% - 40px);
+    background: #fff;
+    border-radius: 12px 0 0 12px;
+    box-shadow: -3px 0 16px rgba(0, 0, 0, 0.18);
+    z-index: 20000;
+    transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 0;
   }
-/* Table data font size */
-  #order-listing td {
-    font-size: 12px !important;
-    font-weight: 400;
+  .tray-scan-modal.open {
+    right: 0;
+  }
+  .tray-scan-modal-content {
+    padding: 28px 32px 18px 32px;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+  }
+  .tray-scan-close {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    font-size: 28px;
+    color: #888;
+    cursor: pointer;
+    z-index: 2;
+  }
+  .modal-top-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 12px;
+  }
+  .user-profile img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+  }
+  #trayScanDetails.table-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr;
+    gap: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 10px;
+    padding-right: 10px;
+  }
+  #trayScanDetails.table-grid > div {
+    background: #f7f7f7;
+    padding: 8px 12px;
+    font-size: 13px;
+    border: 1px solid #ddd;
+    margin: 0;
+  }
+  #trayScanDetails.table-grid > div:nth-child(-n + 3) {
+    background-color: #e0e0e0;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+  @media (max-width: 700px) {
+    .tray-scan-modal,
+    .tray-scan-modal.open {
+      width: 100vw;
+      right: 0;
+      border-radius: 0;
+      top: 0;
+      height: 100vh;
+      max-width: 100vw;
+    }
+    .tray-scan-modal-content {
+      padding: 12px 6px 8px 6px;
+    }
   }
   /* Add this to your <style> block */
   .pagination-wrapper {
@@ -119,69 +184,389 @@
                   <th>Remarks</th>
                 </tr>
               </thead>
-                          <tbody>
-              {% for row in master_data %}
+              <tbody>
+                <!-- Example Row 1 -->
                 <tr>
-                  <td>{{ forloop.counter }}</td>
-                  <td>{{ row.date_time|date:"Y-m-d H:i A" }}</td>
+                  <td>1</td>
+                  <td>2025-05-22 10:00 AM</td>
+                  <!-- Model/Stock No - Image hover -->
                   <td style="position: relative">
-                    <span class="model-hover-trigger" style="cursor: pointer">
-                      {{ row.model_stock_no__model_no }}
-                      <!-- You can add your image tooltip logic here if you have images -->
+                    <span class="model-hover-trigger" style="cursor: pointer"
+                      >1805
+                      <div
+                        class="model-image-tooltip"
+                        style="
+                          position: absolute;
+                          left: 50%;
+                          top: 110%;
+                          transform: translateX(-50%);
+                          background: #fff;
+                          border: 1px solid #ccc;
+                          border-radius: 8px;
+                          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                          padding: 12px 18px;
+                          z-index: 9999;
+                          display: flex;
+                          align-items: center;
+                          gap: 8px;
+                          opacity: 0;
+                          pointer-events: none;
+                          transition: opacity 0.2s;
+                        "
+                      >
+                        <div
+                          class="img-gallery"
+                          style="
+                            display: flex;
+                            gap: 6px;
+                            overflow: hidden;
+                            width: 180px;
+                          "
+                        >
+                          <img
+                            src="/static/assets/images/imagePlaceholder.png"
+                            style="
+                              width: 55px;
+                              height: 55px;
+                              object-fit: cover;
+                              border-radius: 6px;
+                            "
+                          />
+                          <img
+                            src="/static/assets/images/imagePlaceholder.png"
+                            style="
+                              width: 55px;
+                              height: 55px;
+                              object-fit: cover;
+                              border-radius: 6px;
+                            "
+                          />
+                          <img
+                            src="/static/assets/images/imagePlaceholder.png"
+                            style="
+                              width: 55px;
+                              height: 55px;
+                              object-fit: cover;
+                              border-radius: 6px;
+                            "
+                          />
+                          <img
+                            src="/static/assets/images/dashboard.jpg"
+                            style="
+                              width: 55px;
+                              height: 55px;
+                              object-fit: cover;
+                              border-radius: 6px;
+                            "
+                          />
+                        </div>
+                      </div>
                     </span>
                   </td>
-                  <td>{{ row.plating_color }}</td>
-                  <td>{{ row.polish_finish }}</td>
-                  <td>{{ row.version__version_name }}</td>
-                  <td>{{ row.vendor_location }}</td>
-                  <td>
-                    {% if row.tray_type %}{{ row.tray_type }}{% else %}Nil{% endif %}
-                    {% if row.tray_capacity %} {{ row.tray_capacity }}{% endif %}
-                  </td>
-                  <td>{{ row.no_of_trays }}</td>
-                  <td>
-                    {{ row.total_batch_quantity }}
-                  </td>
+                  <td>ISP</td>
+                  <td>A - Buffed</td>
+                  <td>A</td>
+                  <td>Nil</td>
+                  <td>Normal 16</td>
+                  <td>10</td>
+                  <td>50</td>
                   <td>
                     <div
-                      style="background: {% if row.Moved_to_D_Picker %}#0c8249{% else %}#c3c2c2{% endif %}; color: white; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                      style="
+                        background: #0c8249;
+                        color: white;
+                        width: 20px;
+                        height: 20px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 50%;
+                      "
+                    >
                       T
                     </div>
                   </td>
                   <td>
-                    <span style="opacity:0.5; pointer-events:none; display:inline-block;">
-                      <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit Disabled" style="width: 20px; margin-right: 8px; height: auto; filter: grayscale(1) opacity(0.5);" />
-                    </span>
-                    <span style="opacity:0.5; pointer-events:none; display:inline-block;">
-                      <img src="{% static 'assets/icons/bin.png' %}" alt="Delete Disabled" style="width: 20px; height: auto; filter: grayscale(1) opacity(0.5);" />
-                    </span>
+                    <a href="#" title="Edit">
+                      <img
+                        src="{% static 'assets/icons/edit1.png' %}"
+                        alt="Edit"
+                        style="width: 20px; margin-right: 8px; height: auto"
+                      />
+                    </a>
+                    <a href="#" title="Delete">
+                      <img
+                        src="{% static 'assets/icons/bin.png' %}"
+                        alt="Delete"
+                        style="width: 20px; height: auto"
+                      />
+                    </a>
+                    <a href="#" title="Delete">
+                      <img
+                        src="{% static 'assets/icons/view.png' %}"
+                        alt="Delete"
+                        style="width: 20px; height: auto"
+                      />
+                    </a>
                   </td>
                   <td>
                     <div
-                      style="border: 1px solid {% if row.Moved_to_D_Picker %}#0d5d17{% else %}#d2d454{% endif %}; background: {% if row.Moved_to_D_Picker %}#c5f9c2{% else %}#f0f5b7{% endif %}; color: {% if row.Moved_to_D_Picker %}#2f801b{% else %}#4d5204{% endif %}; font-size: 12px; padding: 6px 12px; border-radius: 20px; display: inline-block;">
-                      {% if row.Moved_to_D_Picker %}Yet to Release{% else %}Yet to Release{% endif %}
+                      style="
+                        border: 1px solid #0d5d17;
+                        background: #c5f9c2;
+                        color: #2f801b;
+                        font-size: 12px;
+                        padding: 6px 12px;
+                        border-radius: 20px;
+                        display: inline-block;
+                      "
+                    >
+                      Released
                     </div>
                   </td>
                   <td>
                     <div
-                      style="border: 1px solid #9adeed; background: #d1edf3; color: #033b5d; font-size: 12px; padding: 6px 12px; border-radius: 20px; display: inline-block;">
+                      style="
+                        border: 1px solid #9adeed;
+                        background: #d1edf3;
+                        color: #033b5d;
+                        font-size: 12px;
+                        padding: 6px 12px;
+                        border-radius: 20px;
+                        display: inline-block;
+                      "
+                    >
                       Day Planning
                     </div>
                   </td>
                   <td style="padding: 8px 0 8px 8px">
-                    <label style="cursor: pointer; display: inline-flex; align-items: center;">
-                      <input type="checkbox" class="playpause-toggle" style="display: none" />
-                      <img src="{% static 'assets/icons/play1.png' %}" alt="Play" class="play-icon" />
-                      <img src="{% static 'assets/icons/pause.png' %}" alt="Pause" class="pause-icon" style="display: none" />
+                    <!-- Play/Pause toggle (pure CSS) -->
+                    <label
+                      style="
+                        cursor: pointer;
+                        display: inline-flex;
+                        align-items: center;
+                      "
+                    >
+                      <input
+                        type="checkbox"
+                        class="playpause-toggle"
+                        style="display: none"
+                      />
+                      <img
+                        src="{% static 'assets/icons/read.png' %}"
+                        alt="Play"
+                        class="play-icon"
+                      />
                     </label>
                   </td>
                 </tr>
-              {% empty %}
+                <!-- Example Row 2 -->
                 <tr>
-                  <td colspan="15" class="text-center">No records found.</td>
+                  <td>2</td>
+                  <td>2025-05-22 10:00 AM</td>
+                  <!-- Model/Stock No - Image hover -->
+                  <td style="position: relative">
+                    <span class="model-hover-trigger" style="cursor: pointer"
+                      >1805
+                      <div
+                        class="model-image-tooltip"
+                        style="
+                          position: absolute;
+                          left: 50%;
+                          top: 110%;
+                          transform: translateX(-50%);
+                          background: #fff;
+                          border: 1px solid #ccc;
+                          border-radius: 8px;
+                          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                          padding: 12px 18px;
+                          z-index: 9999;
+                          display: flex;
+                          align-items: center;
+                          gap: 8px;
+                          opacity: 0;
+                          pointer-events: none;
+                          transition: opacity 0.2s;
+                        "
+                      >
+                        <button
+                          class="img-scroll-left"
+                          style="
+                            background: none;
+                            border: none;
+                            font-size: 20px;
+                            cursor: pointer;
+                          "
+                        >
+                          &#8592;
+                        </button>
+                        <div
+                          class="img-gallery"
+                          style="
+                            display: flex;
+                            gap: 6px;
+                            overflow: hidden;
+                            width: 180px;
+                          "
+                        >
+                          <img
+                            src="/static/assets/images/imagePlaceholder.png"
+                            style="
+                              width: 55px;
+                              height: 55px;
+                              object-fit: cover;
+                              border-radius: 6px;
+                            "
+                          />
+                          <img
+                            src="/static/assets/images/imagePlaceholder.png"
+                            style="
+                              width: 55px;
+                              height: 55px;
+                              object-fit: cover;
+                              border-radius: 6px;
+                            "
+                          />
+                          <img
+                            src="/static/assets/images/imagePlaceholder.png"
+                            style="
+                              width: 55px;
+                              height: 55px;
+                              object-fit: cover;
+                              border-radius: 6px;
+                            "
+                          />
+                          <img
+                            src="/static/assets/images/dashboard.jpg"
+                            style="
+                              width: 55px;
+                              height: 55px;
+                              object-fit: cover;
+                              border-radius: 6px;
+                            "
+                          />
+                        </div>
+
+                        <button
+                          class="img-scroll-right"
+                          style="
+                            background: none;
+                            border: none;
+                            font-size: 20px;
+                            cursor: pointer;
+                          "
+                        >
+                          &#8594;
+                        </button>
+                      </div>
+                    </span>
+                  </td>
+                  <td>ISP</td>
+                  <td>A - Buffed</td>
+                  <td>A</td>
+                  <td>Nil</td>
+                  <td>Jumbo 14</td>
+                  <td>10</td>
+                  <td>50</td>
+                  <td>
+                    <div
+                      style="
+                        background: #0c8249;
+                        color: white;
+                        width: 20px;
+                        height: 20px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 50%;
+                      "
+                    >
+                      T
+                    </div>
+                  </td>
+                  <td>
+                    <a href="#" title="Edit">
+                      <img
+                        src="{% static 'assets/icons/edit1.png' %}"
+                        alt="Edit"
+                        style="width: 20px; margin-right: 8px; height: auto"
+                      />
+                    </a>
+                    <a href="#" title="Delete">
+                      <img
+                        src="{% static 'assets/icons/bin.png' %}"
+                        alt="Delete"
+                        style="width: 20px; height: auto"
+                      />
+                    </a>
+                    <a href="#" title="Delete">
+                      <img
+                        src="{% static 'assets/icons/view.png' %}"
+                        alt="Delete"
+                        style="width: 20px; height: auto"
+                      />
+                    </a>
+                  </td>
+                  <td>
+                    <div
+                      style="
+                        border: 1px solid #d2d454;
+                        background: #f0f5b7;
+                        color: #4d5204;
+                        font-size: 12px;
+                        padding: 6px 12px;
+                        border-radius: 20px;
+                        display: inline-block;
+                      "
+                    >
+                      Yet to Release
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      style="
+                        border: 1px solid #9adeed;
+                        background: #d1edf3;
+                        color: #033b5d;
+                        font-size: 12px;
+                        padding: 6px 12px;
+                        border-radius: 20px;
+                        display: inline-block;
+                      "
+                    >
+                      Day Planning
+                    </div>
+                  </td>
+                  <td style="padding: 8px 0 8px 8px">
+                    <label
+                      style="
+                        cursor: pointer;
+                        display: inline-flex;
+                        align-items: center;
+                      "
+                    >
+                      <input
+                        type="checkbox"
+                        class="playpause-toggle"
+                        style="display: none"
+                      />
+                      <img
+                        src="{% static 'assets/icons/play1.png' %}"
+                        alt="Play"
+                        class="play-icon"
+                      />
+                      <img
+                        src="{% static 'assets/icons/pause.png' %}"
+                        alt="Pause"
+                        class="pause-icon"
+                        style="display: none"
+                      />
+                    </label>
+                  </td>
                 </tr>
-              {% endfor %}
-            </tbody>
+                <!-- Add more rows as needed -->
+              </tbody>
             </table>
           </div>
           <!-- Pagination Section -->
@@ -192,6 +577,46 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Tray Scan Modal (hidden by default) -->
+  <div id="trayScanModal" class="tray-scan-modal">
+    <div class="tray-scan-modal-content">
+      <span id="closeTrayScanModal" class="tray-scan-close">&times;</span>
+      <div class="modal-top-header">
+        <div
+          class="user-profile"
+          style="display: flex; align-items: center; gap: 8px"
+        >
+          <img
+            src="/static/assets/images/imagePlaceholder.png"
+            alt="User Profile"
+          />
+          <span>Model No:</span>
+          <h6 id="trayScanModelNo" style="margin: 0">(Fetch Dynamically)</h6>
+        </div>
+      </div>
+      <h5 style="text-align: center; font-weight: 600; margin: 18px 0 10px 0">
+        Day Planning - Tray Scan Table
+      </h5>
+      <!-- ...existing code... -->
+      <div id="trayScanDetails" class="table-grid">
+        <div>S.no</div>
+        <div>Tray ID</div>
+        <div>Tray Qty</div>
+        <!-- Static dummy rows below -->
+        <div>1</div>
+        <div>Tray001</div>
+        <div>15</div>
+        <div>2</div>
+        <div>Tray002</div>
+        <div>12</div>
+        <div>3</div>
+        <div>Tray003</div>
+        <div>18</div>
+      </div>
+      <!-- ...existing code... -->
     </div>
   </div>
 
@@ -498,6 +923,42 @@
         if (e.target === modal) modal.classList.remove("open");
       });
     });
+  </script>
+
+  <script nonce="{{ csp_nonce }}">
+    // Open Tray Scan modal on view.png click
+    document.body.addEventListener("click", function (e) {
+      if (
+        e.target.tagName === "IMG" &&
+        e.target.getAttribute("alt") === "Delete" &&
+        e.target.src.includes("view.png") &&
+        e.target.closest("table#order-listing")
+      ) {
+        e.preventDefault();
+        // Fetch Model No dynamically from the row
+        const row = e.target.closest("tr");
+        const modelNo = row ? row.children[2].innerText.trim() : "";
+        document.getElementById("trayScanModelNo").textContent = modelNo;
+
+        // Optionally, populate trayScanDetails here if needed
+
+        document.getElementById("trayScanModal").classList.add("open");
+      }
+    });
+
+    // Close modal on X or Cancel
+    document.getElementById("closeTrayScanModal").onclick = function () {
+      document.getElementById("trayScanModal").classList.remove("open");
+    };
+    document.getElementById("trayScanCancelBtn").onclick = function () {
+      document.getElementById("trayScanModal").classList.remove("open");
+    };
+    // Close modal if clicking outside content
+    document
+      .getElementById("trayScanModal")
+      .addEventListener("click", function (e) {
+        if (e.target === this) this.classList.remove("open");
+      });
   </script>
   {% endblock %}
 </div>

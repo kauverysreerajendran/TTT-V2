@@ -1,57 +1,385 @@
-{% extends "base.html" %} {% load static %} {% block content %}
+{% extends "base.html" %} 
+
+{% load static %} {% block content %}
 <style>
+    /* Fix: Ensure sticky header highlight for S.No and Date/Time columns */
+  #order-listing thead th:nth-child(1),
+  #order-listing thead th:nth-child(2) {
+    background: #bfddde !important;
+    color: #e5fcff !important;
+    /* Optional: add box-shadow for separation if needed */
+    /* box-shadow: 2px 0 2px -1px rgba(0,0,0,0.04); */
+  }
+/* Only increase the white container and table area height for Samsung Galaxy Tab A9+ (11") and similar tablets */
+@media (min-width: 900px) and (max-width: 1300px) and (min-height: 600px) and (max-height: 900px) {
+  .content-wrapper {
+    min-height: 750px !important;
+    height: 85vh !important;
+    max-height: 850px !important;
+    margin-top: 40px !important;
+    margin-bottom: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  .table-responsive {
+    min-height: 420px !important;
+    height: 60vh !important;
+    max-height: 520px !important;
+  }
+  .content-wrapper > h5,
+  .card-body > h5.text-left.mt-0.mb-4 {
+    margin-top: 0 !important;
+  }
+}
+/* Freeze S.No (first column) */
+#order-listing th:nth-child(1),
+#order-listing td:nth-child(1) {
+  position: sticky;
+  left: 0;
+  z-index: 30; /* higher than header */
+  background: #fff;
+  min-width: 80px;
+  box-shadow: 2px 0 2px -1px rgba(0,0,0,0.04);
+}
 
-#trayScanModal_DayPlanning table thead th {
-  background: #d2d2d2 !important;
-  color: #313131 !important;
-  font-weight: bold;
-  border-bottom: 1 px solid #bdbdbd !important;
-  vertical-align: middle;
+/* Freeze Date and Time (second column) */
+/* ...existing code... */
+#order-listing th:nth-child(2),
+#order-listing td:nth-child(2) {
+  min-width: 90px !important;
+  max-width: 110px !important;
+  width: 100px !important;
+  position: sticky;
+  left: 80px; /* match width of first column */
+  z-index: 25;
+  background: #fff;
+  box-shadow: 2px 0 2px -1px rgba(0,0,0,0.03);
+  word-break: break-all;
+  white-space: normal;
+  text-align: center;
+  /* Make border visible above sticky col 1 */
+  border-left: 1.5px solid #d1d1d1 !important; /* Use a stronger color if needed */
+}
+
+
+/* For sticky header cell (top row, Date/Time) */
+#order-listing thead th:nth-child(2) {
+  z-index: 35;
+  background: #028084 !important;
+  color: #e5fcff !important;
+  border-left: 2px solid #fff !important; /* White border for header, or match your theme */
 }
 /* ...existing code... */
-.readonly-modal-header {
-  background: #f3f3f3;
-  border-radius: 8px 8px 0 0;
-  padding: 16px 20px 12px 20px !important;
-  margin-bottom: 10px;
-  align-items: flex-end !important;
+
+/* When header and column intersect, header should be above */
+#order-listing thead th:nth-child(1) { z-index: 40; background: #028084 !important; color: #e5fcff !important; }
+#order-listing thead th:nth-child(2) { z-index: 35; background: #028084 !important; color: #e5fcff !important; }
+
+
+/* Optional: Prevent overlap on hover/focus */
+#order-listing th,
+#order-listing td {
+  background-clip: padding-box;
 }
-.readonly-modal-header .user-profile {
-  display: flex;
-  align-items: flex-end;
-  gap: 8px;
+@media (min-width: 1800px) and (max-width: 2000px) and (min-height: 1100px) and (max-height: 1300px) {
+  #order-listing,
+  #order-listing th,
+  #order-listing td {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+  }
 }
-#modalModelNo_DayPlanning {
-  margin-top: 10px !important;
-  display: inline-block;
-  font-weight: 600;
-  color: #028084;
-}
-/* ...existing code... */
-/* Dim or blur main content when read-only tray scan modal is open */
-.tray-scan-modal-DayPlanning.open ~ .content-wrapper {
-  opacity: 0.3;
-  pointer-events: none;
-  /* For blur effect, use the next line instead of opacity: */
-  /* filter: blur(2px); */
+@media (min-width: 600px) and (max-width: 1024px) {
+  #order-listing,
+  #order-listing th,
+  #order-listing td {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+  }
 }
 
-/* Shrink table row height in read-only tray scan modal */
-#trayScanModal_DayPlanning table tr,
-#trayScanModal_DayPlanning table td,
-#trayScanModal_DayPlanning table th {
-  height: 22px !important;
-  padding-top: 2px !important;
-  padding-bottom: 2px !important;
-  padding-left: 6px !important;
-  padding-right: 6px !important;
-  font-size: 12px !important;
+#order-listing,
+#order-listing th,
+#order-listing td {
+  font-size: 16px !important;
+  font-weight: 600 !important;
 }
-#trayScanModal_DayPlanning input.form-control {
-  height: 22px !important;
-  padding: 2px 6px !important;
-  font-size: 12px !important;
-}
+    body.sidebar-icon-only .main-panel,
+    body.sidebar-icon-only .content-wrapper,
+    body.sidebar-icon-only .card,
+    body.sidebar-icon-only .card-body,
+    body.sidebar-icon-only .table-responsive {
+      margin-left: 0 !important;
+      padding-left: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    
+    .content-wrapper,
+    .card,
+    .card-body,
+    .table-responsive {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin-right: 0 !important;
+      /* padding-right: 0 !important; */
+      box-sizing: border-box !important;
+    }
+  @media (min-width: 1800px) and (max-width: 2000px) and (min-height: 1100px) and (max-height: 1300px) {
+    .content-wrapper,
+    .row,
+    .col-12,
+    .grid-margin,
+    .stretch-card,
+    .card,
+    .card-body,
+    .table-responsive,
+    #order-listing {
+      max-width: 1400px !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      width: 100% !important;
+    }
+    .card {
+      min-height: 700px !important;
+      margin-bottom: 0 !important;
+    }
+    .card-body {
+      min-height: 650px !important;
+      padding: 0 !important;
+      margin-right: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+    }
+    #order-listing tr,
+    #order-listing td,
+    #order-listing th {
+      height: 44px !important;
+      min-height: 44px !important;
+    }
+  }
+  
+  /* Remove right space after the table and make table stretch fully */
+  .content-wrapper,
+  .row,
+  .col-12,
+  .grid-margin,
+  .stretch-card,
+  .card,
+  .card-body,
+  .table-responsive,
+  #order-listing {
+    margin-right: 0 !important;
+    padding-right: 0 !important;
+    
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+  
+  body, html {
+    overflow-x: hidden !important;
+  }
+  
+  /* Remove left/right padding from .row and .col-12 if any */
+  .row,
+  .col-12 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  
+  /* Remove min-width from table if not needed */
+  #order-listing {
+    min-width: 0 !important;
+    min-width: unset !important;
+    max-width: 100% !important;
+    margin-bottom: 0 !important;
+  }
+  
+  /* Main panel and content wrapper base */
+  .main-panel,
+  .content-wrapper {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100vw !important;
+    min-height: 0 !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* White Container - behind the table */
+  .content-wrapper {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-left: 2px !important;
+    transition: opacity 0.3s ease;
+    flex: 1;
+   overflow-y: visible !important;
+  overflow-x: visible !important;
+    transition: opacity 0.3s ease;
+
+  }
+  
+  @media (max-width: 600px) {
+    .content-wrapper {
+      padding-left: 8px !important;
+    }
+  }
+  
+  /* Title spacing */
+  .card-body > h5.text-left.mt-0.mb-4 {
+    margin-bottom: 12px !important;
+    margin-top: -5px !important;
+    padding-bottom: 0 !important;
+    margin-left: 5px !important;
+  }
+  .content-wrapper > h5.text-left.mt-0.mb-4 {
+    margin-top: -50px !important;
+    margin-bottom: -5px !important;
+    margin-left: -15px !important;
+  }
+  
+  /* Style for toggle switch and whole row inactive */
+  @media (max-width: 426px){
+    .file-upload-area p {
+      font-size: 12px !important;
+    }
+  }
+  .tooltip-inner {
+    white-space: pre-line !important;
+  }
+  td:first-child,
+  td:first-child * {
+    filter: none !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    color: inherit !important;
+  }
+  .row-inactive td:first-child {
+    background: none !important;
+    background-color: transparent !important;
+  }
+  .row-inactive,
+  .row-inactive td {
+    background: #ededed !important;
+    background-color: #ededed !important;
+  }
+  .row-inactive-blur {
+    filter: blur(0.7px);
+    cursor: not-allowed !important;
+    user-select: none;
+    pointer-events: auto !important; /* allow hover for cursor effect */
+  }
+  .hold-toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 20px;
+  }
+  .hold-toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .hold-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #e5e5e5; /* Always grey track */
+    border-radius: 20px;
+    transition: .3s;
+  }
+  .hold-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px; width: 16px;
+    left: 2px; bottom: 2px;
+    background-color: #bbb; /* Default grey circle */
+    border: 2px solid #bbb;
+    border-radius: 50%;
+    transition: .3s;
+  }
+  .hold-toggle-switch input:checked + .hold-slider:before {
+    transform: translateX(16px);
+    background-color: #007bff; /* Blue circle when ON */
+    border-color: #007bff;
+  }
+  .hold-toggle-switch input:not(:checked) + .hold-slider:before {
+    background-color: #bbb; /* Grey circle when OFF */
+    border-color: #bbb;
+  }
+  .hold-toggle-switch input:disabled + .hold-slider:before {
+    background-color: #bbb !important; /* Grey circle when disabled */
+    border-color: #bbb !important;
+  }
+  
+  /* end of toggle style switch */
+  #trayScanModal_DayPlanning table thead th {
+    background: #d2d2d2 !important;
+    color: #313131 !important;
+    font-weight: bold;
+    border-bottom: 1px solid #bdbdbd !important;
+    vertical-align: middle;
+  }
+  
+  /* Show tooltip on hover */
+  .model-hover-trigger:hover .model-image-tooltip {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    display: flex !important;
+  }
+  
+  /* Modal and tray scan styles */
+  .readonly-modal-header {
+    background: #f3f3f3;
+    border-radius: 8px 8px 0 0;
+    padding: 16px 20px 12px 20px !important;
+    margin-bottom: 10px;
+    align-items: flex-end !important;
+  }
+  .readonly-modal-header .user-profile {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+  }
+  #modalModelNo_DayPlanning {
+    margin-top: 10px !important;
+    display: inline-block;
+    font-weight: 600;
+    color: #028084;
+  }
+  /* Dim or blur main content when read-only tray scan modal is open */
+  .tray-scan-modal-DayPlanning.open ~ .content-wrapper {
+    opacity: 0.3;
+    pointer-events: none;
+    /* For blur effect, use the next line instead of opacity: */
+    /* filter: blur(2px); */
+  }
+  
+  /* Shrink table row height in read-only tray scan modal */
+  #trayScanModal_DayPlanning table tr,
+  #trayScanModal_DayPlanning table td,
+  #trayScanModal_DayPlanning table th {
+    height: 22px !important;
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+    font-size: 12px !important;
+  }
+  #trayScanModal_DayPlanning input.form-control {
+    height: 22px !important;
+    padding: 2px 6px !important;
+    font-size: 12px !important;
+  }
   .tray-scan-modal-DayPlanning {
     display: none;
     position: fixed;
@@ -69,72 +397,112 @@
   .tray-scan-modal-DayPlanning.open {
     display: block;
   }
-.tray-scan-close-readonly {
-  position: absolute;
-  top: 18px;   /* Adjust as needed */
-  right: 10px;
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
-  color: #d9534f; /* Optional: make it red for visibility */
-}
+  .tray-scan-close-readonly {
+    position: absolute;
+    top: 18px;
+    right: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #d9534f;
+  }
   #trayScanDetails.table-grid > div {
-  overflow: visible !important;
-  min-width: 0 !important;
-  word-break: break-all;
-}
-.tray-scan-modal h5 {
-text-align: center !important;
-margin: 0 auto 8px auto !important;
-font-size: 1.15rem !important;
-font-weight: 700 !important;
-width: 100%;
-display: block;
-}
-#trayScanDetails.table-grid > div.tray-validation-status-header {
-background-color: #e0f7fa !important;
-font-weight: bold !important;
-color: #028084 !important;
-}
-#trayScanDetails.table-grid > div.tray-validation-status-cell {
-background-color: #f1fcff !important;
-font-weight: bold !important;
-color: #028084 !important;
-}
-#order-listing thead th {
-height: 38px !important; /* Increase as needed */
-background: #028084 !important;
-color: #e5fcff !important;
-vertical-align: middle !important;
-border-bottom: 2.5px solid #bdbdbd !important; /* Thicker grey line below heading */
+    overflow: visible !important;
+    min-width: 0 !important;
+    word-break: break-all;
+  }
+  .tray-scan-modal h5 {
+    text-align: center !important;
+    margin: 0 auto 8px auto !important;
+    font-size: 1.15rem !important;
+    font-weight: 700 !important;
+    width: 100%;
+    display: block;
+  }
+  #trayScanDetails.table-grid > div.tray-validation-status-header {
+    background-color: #e0f7fa !important;
+    font-weight: bold !important;
+    color: #028084 !important;
+  }
+  #trayScanDetails.table-grid > div.tray-validation-status-cell {
+    background-color: #f1fcff !important;
+    font-weight: bold !important;
+    color: #028084 !important;
+  }
+  #order-listing thead th {
+    height: 38px !important;
+    background: #028084 !important;
+    color: #e5fcff !important;
+    vertical-align: middle !important;
+    border-bottom: 2.5px solid #bdbdbd !important;
+    position: sticky;
+  top: 0;
+    z-index: 20; /* higher than sticky columns */
 
-}
-/* --- DP_PickTable: Match DP_Completed_Table style --- */
-#order-listing {
-border-collapse: collapse;
-}
-#order-listing th,
-#order-listing td {
-border-right: 1px solid #d1d1d1;
-border-bottom: 1px solid #e0e0e0;
-font-size: 12px;
-}
-#order-listing th:last-child,
-#order-listing td:last-child {
-border-right: none;
-}
-#order-listing tr,
-#order-listing td,
-#order-listing th {
-height: 20px !important;
-padding: 4px 8px !important;
-}
+  }
+  
+  /* --- DP_PickTable: Match DP_Completed_Table style --- */
+  #order-listing {
+    border-collapse: collapse;
+    width: 100% !important;
+    min-width: 900px !important;
+    max-width: 1100px !important;
+    margin: 0 auto !important;
+    
+  }
+  #order-listing th,
+  #order-listing td {
+    border-right: 1px solid #d1d1d1;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 12px;
+  }
+  #order-listing th:last-child,
+  #order-listing td:last-child {
+    border-right: none;
+  }
+  #order-listing tr,
+  #order-listing td,
+  #order-listing th {
+    height: 30px !important;
+    padding: 4px 8px !important;
+  }
 
+  
 .pagination-wrapper {
-background: #fff;
-padding: 8px 0 0 0;
-position: relative;
-z-index: 2;
+      background: #fff;
+      margin-bottom: 0 !important;
+      margin-top: -25px !important;
+      margin-right: -25px !important;
+      right: 205px !important;
+      margin-left: 0 !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      position: static  !important;
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+      
+    }
+  .pagination {
+  font-size: 13px !important;
+  gap: 2px !important;
+}
+
+.pagination .page-link {
+  padding: 2px 8px !important;
+  font-size: 13px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+}
+@media (max-width: 600px) {
+  .pagination-wrapper {
+    margin-left: 4px !important;
+    
+  }
 }
 /* Tooltip for model images */
 .model-image-tooltip {
@@ -199,12 +567,14 @@ margin-right: calc(-0.5 * var(--bs-gutter-x));
 margin-left: calc(-0.5 * var(--bs-gutter-x));
 min-height: 10px; /* Add this line to reduce minimum row height */
 padding-top: 2px; /* Optional: reduce vertical padding */
-padding-bottom: 2px; /* Optional: reduce vertical padding */
+ margin-bottom: 0 !important;
+padding-bottom: 0 !important;
 overflow-y: auto !important;
 overflow-x: auto !important;
 scrollbar-width: thin; /* For Firefox */
 -ms-overflow-style: auto; /* For IE/Edge */
 }
+
 .table-responsive::-webkit-scrollbar {
 display: none; /* Chrome, Safari, Opera */
 }
@@ -365,10 +735,6 @@ right: 10px;
 }
 }
 
-/* Make sure borders are continuous for the whole table */
-#order-listing {
-border-collapse: collapse;
-}
 
 #order-listing th,
 #order-listing td {
@@ -401,10 +767,7 @@ font-weight: 500;
 font-size: 12px !important;
 font-weight: 400;
 }
-.content-wrapper {
-transition: opacity 0.3s ease;
-padding-bottom: 70px !important; /* Reduce space above footer */
-}
+
 
 /* When modal is active, dim the content */
 .tray-scan-modal.active ~ .content-wrapper {
@@ -537,19 +900,46 @@ font-weight: bold;
 cursor: pointer;
 color: #d9534f; 
 }
-
+#order-listing tr:last-child td {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
 /* Ensure table is scrollable if data exceeds visible area */
 .table-responsive {
-max-height: 250px;
+max-height: 500px;
+/* max-height: calc(100vh - 400px)  !important; /* Adjust if needed */
 overflow-y: auto !important;
 overflow-x: auto !important;
-scrollbar-width: thin;
--ms-overflow-style: auto;
-margin-bottom: 4px;
+scrollbar-width: none;
+-ms-overflow-style: none;
+margin-bottom: 0 !important;
+padding-bottom: 0 !important;
+min-height: 400px !important;
+max-width: 1100px !important;
+margin-right: 0 !important;
+padding-right: 0 !important;
+box-sizing: border-box !important;
+margin-left: 5px !important;
+margin-bottom: 0 !important;
+padding-bottom: 0 !important;
+
+}
+@media (min-width: 600px) and (max-width: 1200px) {
+  .table-responsive {
+    max-height: 700px !important;
+    min-height: 500px !important;
+  }
+}
+@media (min-width: 600px) and (max-width: 1024px) {
+  .table-responsive {
+    margin-left: 5px !important;
+  }
 }
 
+
+
 .table-responsive::-webkit-scrollbar {
-display: block;
+display: none; /* Chrome, Safari, Opera */
 height: 8px;
 width: 8px;
 }
@@ -566,13 +956,9 @@ body {
 display: flex;
 flex-direction: column;
 min-height: 100vh;
+  overflow-y: auto !important;
 }
 
-.content-wrapper {
-flex: 1;
-overflow-y: auto; /* enable scroll only for content section */
-padding-bottom: 20px;
-}
 
 footer {
 position: absolute;
@@ -603,14 +989,69 @@ z-index: 10; /* ensure it stays above the table rows */
 box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* optional shadow for better separation */
 }
 
+/* Ensure the table header is always visible */
+@media (max-width: 426px){
+    .tray-scan-modal-DayPlanning {
+      width:100% !important;
+      right: 0px !important;
+    }
+    .tray-scan-modal h5{
+      font-size: .15rem !important;
+    }
+  }
+  @media (max-width: 426px){
+    #trayScanModal{
+      width: 90% !important;
+    }
+      @media (max-width: 600px) {
+              /* Adjust each tray row cell */
+              #trayScanDetails > div {
+              min-height: 28px !important;
+              padding: 4px;
+              font-size: 14px;
+              }
+              /* Ensure inputs fill available width with proper padding */
+              #trayScanDetails input.form-control {
+              width: 100% !important;
+              padding: 4px;
+              }
+              /* Scale down icons/buttons for a better mobile view */
+              #trayScanDetails .tray-edit-btn,
+              #trayScanDetails .tray-verify-checkbox {
+              width: 20px !important;
+              height: 20px !important;
+              }
+            }
+    #trayValidateBtn{
+      font-size: 10px !important;
+    }
+    .tray-scan-modal-DayPlanning {
+      width:100% !important;
+      right: 0px !important;
+    }
+    .tray-scan-modal h5{
+      font-size: .15rem !important;
+    }
+    .user-profile{
+      font-size: 15px !important;
+    }
+  }
+
+ @media (width: 768px) {
+  #trayScanModal {
+    max-height: 53% !important; /* Adjust height for smaller screens */
+  }
+ }
 </style>
 
 <div class="content-wrapper">
-  <h5 class="text-left mt-0 mb-3">Day Planning Pick Table</h5>
+  <!-- <h5 class="text-left mt-0 mb-3">Day Planning Pick Table</h5> -->
   <div class="row">
     <div class="col-12 grid-margin stretch-card">
       <div class="card">
-        <div class="card-body">
+              <div class="card-body" style="padding-bottom:12px;">
+              <h5 class="text-left mt-0 mb-4" style="font-weight:700;">Day Planning Pick Table</h5>
+
             <!-- Table Section -->
             <div class="table-responsive">
               <table id="order-listing" class="table">
@@ -620,7 +1061,7 @@ box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* optional shadow for better sep
                       S.No <i class="fa fa-filter" aria-hidden="true"></i>
                     </th>
                     <th>
-                      Date and Time
+                      Date<br>Time
                       <i class="fa fa-filter" aria-hidden="true"></i>
                     </th>
                     <th>
@@ -676,8 +1117,25 @@ box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* optional shadow for better sep
                 <tbody>
                   {% for data in master_data %}
                   <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ data.date_time|date:"Y-m-d H:i A"|default:"N/A" }}</td>
+                                        <td>
+                      <span style="display:flex; align-items:center; gap:6px;">
+                        <label class="hold-toggle-switch" style="margin-bottom:0;">
+                          <input
+                            type="checkbox"
+                            class="hold-toggle-btn"
+                            checked
+                          />
+                          <span class="hold-slider"></span>
+                        </label>
+                        <span class="hold-remark-icon" style="display:none; cursor:pointer;" title=""></span>
+                        <span class="sno-value">{{ forloop.counter }}</span>
+                      </span>
+                    </td>
+                    <!-- <td>{{ data.date_time|date:"Y-m-d H:i A"|default:"N/A" }}</td> -->
+                    <td>
+                    {{ data.date_time|date:"Y-m-d" }}<br>
+                    <span style="display:inline-block; margin-top:4px;">{{ data.date_time|date:"h:i A" }}</span>
+                                        </td>
                     <td style="position: relative;">
                       <span class="model-hover-trigger" style="cursor: pointer;">
                         {{ data.model_stock_no__model_no }}
@@ -846,7 +1304,7 @@ box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* optional shadow for better sep
                             padding-bottom: 0.5rem;
                           "
                         >
-                          On-Hold
+                          Draft
                         </div>
                       {% elif data.last_process_module and data.next_process_module %}
                         <div
@@ -1030,17 +1488,6 @@ box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* optional shadow for better sep
 <h5 style="text-align: center; margin: 0; flex: 1; font-weight: 600; color:#595959">
 Day Planning - Tray Scan
 </h5>
- <button id="trayValidateBtn" type="button" style="display: flex; align-items: center; gap: 6px; background: #f5faff; border: 1px solid #023E4DCC; color: #023E4DCC; border-radius: 20px; padding: 4px 14px; font-size: 13px; font-weight: 500; cursor: pointer;">
-                           <img src="{% static 'assets/icons/validate.png' %}" alt="Validate" style="width: 20px; height: 20px; margin-right: 4px;" />
-                           Tray Validate
-                           </button>
-                           <img
-                              src="{% static 'assets/icons/redo2.png' %}"
-                              alt="Redo"
-                              id="trayScanRedoBtn"
-                              style="width: 24px; height: 24px; cursor: pointer; margin-left: 8px;"
-                              title="Clear Tray IDs"
-                              />
 
 </div>
 
@@ -1071,77 +1518,101 @@ Day Planning - Tray Scan
               <div id="trayQtyErrorFooter" style="color: red; font-size: 14px; text-align: center; min-height: 22px; margin-top: 8px;"></div>
               
             </div>
-
-                            <div
-                id="trayScanModal_DayPlanning"
-                class="tray-scan-modal-DayPlanning"
-              >
-                <div class="tray-scan-modal-DayPlanning-content">
-                                    <span id="closeTrayScanModal_DayPlanning" class="tray-scan-close-readonly"
-                    >&times;</span
-                  >
-                  <!-- New top header container: title + user profile aligned left -->
+            <div
+              id="trayScanModal_DayPlanning"
+              class="tray-scan-modal-DayPlanning"
+            >
+              <div class="tray-scan-modal-DayPlanning-content">
+                <span id="closeTrayScanModal_DayPlanning" class="tray-scan-close-readonly"
+                  >&times;</span
+                >
+                <!-- New top header container: title + user profile aligned left -->
+                <div
+                  class="modal-top-header"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+                    padding-bottom: 10px;
+                  "
+                >
                   <div
-                    class="modal-top-header"
-                    style="
-                      display: flex;
-                      align-items: center;
-                      gap: 20px;
-                      padding-bottom: 10px;
-                    "
+                    class="user-profile"
+                    style="display: flex; align-items: center; gap: 8px"
                   >
-                    <div
-                      class="user-profile"
-                      style="display: flex; align-items: center; gap: 8px"
-                    >
-                      <img
-                        src="/static/assets/images/imagePlaceholder.png"
-                        alt="User Profile"
-                        style="
-                          border-radius: 50%;
-                          width: 50px;
-                          height: 50px;
-                          object-fit: cover;
-                        "
-                      />
-                      <span>Model No:</span>
-                      <h6 id="modalModelNo_DayPlanning">(Fetch Dynamically)</h6>
-                    </div>
+                    <img
+                      src="/static/assets/images/imagePlaceholder.png"
+                      alt="User Profile"
+                      style="
+                        border-radius: 50%;
+                        width: 50px;
+                        height: 50px;
+                        object-fit: cover;
+                      "
+                    />
+                    <span>Model No:</span>
+                    <h6 id="modalModelNo_DayPlanning">(Fetch Dynamically)</h6>
                   </div>
-                  <!-- Day Planning - Tray Scan (Read Only) Modal Popup -->
-                  <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-                    <h5 style="text-align: center; margin: 0; flex: 1; font-weight: 600; color:#595959">
-                      Day Planning - Tray Scan (Read Only)
-                    </h5>
-                     <button id="trayValidateBtn" type="button" style="display: flex; align-items: center; gap: 6px; background: #f5faff; border: 1px solid #023E4DCC; color: #023E4DCC; border-radius: 20px; padding: 4px 14px; font-size: 13px; font-weight: 500; cursor: pointer;">
-                           <img src="{% static 'assets/icons/validate.png' %}" alt="Validate" style="width: 20px; height: 20px; margin-right: 4px;" />
-                           Tray Validate
-                           </button>
-                           <img
-                              src="{% static 'assets/icons/redo2.png' %}"
-                              alt="Redo"
-                              id="trayScanRedoBtn"
-                              style="width: 24px; height: 24px; cursor: pointer; margin-left: 8px;"
-                              title="Clear Tray IDs"/>
-                  </div>
-
-                  <!-- trayScanDetails_DayPlanning will be a scrollable 3-column grid with headers and unlimited rows -->
-                  <div id="trayScanDetails_DayPlanning" class="table-grid">
-                    <!-- Headers -->
-                    <div>S.no</div>
-                    <div>Tray ID</div>
-                    <div>Tray Qty</div>
-                    <div class="tray-validation-status-header">Tray Validation Status
-                      <span style="margin-left: 10px;">
-    <img src="{% static 'assets/icons/fail.png' %}" alt="Cross" title="Fail" style="width:18px; height:18px; margin-right:6px; vertical-align:middle;" />
-    <img src="{% static 'assets/icons/pass.png' %}" alt="Pass" title="Pass" style="width:18px; height:18px; vertical-align:middle;" />
-  </span>
-                    </div>
-                    <!-- Example rows (replace with dynamic content) -->
-                  </div>
-                  <!-- No buttons for read-only modal -->
                 </div>
+                <!-- Redo icon for clearing "tray ID" -->
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                  <h5 style="text-align: center; margin: 0; flex: 1; font-weight: 600; color:#595959">
+                    Day Planning - Tray Scan (Read Only)
+                  </h5>
+                  <button id="trayValidateBtn" type="button" style="display: flex; align-items: center; gap: 6px; background: #f5faff; border: 1px solid #023E4DCC; color: #023E4DCC; border-radius: 20px; padding: 4px 14px; font-size: 13px; font-weight: 500; cursor: pointer;">
+                      <img src="{% static 'assets/icons/validate.png' %}" alt="Validate" style="width: 20px; height: 20px; margin-right: 4px;" />
+                      Tray Validate
+                  </button>
+
+                  <!-- Hidden input field - completely invisible to users -->
+                  <input id="trayValidateInput" type="text" placeholder="Enter validation info..." style="position: absolute; left: -9999px; opacity: 0; pointer-events: none;" />
+
+                  <img
+                      src="{% static 'assets/icons/redo2.png' %}"
+                      alt="Redo"
+                      id="trayScanRedoBtn"
+                      style="width: 24px; height: 24px; cursor: pointer; margin-left: 8px;"
+                      title="Clear Tray IDs"
+                  />
+                </div>
+                
+                <!-- Error message container - initially hidden -->
+                <div id="trayErrorMessage" style="display: none; background-color: #ffebee; border: 1px solid #f44336; color: #c62828; padding: 8px 12px; border-radius: 4px; margin-bottom: 10px; font-size: 14px; text-align: center;">
+                  <span id="trayErrorText"></span>
+                </div>
+                
+                <!-- trayScanDetails_DayPlanning will be a scrollable 3-column grid with headers and unlimited rows -->
+                <div id="trayScanDetails_DayPlanning" class="table-grid">
+                  <!-- Headers -->
+                  <div>S.no</div>
+                  <div>Tray ID</div>
+                  <div>Tray Qty</div>
+                  <div class="tray-validation-status-header">Tray Validation Status
+                    <span style="margin-left: 10px;">
+            <img src="{% static 'assets/icons/fail.png' %}" alt="Cross" title="Fail" style="width:18px; height:18px; margin-right:6px; vertical-align:middle;" />
+            <img src="{% static 'assets/icons/pass.png' %}" alt="Pass" title="Pass" style="width:18px; height:18px; vertical-align:middle;" />
+            </span>
+                  </div>
+                  <!-- Example rows (replace with dynamic content) -->
+                </div>
+                <!-- No buttons for read-only modal -->
               </div>
+            </div>
+                        <!-- End of Tray Scan Modal Window -->
+
+            </div>  
+          </div>
+
+                    <div id="holdRemarkModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.18); z-index:20000; align-items:center; justify-content:center;">
+            <div style="background:#fff; border-radius:10px; padding:28px 32px 18px 32px; min-width:320px; max-width:90vw; box-shadow:0 4px 24px rgba(0,0,0,0.18); position:relative;">
+              <span id="closeHoldRemarkModal" style="position:absolute; top:8px; right:16px; font-size:22px; font-weight:bold; color:#d9534f; cursor:pointer;">&times;</span>
+              <h5 style="margin-bottom:16px; color:#028084;">Row Hold Remark</h5>
+              <textarea id="holdRemarkInput" maxlength="50" style="width:100%; height:60px; border:1px solid #ccc; border-radius:6px; padding:8px; font-size:15px; resize:none;" placeholder="Enter remark (max 50 chars)"></textarea>
+              <div style="text-align:right; margin-top:10px;">
+                <button id="saveHoldRemarkBtn" style="background:#007bff; color:#fff; border:none; border-radius:20px; padding:6px 18px; font-size:15px; cursor:pointer;">Save</button>
+              </div>
+              <div id="holdRemarkError" style="color:red; font-size:13px; min-height:18px; margin-top:6px;"></div>
+            </div>
           </div>
         </div>
 
@@ -1493,33 +1964,7 @@ Day Planning - Tray Scan
     });
   </script>
 
- <!-- Script for Tray Validate Status column -- enable/disable of table column -->
- <script nonce="{{ csp_nonce }}">
-  document.addEventListener("DOMContentLoaded", function () {
-    const validateBtn = document.getElementById("trayValidateBtn");
-    const detailsDiv = document.getElementById("trayScanDetails");
-    let validationEnabled = false;
-  
-    if (validateBtn && detailsDiv) {
-      validateBtn.addEventListener("click", function () {
-        validationEnabled = !validationEnabled;
-  
-        // Toggle header
-        const header = detailsDiv.querySelector('.tray-validation-status-header');
-        if (header) {
-          header.style.opacity = validationEnabled ? "1" : "0.3";
-          header.style.pointerEvents = validationEnabled ? "auto" : "none";
-        }
-  
-        // Toggle all cells in the column
-        detailsDiv.querySelectorAll('.tray-validation-status-cell').forEach(function(cell) {
-          cell.style.opacity = validationEnabled ? "1" : "0.3";
-          cell.style.pointerEvents = validationEnabled ? "auto" : "none";
-        });
-      });
-    }
-  });
-  </script>
+
 
   <!-- Script for Tray Scan - Modal Popup -->
   <script nonce="{{ csp_nonce }}">
@@ -1629,12 +2074,13 @@ Day Planning - Tray Scan
                         <div style="min-height:32px;">
                             ${
                               i === 0
-                                ? `<div style="display: flex; align-items: center; gap: 8px;">
-                                      <input type="number" class="form-control tray-qty-input" value="${trayQty}" style="width: 60px;" readonly />
-                                      <input type="checkbox" class="tray-verify-checkbox" style="width: 18px; height: 18px; cursor: pointer;" 
-                                        ${topTrayQtyVerified ? 'checked disabled' : ''} />
+                                ? `<div style="display: flex; align-items: center; justify-content: space-between;">
+                                  <input type="number" class="form-control tray-qty-input" value="${trayQty}" style="width: 60px;" readonly />
+                                  <div style="display: flex; align-items: center; gap: 27px;">
+                                      <input type="checkbox" class="tray-verify-checkbox" style="width: 18px; height: 18px; cursor: pointer;" ${topTrayQtyVerified ? 'checked disabled' : ''} />
                                       <img src="{% static 'assets/icons/edit2.png' %}" alt="Edit" class="tray-edit-btn" style="width: 18px; height: 18px; cursor: pointer;${topTrayQtyVerified ? 'opacity:0.5;pointer-events:none;' : ''}" />
-                                   </div>`
+                                  </div>
+                                  </div>`
                                 : `<input type="number" class="form-control" value="${trayQty}" style="width: 100%;" readonly />`
                             }
                         </div>
@@ -1718,6 +2164,10 @@ Day Planning - Tray Scan
                                   const trayScanBtn = document.querySelector(`.tray-scan-btn[data-batch-id="${batchId}"]`);
                                   if (trayScanBtn) {
                                       trayScanBtn.setAttribute('data-top-tray-qty-verified', 'True');
+                                      // Update the data-tray-qty-list attribute with the latest values
+                                      const trayQtyInputs = detailsDiv.querySelectorAll('input[type="number"]');
+                                      const updatedQtyList = Array.from(trayQtyInputs).map(input => parseInt(input.value, 10) || 0);
+                                      trayScanBtn.setAttribute('data-tray-qty-list', JSON.stringify(updatedQtyList));
                                   }
                                   
                                     // Disable and check the checkbox
@@ -1746,7 +2196,7 @@ Day Planning - Tray Scan
                                             qtyCell.textContent = totalQty;
                                         }
                                     }
-                                    // Update Batch Status cell (13th column) to "On-Hold"
+                                    // Update Batch Status cell (13th column) to "Draft"
                                     const statusCell = currentRow.querySelector('td:nth-child(13)');
                                     if (statusCell) {
                                         statusCell.innerHTML = `
@@ -1762,10 +2212,36 @@ Day Planning - Tray Scan
                                                 padding-bottom: 0.5rem;
                                               "
                                             >
-                                              On-Hold
+                                              Draft
                                             </div>
                                         `;
                                     }
+
+                                    // Set Process Status (11th column) to half green, half gray
+                                    const processStatusCell = currentRow.querySelector('td:nth-child(11)');
+                                    if (processStatusCell) {
+                                        processStatusCell.innerHTML = `
+                                            <div
+                                              title="Tray Scan"
+                                              class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+                                              style="
+                                                width: 28px;
+                                                height: 28px;
+                                                background: linear-gradient(to right, #0c8249 50%, #bfbfbf 50%);
+                                                color: white;
+                                                font-weight: bold;
+                                                line-height: 20px;
+                                                text-align: center;
+                                                padding-top: 1px;
+                                                padding-right: 1px;"
+                                            >
+                                              T
+                                            </div>
+                                        `;
+                                    }
+                                
+
+
 
                                 } else {
                                     const footer = document.getElementById('trayQtyErrorFooter');
@@ -1969,6 +2445,7 @@ Day Planning - Tray Scan
                                               const currentRow = document.querySelector(`.tray-scan-btn[data-batch-id="${batchId}"]`)?.closest('tr');
                                               if (currentRow) {
                                                   // Batch Status (13th column)
+
                                                   const statusCell = currentRow.querySelector('td:nth-child(13)');
                                                   if (statusCell) {
                                                       statusCell.innerHTML = `
@@ -1984,9 +2461,17 @@ Day Planning - Tray Scan
                                                               padding-bottom: 0.5rem;
                                                             "
                                                           >
-                                                            On-Hold
+                                                            Draft
                                                           </div>
                                                       `;
+                                                  }
+                                                  const qtyCell = currentRow.querySelector('td:nth-child(10)');
+                                                  if (qtyCell) {
+                                                      // Get the top tray qty input value from the modal
+                                                      const topTrayQtyInput = detailsDiv.querySelector('.tray-qty-input');
+                                                      if (topTrayQtyInput) {
+                                                          qtyCell.textContent = topTrayQtyInput.value;
+                                                      }
                                                   }
                                                   // Process Status (11th column) - half green, half gray
                                                   const processStatusCell = currentRow.querySelector('td:nth-child(11)');
@@ -2090,6 +2575,8 @@ Day Planning - Tray Scan
                                 text: 'Tray scan saved!',
                                 timer: 1200,
                                 showConfirmButton: false
+                              }).then(() => {
+                                location.reload();
                               });
                               modal.classList.remove("open");
                               const currentRow = document.querySelector(`.tray-scan-btn[data-batch-id="${batchId}"]`)?.closest('tr');
@@ -2136,6 +2623,95 @@ Day Planning - Tray Scan
                               // Disable Edit and Delete icons in Action cell (12th column)
                             const actionCell = currentRow.querySelector('td:nth-child(12)');
                             if (actionCell) {
+                              
+                                // Replace Tray Scan link with View icon in Action cell (12th column)
+                                const actionCell = currentRow.querySelector('td:nth-child(12)');
+                                if (actionCell) {
+                                    // Remove Tray Scan link if present
+                                    const trayScanBtn = actionCell.querySelector('.tray-scan-btn');
+                                    if (trayScanBtn) trayScanBtn.remove();
+
+                                    // Add View icon (same as in your template)
+                                    const viewBtn = document.createElement('a');
+                                    viewBtn.href = "#";
+                                    viewBtn.title = "View";
+                                    viewBtn.className = "text-primary tray-scan-btn-Jig";
+                                    viewBtn.style.textDecoration = "underline";
+                                    viewBtn.setAttribute('data-batch-id', batchId);
+                                    viewBtn.setAttribute('data-model-no', event.target.getAttribute('data-model-no'));
+                                    viewBtn.setAttribute('data-no-of-trays', event.target.getAttribute('data-no-of-trays'));
+                                    viewBtn.setAttribute('data-tray-capacity', event.target.getAttribute('data-tray-capacity'));
+                                    viewBtn.setAttribute('data-moved-to-d-picker', "True");
+                                    viewBtn.setAttribute('data-tray-qty-list', event.target.getAttribute('data-tray-qty-list'));
+                                    viewBtn.innerHTML = `<img src="{% static 'assets/icons/view.png' %}" alt="View" class="tray-scan-view-img" style="width: 20px; margin-right: 8px; height: auto; cursor:pointer;" />`;
+                                    actionCell.appendChild(viewBtn);
+
+                                    // Re-attach the event listener for the new View icon
+                                    viewBtn.addEventListener('click', async function (e) {
+                                        e.preventDefault();
+                                        // trigger the same code as .tray-scan-btn-Jig click
+                                        const modal = document.getElementById("trayScanModal_DayPlanning");
+                                        const detailsDiv = document.getElementById("trayScanDetails_DayPlanning");
+                                        const modalModelNo = document.getElementById("modalModelNo_DayPlanning");
+                                        const batchId = viewBtn.getAttribute('data-batch-id');
+                                        const modelNo = viewBtn.getAttribute('data-model-no');
+                                        const noOfTrays = parseInt(viewBtn.getAttribute('data-no-of-trays')) || 0;
+                                        const trayCapacity = viewBtn.getAttribute('data-tray-capacity') || "";
+                                        let trayQtyList = [];
+                                        try {
+                                          trayQtyList = JSON.parse(viewBtn.getAttribute('data-tray-qty-list') || "[]");
+                                        } catch (e) { trayQtyList = []; }
+                                        if (modalModelNo && modelNo) modalModelNo.textContent = modelNo;
+                                        let traysData = [];
+                                        try {
+                                          const resp = await fetch(`/dayplanning/tray_id_list/?batch_id=${encodeURIComponent(batchId)}`);
+                                          const result = await resp.json();
+                                          if (result.success && Array.isArray(result.trays) && result.trays.length > 0) {
+                                            traysData = result.trays;
+                                          }
+                                        } catch (e) {}
+                                        let html = `
+                                          <table class="table table-bordered table-sm" style="width:100%; margin-bottom:0;">
+                                            <thead>
+                                              <tr>
+                                                <th style="width:50px;">S.no</th>
+                                                <th>Tray ID</th>
+                                                <th>Tray Qty</th>
+                                                <th>Tray Validation Status</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                        `;
+                                        let totalRows = noOfTrays;
+                                        for (let i = 0; i < totalRows; i++) {
+                                          const tray = traysData[i] || {};
+                                          const trayQty = tray.tray_quantity || trayQtyList[i] || trayCapacity;
+                                          html += `
+                                            <tr>
+                                              <td>${i === 0 ? '1 (Top Tray)' : (i + 1)}</td>
+                                              <td>
+                                                <input type="text" class="form-control" value="${tray.tray_id || ''}" readonly style="width: 100%;" />
+                                              </td>
+                                              <td>
+                                                <input type="number" class="form-control" value="${trayQty}" readonly style="width: 100%;" />
+                                              </td>
+                                              <td>
+                                                <img src="{% static 'assets/icons/fail.png' %}" alt="Fail" title="Fail" style="width:18px; height:18px; margin-right:6px; vertical-align:middle;" />
+                                                <img src="{% static 'assets/icons/pass.png' %}" alt="Pass" title="Pass" style="width:18px; height:18px; vertical-align:middle;" />
+                                              </td>
+                                            </tr>
+                                          `;
+                                        }
+                                        html += `
+                                            </tbody>
+                                          </table>
+                                        `;
+                                        detailsDiv.innerHTML = html;
+                                        if (modal) modal.style.display = "block";
+                                        modal.classList.add("open");
+                                    });
+                                }
+
                                 // Find Edit icon and replace with disabled version
                                 const editBtn = actionCell.querySelector('.edit-qty-btn');
                                 if (editBtn) {
@@ -2157,7 +2733,12 @@ Day Planning - Tray Scan
                                     disabledDelete.innerHTML = `<img src="{% static 'assets/icons/bin.png' %}" alt="Delete Disabled" style="width: 28px; margin-right: 8px; height: auto; filter: grayscale(1) opacity(0.5); cursor:not-allowed;" />`;
                                     deleteBtn.replaceWith(disabledDelete);
                                 }
+                                
                             }
+
+                            
+
+                            
 
                             
                             // Disable audio icon
@@ -2224,90 +2805,230 @@ Day Planning - Tray Scan
     });
     </script>
 
-    
 
-<!-- Active row to be highlighted & Restores the highlighted row to its original position and removes the highlight bg when the tray scan modal is closed. -->
+
 <script nonce="{{ csp_nonce }}">
-// Row highlight for Tray Scan (matches highlightWF.html logic) + Move active row to top and restore on close
-document.addEventListener("DOMContentLoaded", function() {
-  // Add highlight style if not present
-  if (!document.getElementById('dp-row-action-highlight-style')) {
-    var style = document.createElement('style');
-    style.id = 'dp-row-action-highlight-style';
-    style.innerHTML = `
-      .dp-row-action-highlight {
-        transition: box-shadow 1.3s;
-        background-color: #f0f8ff !important;
-        animation: highlightAnimation 2s ease-in-out;
+document.addEventListener("DOMContentLoaded", function () {
+  const redoBtn = document.getElementById("trayScanRedoBtn");
+  const validateInput = document.getElementById("trayValidateInput");
+  const detailsDiv = document.getElementById("trayScanDetails_DayPlanning");
+  const errorMessage = document.getElementById("trayErrorMessage");
+
+  if (redoBtn && validateInput && detailsDiv) {
+    redoBtn.addEventListener("click", function () {
+      // Hide and clear the input
+      validateInput.value = "";
+      validateInput.blur();
+      
+      // Hide error message
+      if (errorMessage) {
+        errorMessage.style.display = "none";
       }
-    `;
-    document.head.appendChild(style);
-  }
+      
+      // Reset Tray Validate button to normal state
+      const validateBtn = document.getElementById("trayValidateBtn");
+      if (validateBtn) {
+        validateBtn.style.background = "#f5faff";
+        validateBtn.style.borderColor = "#023E4DCC";
+        validateBtn.style.color = "#023E4DCC";
+      }
 
-  let originalRowIndex = null;
-  let movedRow = null;
-  let placeholderRow = null;
-
-  document.querySelectorAll('.tray-scan-btn').forEach(function(link) {
-    link.addEventListener('click', function(event) {
-      // Remove highlight from all rows
-      document.querySelectorAll('tbody tr').forEach(function(row) {
-        row.classList.remove('dp-row-action-highlight');
-      });
-      // Move the clicked row to the top and highlight
-      var row = event.target.closest('tr');
-      if (row && row.parentNode) {
-        const tbody = row.parentNode;
-        // Only move if not already at top
-        if (tbody.firstElementChild !== row) {
-          // If a previous move exists, restore it first
-          if (movedRow && placeholderRow && placeholderRow.parentNode) {
-            placeholderRow.parentNode.insertBefore(movedRow, placeholderRow);
-            placeholderRow.parentNode.removeChild(placeholderRow);
-            movedRow.classList.remove('dp-row-action-highlight');
-            movedRow = null;
-            placeholderRow = null;
-            originalRowIndex = null;
+      // Reset all icons in the validation status column (read-only modal)
+      // For table layout:
+      const rows = detailsDiv.querySelectorAll("tbody tr");
+      if (rows.length > 0) {
+        rows.forEach(row => {
+          const statusCell = row.querySelector("td:last-child");
+          if (statusCell) {
+            statusCell.innerHTML = `
+              <img src="{% static 'assets/icons/fail.png' %}" alt="Fail" title="Fail" style="width:18px; height:18px; margin-right:6px; vertical-align:middle;" />
+              <img src="{% static 'assets/icons/pass.png' %}" alt="Pass" title="Pass" style="width:18px; height:18px; vertical-align:middle;" />
+            `;
           }
-          // Store original index and row
-          originalRowIndex = Array.from(tbody.children).indexOf(row);
-          movedRow = row;
-          // Insert a placeholder at the original position
-          placeholderRow = document.createElement('tr');
-          placeholderRow.style.display = 'none';
-          tbody.insertBefore(placeholderRow, tbody.children[originalRowIndex]);
-          // Move row to top
-          tbody.insertBefore(row, tbody.firstElementChild);
-        }
-        row.classList.add('dp-row-action-highlight');
+        });
+      } else {
+        // For grid layout (if used)
+        detailsDiv.querySelectorAll('.tray-validation-status-header, .tray-validation-status-cell').forEach(cell => {
+          cell.innerHTML = `
+            Tray Validation Status
+            <span style="margin-left: 10px;">
+              <img src="{% static 'assets/icons/fail.png' %}" alt="Cross" title="Fail" style="width:18px; height:18px; margin-right:6px; vertical-align:middle;" />
+              <img src="{% static 'assets/icons/pass.png' %}" alt="Pass" title="Pass" style="width:18px; height:18px; vertical-align:middle;" />
+            </span>
+          `;
+        });
       }
-    });
-  });
-
-  // On modal close, restore row to original position and remove highlight
-  var closeBtn = document.getElementById('closeTrayScanModal');
-  if (closeBtn) {
-    closeBtn.addEventListener('click', function() {
-      if (movedRow && placeholderRow && placeholderRow.parentNode) {
-        placeholderRow.parentNode.insertBefore(movedRow, placeholderRow);
-        placeholderRow.parentNode.removeChild(placeholderRow);
-        movedRow.classList.remove('dp-row-action-highlight');
-        movedRow = null;
-        placeholderRow = null;
-        originalRowIndex = null;
-      }
-      // Also remove highlight from any row just in case
-      document.querySelectorAll('tbody tr').forEach(function(row) {
-        row.classList.remove('dp-row-action-highlight');
-        row.classList.remove('highlighted-tray-scan');
-      });
     });
   }
 });
 </script>
+
+<script nonce="{{ csp_nonce }}">
+document.addEventListener("DOMContentLoaded", function () {
+  const validateBtn = document.getElementById("trayValidateBtn");
+  const validateInput = document.getElementById("trayValidateInput");
+  const redoBtn = document.getElementById("trayScanRedoBtn");
+  const errorMessage = document.getElementById("trayErrorMessage");
+
+  if (validateBtn && validateInput) {
+    validateBtn.addEventListener("click", function () {
+      validateInput.value = "";
+      // Hide error message when starting new validation
+      if (errorMessage) {
+        errorMessage.style.display = "none";
+      }
+      
+      // Change button to active state (green color)
+      validateBtn.style.background = "#e8f5e8";
+      validateBtn.style.borderColor = "#4caf50";
+      validateBtn.style.color = "#2e7d32";
+      
+      // Focus the hidden input so it can receive keystrokes
+      validateInput.focus();
+    });
+  }
   
-  <!-- Script for opening Day Planning - Tray Scan modal with read-only view while hitting view.png -->
-    
+  if (redoBtn && validateInput) {
+    redoBtn.addEventListener("click", function () {
+      validateInput.value = "";
+      validateInput.blur();
+      // Hide error message
+      if (errorMessage) {
+        errorMessage.style.display = "none";
+      }
+      
+      // Reset button to normal state (original blue color)
+      if (validateBtn) {
+        validateBtn.style.background = "#f5faff";
+        validateBtn.style.borderColor = "#023E4DCC";
+        validateBtn.style.color = "#023E4DCC";
+      }
+      
+      redoBtn.focus();
+    });
+  }
+});
+</script>
+
+<!-- Script for Tray Validate Status column -- enable/disable of table column -->
+<script nonce="{{ csp_nonce }}">
+document.addEventListener("DOMContentLoaded", function () {
+  const validateInput = document.getElementById("trayValidateInput");
+  const detailsDiv = document.getElementById("trayScanDetails_DayPlanning");
+  const errorMessage = document.getElementById("trayErrorMessage");
+  const errorText = document.getElementById("trayErrorText");
+
+  function getCurrentBatchId() {
+    const modal = document.getElementById("trayScanModal_DayPlanning");
+    if (modal && modal.dataset.batchId) return modal.dataset.batchId;
+    const lastBtn = document.querySelector('.tray-scan-btn-Jig[data-batch-id]');
+    return lastBtn ? lastBtn.getAttribute('data-batch-id') : '';
+  }
+
+  function showError(message) {
+    if (errorMessage && errorText) {
+      errorText.textContent = message;
+      errorMessage.style.display = "block";
+      // Auto-hide after 5 seconds
+      setTimeout(() => {
+        errorMessage.style.display = "none";
+      }, 5000);
+    }
+  }
+
+  function hideError() {
+    if (errorMessage) {
+      errorMessage.style.display = "none";
+    }
+  }
+
+  if (validateInput && detailsDiv) {
+    validateInput.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        const trayId = validateInput.value.trim();
+        if (!trayId) return;
+        const batchId = getCurrentBatchId();
+        if (!batchId) return;
+
+        // Hide any existing error message
+        hideError();
+
+        fetch("/dayplanning/tray_validate/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie('csrftoken')
+          },
+          body: JSON.stringify({
+            batch_id: batchId,
+            tray_id: trayId
+          })
+        })
+        .then(res => res.json())
+        .then(data => {
+          // Find the row in the table with this Tray ID
+          const rows = detailsDiv.querySelectorAll("tbody tr");
+          let found = false;
+          rows.forEach(row => {
+            const trayIdInput = row.querySelector('input[type="text"]');
+            if (trayIdInput && trayIdInput.value.trim() === trayId) {
+              found = true;
+              const statusCell = row.querySelector("td:last-child");
+              if (statusCell) {
+                if (data.success && data.exists) {
+                  statusCell.innerHTML = `
+                    <img src="{% static 'assets/icons/fail.png' %}" alt="Fail" title="Fail" style="width:18px; height:18px; margin-right:6px; vertical-align:middle; opacity:0.3;" />
+                    <img src="{% static 'assets/icons/pass.png' %}" alt="Pass" title="Pass" style="width:18px; height:18px; vertical-align:middle;" />
+                  `;
+                } else {
+                  statusCell.innerHTML = `
+                    <img src="{% static 'assets/icons/fail.png' %}" alt="Fail" title="Fail" style="width:18px; height:18px; margin-right:6px; vertical-align:middle;" />
+                    <img src="{% static 'assets/icons/pass.png' %}" alt="Pass" title="Pass" style="width:18px; height:18px; vertical-align:middle; opacity:0.3;" />
+                  `;
+                }
+              }
+            }
+          });
+          
+          if (!found) {
+            // Show inline error message instead of SweetAlert
+            showError(`Tray ID "${trayId}" not found in table.`);
+          }
+          
+          // --- Always clear and focus input for next scan ---
+          validateInput.value = "";
+          validateInput.focus();
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          showError('An error occurred while validating the tray ID.');
+          validateInput.value = "";
+          validateInput.focus();
+        });
+      }
+    });
+  }
+  
+  // Helper for CSRF
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+});
+</script>
+
+    <!-- Script for opening Day Planning - Tray Scan modal with read-only view while hitting view.png -->
+
 <script nonce="{{ csp_nonce }}">
 document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll('.tray-scan-btn-Jig').forEach(function(link) {
@@ -2318,6 +3039,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const modal = document.getElementById("trayScanModal_DayPlanning");
       const detailsDiv = document.getElementById("trayScanDetails_DayPlanning");
       const modalModelNo = document.getElementById("modalModelNo_DayPlanning");
+      modal.dataset.batchId = link.getAttribute('data-batch-id'); // ✅ Correct place
 
       // Get data attributes
       const batchId = link.getAttribute('data-batch-id');
@@ -2405,24 +3127,378 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
-<!-- Script for clearing "Tray ID" -->
+
+    
+
+<!-- Active row to be highlighted & Restores the highlighted row to its original position and removes the highlight bg when the tray scan modal is closed. -->
 <script nonce="{{ csp_nonce }}">
-document.addEventListener("click", function(e) {
-  // Only act on the editable modal's redo button
-  if (e.target && e.target.id === "trayScanRedoBtn") {
-    // Find the editable tray scan modal grid
-    var detailsDiv = document.getElementById("trayScanDetails");
-    if (!detailsDiv) return;
-    // Find all text inputs (Tray ID) that are NOT readonly
-    var trayIdInputs = detailsDiv.querySelectorAll('input[type="text"]:not([readonly])');
-    trayIdInputs.forEach(function(input) {
-      input.value = "";
+// Row highlight for Tray Scan (matches highlightWF.html logic) + Move active row to top and restore on close
+document.addEventListener("DOMContentLoaded", function() {
+  // Add highlight style if not present
+  if (!document.getElementById('dp-row-action-highlight-style')) {
+    var style = document.createElement('style');
+    style.id = 'dp-row-action-highlight-style';
+    style.innerHTML = `
+      .dp-row-action-highlight {
+        transition: box-shadow 1.3s;
+        background-color: #f0f8ff !important;
+        animation: highlightAnimation 2s ease-in-out;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  let originalRowIndex = null;
+  let movedRow = null;
+  let placeholderRow = null;
+
+  document.querySelectorAll('.tray-scan-btn').forEach(function(link) {
+    link.addEventListener('click', function(event) {
+      // Remove highlight from all rows
+      document.querySelectorAll('tbody tr').forEach(function(row) {
+        row.classList.remove('dp-row-action-highlight');
+      });
+      // Move the clicked row to the top and highlight
+      var row = event.target.closest('tr');
+      if (row && row.parentNode) {
+        const tbody = row.parentNode;
+        // Only move if not already at top
+        if (tbody.firstElementChild !== row) {
+          // If a previous move exists, restore it first
+          if (movedRow && placeholderRow && placeholderRow.parentNode) {
+            placeholderRow.parentNode.insertBefore(movedRow, placeholderRow);
+            placeholderRow.parentNode.removeChild(placeholderRow);
+            movedRow.classList.remove('dp-row-action-highlight');
+            movedRow = null;
+            placeholderRow = null;
+            originalRowIndex = null;
+          }
+          // Store original index and row
+          originalRowIndex = Array.from(tbody.children).indexOf(row);
+          movedRow = row;
+          // Insert a placeholder at the original position
+          placeholderRow = document.createElement('tr');
+          placeholderRow.style.display = 'none';
+          tbody.insertBefore(placeholderRow, tbody.children[originalRowIndex]);
+          // Move row to top
+          tbody.insertBefore(row, tbody.firstElementChild);
+        }
+        row.classList.add('dp-row-action-highlight');
+      }
+    });
+  });
+
+  // On modal close, restore row to original position and remove highlight for tray-scan-btn
+  var closeBtn = document.getElementById('closeTrayScanModal');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', function() {
+      if (movedRow && placeholderRow && placeholderRow.parentNode) {
+        placeholderRow.parentNode.insertBefore(movedRow, placeholderRow);
+        placeholderRow.parentNode.removeChild(placeholderRow);
+        movedRow.classList.remove('dp-row-action-highlight');
+        movedRow = null;
+        placeholderRow = null;
+        originalRowIndex = null;
+      }
+      // Also remove highlight from any row just in case
+      document.querySelectorAll('tbody tr').forEach(function(row) {
+        row.classList.remove('dp-row-action-highlight');
+        row.classList.remove('highlighted-tray-scan');
+      });
+    });
+  }
+
+  // --- NEW BLOCK: Same highlight logic for view icon (with class .tray-scan-btn-Jig) ---
+  let originalRowIndexJig = null;
+  let movedRowJig = null;
+  let placeholderRowJig = null;
+
+  document.querySelectorAll('.tray-scan-btn-Jig').forEach(function(link) {
+    link.addEventListener('click', function(event) {
+      // Remove highlight from all rows
+      document.querySelectorAll('tbody tr').forEach(function(row) {
+        row.classList.remove('dp-row-action-highlight');
+      });
+      // Move the clicked row to the top and highlight
+      var row = event.target.closest('tr');
+      if (row && row.parentNode) {
+        const tbody = row.parentNode;
+        // Only move if not already at top
+        if (tbody.firstElementChild !== row) {
+          // If a previous move exists, restore it first
+          if (movedRowJig && placeholderRowJig && placeholderRowJig.parentNode) {
+            placeholderRowJig.parentNode.insertBefore(movedRowJig, placeholderRowJig);
+            placeholderRowJig.parentNode.removeChild(placeholderRowJig);
+            movedRowJig.classList.remove('dp-row-action-highlight');
+            movedRowJig = null;
+            placeholderRowJig = null;
+            originalRowIndexJig = null;
+          }
+          // Store original index and row
+          originalRowIndexJig = Array.from(tbody.children).indexOf(row);
+          movedRowJig = row;
+          // Insert a placeholder at the original position
+          placeholderRowJig = document.createElement('tr');
+          placeholderRowJig.style.display = 'none';
+          tbody.insertBefore(placeholderRowJig, tbody.children[originalRowIndexJig]);
+          // Move row to top
+          tbody.insertBefore(row, tbody.firstElementChild);
+        }
+        row.classList.add('dp-row-action-highlight');
+      }
+    });
+  });
+
+  // On modal close for view icon, restore row to original position and remove highlight.
+  // FIX: Use the close button for the Day Planning modal ("closeTrayScanModal_DayPlanning")
+  var jigCloseBtn = document.getElementById('closeTrayScanModal_DayPlanning');
+  if (jigCloseBtn) {
+    jigCloseBtn.addEventListener('click', function() {
+      if (movedRowJig && placeholderRowJig && placeholderRowJig.parentNode) {
+        placeholderRowJig.parentNode.insertBefore(movedRowJig, placeholderRowJig);
+        placeholderRowJig.parentNode.removeChild(placeholderRowJig);
+        movedRowJig.classList.remove('dp-row-action-highlight');
+        movedRowJig = null;
+        placeholderRowJig = null;
+        originalRowIndexJig = null;
+      }
+      document.querySelectorAll('tbody tr').forEach(function(row) {
+        row.classList.remove('dp-row-action-highlight');
+        row.classList.remove('highlighted-tray-scan');
+      });
+    });
+  }
+});
+</script>
+
+<!-- New script appended below without altering existing lines -->
+<script nonce="{{ csp_nonce }}">
+// Append new block: Clear highlight and restore row when Draft, Submit, or Cancel is clicked
+document.addEventListener("DOMContentLoaded", function() {
+  function clearHighlightAndRestore() {
+    var closeBtn = document.getElementById('closeTrayScanModal');
+    if (closeBtn) {
+      closeBtn.click();
+    }
+    var jigCloseBtn = document.getElementById('closeTrayScanModal_DayPlanning');
+    if (jigCloseBtn) {
+      jigCloseBtn.click();
+    }
+  }
+  
+  var draftBtn = document.getElementById("trayScanDraftBtn");
+  if (draftBtn) {
+    draftBtn.addEventListener("click", function() {
+      clearHighlightAndRestore();
+    });
+  }
+  var submitBtn = document.getElementById("trayScanSubmitBtn");
+  if (submitBtn) {
+    submitBtn.addEventListener("click", function() {
+      clearHighlightAndRestore();
+    });
+  }
+  var cancelBtn = document.getElementById("trayScanCancelBtn");
+  if (cancelBtn) {
+    cancelBtn.addEventListener("click", function() {
+      clearHighlightAndRestore();
     });
   }
 });
 </script>
 
 
+<script nonce="{{ csp_nonce }}">
+document.addEventListener("DOMContentLoaded", function () {
+  let currentHoldCell = null;
+  let intendedState = null;
+
+  // Store remarks in localStorage for demo (replace with AJAX for backend persistence)
+  const savedStates = JSON.parse(localStorage.getItem("holdToggleStates") || "{}");
+
+  // Apply saved states to each row on load
+  Object.keys(savedStates).forEach(rowId => {
+    const row = document.querySelector(`tr[data-row-id="${rowId}"]`);
+    if (!row) return;
+    const cell = row.querySelector('td');
+    const toggle = row.querySelector('.hold-toggle-btn');
+    const icon = row.querySelector('.hold-remark-icon');
+    const state = savedStates[rowId];
+    toggle.checked = state.toggle;
+    if (state.toggle === false) {
+      row.classList.add('row-inactive');
+      row.querySelectorAll('td').forEach((td, idx) => {
+        if (idx > 0) td.classList.add('row-inactive-blur');
+        else td.classList.remove('row-inactive-blur');
+      });
+    }
+    let tooltipText = `Holding Reason: ${state.holdReason || ''}`;
+    if (state.unholdReason) tooltipText += `\nUnholding Reason: ${state.unholdReason}`;
+    icon.setAttribute('data-title', tooltipText);
+    icon.style.display = 'inline-block';
+    icon.innerHTML = `<img src="{% static 'assets/icons/view2.png' %}" alt="Remark" style="width:18px; height:18px;" />`;
+  });
+
+  // Toggle click handler
+  document.querySelectorAll('.hold-toggle-btn').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      currentHoldCell = btn.closest('td');
+      intendedState = btn.checked;
+      const row = currentHoldCell.closest('tr');
+      const rowId = row.getAttribute('data-row-id');
+      const state = savedStates[rowId] || { holdReason: '', unholdReason: '' };
+      // Set modal title
+      document.getElementById('holdRemarkModal').querySelector('h5').textContent = intendedState ? 'Unholding Reason' : 'Holding Reason';
+      document.getElementById('holdRemarkInput').value = '';
+      document.getElementById('holdRemarkError').textContent = '';
+      document.getElementById('holdRemarkModal').style.display = 'flex';
+      document.getElementById('holdRemarkInput').focus();
+    });
+  });
+
+  // Save remark and update tooltip
+  document.getElementById('saveHoldRemarkBtn').onclick = function () {
+    const remark = document.getElementById('holdRemarkInput').value.trim();
+    if (!remark) {
+      document.getElementById('holdRemarkError').textContent = 'Remark required!';
+      return;
+    }
+    if (remark.length > 50) {
+      document.getElementById('holdRemarkError').textContent = 'Max 50 characters!';
+      return;
+    }
+    if (!currentHoldCell) return;
+    const row = currentHoldCell.closest('tr');
+    const rowId = row.getAttribute('data-row-id');
+    const toggle = currentHoldCell.querySelector('.hold-toggle-btn');
+    const icon = currentHoldCell.querySelector('.hold-remark-icon');
+    const state = savedStates[rowId] || { holdReason: '', unholdReason: '' };
+
+    if (!intendedState) {
+      // Holding
+      state.holdReason = remark;
+      toggle.checked = false;
+      row.classList.add('row-inactive');
+      row.querySelectorAll('td').forEach((td, idx) => {
+        if (idx > 0) td.classList.add('row-inactive-blur');
+        else td.classList.remove('row-inactive-blur');
+      });
+    } else {
+      // Unholding
+      state.unholdReason = remark;
+      toggle.checked = true;
+      row.classList.remove('row-inactive');
+      row.querySelectorAll('td').forEach(td => td.classList.remove('row-inactive-blur'));
+    }
+    state.toggle = toggle.checked;
+    let tooltipText = `Holding Reason: ${state.holdReason || ''}`;
+    if (state.unholdReason) tooltipText += `\nUnholding Reason: ${state.unholdReason}`;
+    icon.setAttribute('data-title', tooltipText);
+    icon.style.display = 'inline-block';
+    icon.innerHTML = `<img src="{% static 'assets/icons/view2.png' %}" alt="Remark" style="width:18px; height:18px;" />`;
+    savedStates[rowId] = state;
+    localStorage.setItem("holdToggleStates", JSON.stringify(savedStates));
+    document.getElementById('holdRemarkModal').style.display = 'none';
+  };
+
+  // Eye icon click: show both remarks in textarea
+  document.querySelectorAll('.hold-remark-icon').forEach(function (icon) {
+    icon.addEventListener('click', function () {
+      currentHoldCell = icon.closest('td');
+      intendedState = null;
+      const row = currentHoldCell.closest('tr');
+      const rowId = row.getAttribute('data-row-id');
+      const state = savedStates[rowId] || { holdReason: '', unholdReason: '' };
+      let val = '';
+      if (state.holdReason) val += `Holding Reason: ${state.holdReason}\n`;
+      if (state.unholdReason) val += `Unholding Reason: ${state.unholdReason}`;
+      document.getElementById('holdRemarkInput').value = val.trim();
+      document.getElementById('holdRemarkError').textContent = '';
+      document.getElementById('holdRemarkModal').style.display = 'flex';
+      document.getElementById('holdRemarkInput').focus();
+    });
+  });
+
+  // Custom tooltip for eye icon
+  const customTooltip = document.createElement('div');
+  customTooltip.style.position = 'absolute';
+  customTooltip.style.background = '#333';
+  customTooltip.style.color = '#fff';
+  customTooltip.style.padding = '6px 10px';
+  customTooltip.style.borderRadius = '4px';
+  customTooltip.style.fontSize = '13px';
+  customTooltip.style.zIndex = '9999';
+  customTooltip.style.whiteSpace = 'pre-line';
+  customTooltip.style.pointerEvents = 'none';
+  customTooltip.style.display = 'none';
+  document.body.appendChild(customTooltip);
+
+  document.addEventListener('mouseover', function (e) {
+    const target = e.target.closest('.hold-remark-icon img');
+    if (target && target.parentElement?.dataset?.title) {
+      customTooltip.textContent = target.parentElement.dataset.title;
+      customTooltip.style.display = 'block';
+    }
+  });
+  document.addEventListener('mousemove', function (e) {
+    if (customTooltip.style.display === 'block') {
+      customTooltip.style.left = (e.pageX + 10) + 'px';
+      customTooltip.style.top = (e.pageY + 10) + 'px';
+    }
+  });
+  document.addEventListener('mouseout', function (e) {
+    if (e.target.closest('.hold-remark-icon img')) {
+      customTooltip.style.display = 'none';
+    }
+  });
+
+  // Modal close
+  document.getElementById('closeHoldRemarkModal').onclick = function () {
+    document.getElementById('holdRemarkModal').style.display = 'none';
+  };
+});
+</script>
+
+<!-- /**
+  * Script for sorting the order listing table
+  * This script allows users to click on table headers to sort the rows based on the column data.
+  */   -->
+<script nonce="{{ csp_nonce }}">
+document.addEventListener("DOMContentLoaded", function () {
+  const table = document.getElementById("order-listing");
+  if (!table) return;
+  const headers = table.querySelectorAll("thead th");
+  const tbody = table.querySelector("tbody");
+  let sortDirection = {};
+
+  headers.forEach((header, index) => {
+    header.style.cursor = "pointer";
+    header.addEventListener("click", function () {
+      const rows = Array.from(tbody.querySelectorAll("tr"));
+      const dir = sortDirection[index] === "asc" ? "desc" : "asc";
+      sortDirection[index] = dir;
+
+      rows.sort((a, b) => {
+        const cellA = a.children[index]?.textContent.trim() || "";
+        const cellB = b.children[index]?.textContent.trim() || "";
+        // Try numeric sort, fallback to string
+        const numA = parseFloat(cellA.replace(/,/g, ""));
+        const numB = parseFloat(cellB.replace(/,/g, ""));
+        if (!isNaN(numA) && !isNaN(numB)) {
+          return dir === "asc" ? numA - numB : numB - numA;
+        }
+        return dir === "asc"
+          ? cellA.localeCompare(cellB)
+          : cellB.localeCompare(cellA);
+      });
+
+      tbody.innerHTML = "";
+      rows.forEach((row) => tbody.appendChild(row));
+    });
+  });
+});
+</script>
 
   {% endblock %} {% endblock content %}
 </div>

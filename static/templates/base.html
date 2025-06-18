@@ -5,8 +5,45 @@
 
 
 <style>
+/* Move search bar to the right side of the navbar */
+.navbar-menu-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
+.navbar-nav.mr-lg-2 {
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 991.98px) {
+  .navbar-nav.mr-lg-2 {
+    width: 100%;
+    justify-content: flex-end;
+    margin-left: 0 !important;
+  }
+  .navbar-menu-wrapper {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+}
+  .sidebar .nav .nav-link:hover,
+  .sidebar .nav .menu-title:hover,
+  .sidebar .nav .sub-menu .nav-link:hover {
+    color: #fff !important;
+  }
+
+.sidebar .nav .nav-link,
+.sidebar .nav .menu-title,
+.sidebar .nav .sub-menu .nav-link {
+  color: #000 !important;
+}
   
-  footer.footer span,
+footer.footer span,
 footer.footer {
   font-weight: 400 !important; /* Normal weight */
 }
@@ -599,7 +636,9 @@ body {
 }
 
 </style>
-  <!-- Required meta tags -->
+
+
+<!-- Required meta tags -->
   <meta charset="utf-8">
   <meta
   http-equiv="Content-Security-Policy"
@@ -662,19 +701,18 @@ body {
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
           <span class="icon-menu"></span>
         </button>
-        <ul class="navbar-nav mr-lg-2">
-          <li class="nav-item nav-search d-none d-lg-block">
-            <div class="input-group">
-              <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
-                <span class="input-group-text" id="search">
-                  <i class="icon-search"></i>
-                </span>
-              </div>
-              <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now" aria-label="search"
-                aria-describedby="search">
-            </div>
-          </li>
-        </ul>
+      <!-- Search bar moved here -->
+      <!-- <li class="nav-item nav-search d-none d-lg-block" style="margin-left: 10px;">
+        <div class="input-group">
+          <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
+            <span class="input-group-text" id="search">
+              <i class="icon-search"></i>
+            </span>
+          </div>
+          <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now" aria-label="search"
+            aria-describedby="search">
+        </div>
+      </li> -->
         <ul class="navbar-nav navbar-nav-right">
             <li class="nav-item dropdown">
               <a
@@ -688,6 +726,8 @@ body {
                   class="barcode-icon"
                 />
               </a>
+
+              
               <span style="display: inline-block; width: 4px"></span>
 
               <a
@@ -972,336 +1012,234 @@ body {
       <!-- partial -->
       <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <ul class="nav">
-          <li class="nav-item">
-              <!-- Dashboard Menu -->
-            <a class="nav-link" href="{% url 'root' %}">
-                <i class="icon-grid menu-icon"></i>
-                <span class="menu-title">Dashboard</span>
-              </a>
-          </li>
-          <!-- Day Planning Menu -->
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-              <i class="icon-watch menu-icon"></i>
-              <span class="menu-title">Day Planning</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="ui-basic">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{% url 'bulk_upload' %}">Bulk Upload</a></li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'dp_pick_table' %}"
-                  >DP Pick Table</a
-                  >
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'dp_completed_table' %}"
-                  >DP Completed Table</a
-                  >
-                </li>
-              </ul>
-            </div>
-          </li>
-
-                                           <!-- Recovery Onboard Menu -->
-                      <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#recovery-onboard" aria-expanded="false" aria-controls="recovery-onboard">
-                            <i class="ti-loop menu-icon"></i>
-                          <span class="menu-title">Recovery Onboard</span>
-                          <i class="menu-arrow"></i>
-                        </a>
-                        <div class="collapse" id="recovery-onboard">
-                          <ul class="nav flex-column sub-menu">
-                            <li class="nav-item">
-                              <a class="nav-link" href="{% url 'recovery_BulkUpload' %}">R- Bulk Upload</a>
-                            </li>
-                            <li class="nav-item">
-                              <a class="nav-link" href="{% url 'recovery_dp_pick_table' %}">R - DP Pick Table</a>
-                            </li>
-                            <li class="nav-item">
-                              <a class="nav-link" href="{% url 'recovery_dp_completed_table' %}">R - DP Completed Table</a>
-                            </li>
-                          </ul>
-                        </div>
-                      </li>
-
-
-         
-
-         <!-- Input Screening Menu -->
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#ui-advanced" aria-expanded="false" aria-controls="ui-advanced">
-              <i class="fa fa-search menu-icon"></i>
-              <span class="menu-title">Input Screening</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="ui-advanced">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> 
-                  <a class="nav-link" href="{% url 'IS_PickTable' %}">Pick Table</a>
-                </li>
-                <li class="nav-item"> 
-                  <a class="nav-link" href="{% url 'IS_Completed_Table' %}">Completed Table</a>
-                </li>
-                <li class="nav-item"> 
-                  <a class="nav-link" href="{% url 'IS_AcceptTable' %}">Accept</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'IS_RejectTable' %}">Reject</a>
-                </li>
-              </ul>
-            </div>
-          </li>
-
-          <!-- Recovery Input Screening Menu -->
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="ui-advanced">
-              <i class="fa fa-recycle menu-icon"></i>
-              <span class="menu-title" style="line-height:1.3 !important;">R- Input Screening</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="form-elements">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> 
-                  <a class="nav-link" href="{% url 'Recovery_IS_PickTable' %}">Pick Table</a>
-                </li>
-                <li class="nav-item"> 
-                  <a class="nav-link" href="{% url 'Recovery_IS_Completed_Table' %}">Completed Table</a>
-                </li>
-                <li class="nav-item"> 
-                  <a class="nav-link" href="{% url 'Recovery_IS_AcceptTable' %}">Accept</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'Recovery_IS_RejectTable' %}">Reject</a>
-                </li>
-              </ul>
-            </div>
-          </li>
-
- <!-- Brass QC Menu -->
+<ul class="nav">
 <li class="nav-item">
-  <a class="nav-link" data-bs-toggle="collapse" href="#brassQCMenu" aria-expanded="false" aria-controls="brassQCMenu">
-    <i class="ti-crown menu-icon"></i>
-    <span class="menu-title">Brass QC</span>
-    <i class="menu-arrow"></i>
-  </a>
-  <div class="collapse" id="brassQCMenu">
-    <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> 
-                  <a class="nav-link" href="{% url 'BrassPickTableView' %}">Brass Qc Pick Table</a>
-                </li>
-                <li class="nav-item"> 
-                  <a class="nav-link" href="{% url 'BrassCompletedView' %}">BQ Complete Table</a>
-                </li>
-                <li class="nav-item"> 
-                  <a class="nav-link" href="{% url 'IqfPickTableView' %}">IQF Pick Table</a>
-                </li>
-                <li class="nav-item"> 
-                  <a class="nav-link" href="{% url 'IqfCompletedTableView' %}">IQF Completed Table</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'IqpRejectTableView' %}">IQF Reject Table</a>
-                </li>
-              </ul>
-  </div>
+<a class="nav-link" href="{% url 'index' %}">
+<i class="icon-grid menu-icon"></i>
+<span class="menu-title">Dashboard</span>
+</a>
 </li>
-
-
-
+<li class="nav-item">
+<a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+<i class="icon-watch menu-icon"></i>
+<span class="menu-title">Day Planning</span>
+<i class="menu-arrow"></i>
+</a>
+<div class="collapse" id="ui-basic">
+<ul class="nav flex-column sub-menu">
+<li class="nav-item"> <a class="nav-link" href="{% url 'bulk_upload' %}">Bulk Upload</a></li>
+<li class="nav-item">
+<a class="nav-link" href="{% url 'dp_pick_table' %}"
+>DP Pick Table</a
+>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="{% url 'dp_completed_table' %}"
+>DP Completed Table</a
+>
+</li>
+</ul>
+</div>
+</li>
+ 
+          <!-- Recovery Onboard Menu -->
+<li class="nav-item">
+<a class="nav-link" data-bs-toggle="collapse" href="#recovery-onboard" aria-expanded="false" aria-controls="recovery-onboard">
+<i class="ti-loop menu-icon"></i>
+<span class="menu-title">Recovery Onboard</span>
+<i class="menu-arrow"></i>
+</a>
+<div class="collapse" id="recovery-onboard">
+<ul class="nav flex-column sub-menu">
+<li class="nav-item">
+<a class="nav-link" href="{% url 'rec_bulk_upload' %}">R- Bulk Upload</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="{% url 'rec_dp_pick_table' %}">R - DP Pick Table</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="{% url 'rec_completed_table' %}">R - DP Completed Table</a>
+</li>
+</ul>
+</div>
+</li>
+ 
+          <li class="nav-item">
+<a class="nav-link" data-bs-toggle="collapse" href="#ui-advanced" aria-expanded="false" aria-controls="ui-advanced">
+<i class="icon-watch menu-icon"></i>
+<span class="menu-title">Input Screening</span>
+<i class="menu-arrow"></i>
+</a>
+<div class="collapse" id="ui-advanced">
+<ul class="nav flex-column sub-menu">
+<li class="nav-item"> 
+<a class="nav-link" href="{% url 'IS_PickTable' %}">Pick Table</a>
+</li>
+<li class="nav-item"> 
+<a class="nav-link" href="{% url 'IS_Completed_Table' %}">Completed Table</a>
+</li>
+<li class="nav-item"> 
+<a class="nav-link" href="{% url 'IS_AcceptTable' %}">Accept</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="{% url 'IS_RejectTable' %}">Reject</a>
+</li>
+</ul>
+</div>
+</li>
+<!-- Brass Qc Menu -->
+<li class="nav-item">
+<a class="nav-link" data-bs-toggle="collapse" href="#editors" aria-expanded="false" aria-controls="ui-advanced">
+<i class="fa fa-industry menu-icon"></i>
+<span class="menu-title">Brass QC</span>
+<i class="menu-arrow"></i>
+</a>
+<div class="collapse" id="editors">
+<ul class="nav flex-column sub-menu">
+<li class="nav-item"> 
+<a class="nav-link" href="{% url 'BrassPickTableView' %}">Brass Qc Pick Table</a>
+</li>
+<li class="nav-item"> 
+<a class="nav-link" href="{% url 'BrassCompletedView' %}">Brass Qc Completed Table</a>
+</li>
+<li class="nav-item"> 
+<a class="nav-link" href="{% url 'iqf_picktable' %}">IQF Pick Table</a>
+</li>
+<li class="nav-item"> 
+<a class="nav-link" href="{% url 'iqf_completed_table' %}">IQF Completed Table</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="{% url 'iqf_rejection_table' %}">IQF Reject Table</a>
+</li>
+</ul>
+</div>
+</li>
 <!-- Jig Loading Menu -->
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#jig-loading" aria-expanded="false" aria-controls="jig-loading">
-              <i class="ti-package menu-icon"></i>
-              <span class="menu-title">Jig Loading</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="jig-loading">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'JigView' %}">Pick Table</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'JigCompletedTable' %}">Completed Table</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'jig_composition' %}">Jig Composition</a>
-                </li>
-              </ul>
-            </div>
-          </li>
-
-<!-- Recovery Brass QC Menu -->
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="ui-advanced">
-                <i class="fa fa-cogs menu-icon"></i>
-                <span class="menu-title">R - Brass QC</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="charts">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> 
-                  <a class="nav-link" href="{% url 'R_BrassPickTableView' %}">R - Brass Qc Pick Table</a>
-                </li>
-                <li class="nav-item"> 
-                  <a class="nav-link" href="{% url 'R_BrassCompletedView' %}">R - Brass Qc Completed Table</a>
-                </li>
-                <li class="nav-item"> 
-                  <a class="nav-link" href="{% url 'R_IqfPickTableView' %}">R - IQF Pick Table</a>
-                </li>
-                <li class="nav-item"> 
-                  <a class="nav-link" href="{% url 'R_IqfCompletedTableView' %}">R - IQF Completed Table</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'R_IqpRejectTableView' %}">R - IQF Reject Table</a>
-                </li>
-              </ul>
-            </div>
-          </li>
-
+<li class="nav-item">
+<a class="nav-link" data-bs-toggle="collapse" href="#jig-loading" aria-expanded="false" aria-controls="jig-loading">
+<i class="ti-package menu-icon"></i>
+<span class="menu-title">Jig Loading</span>
+<i class="menu-arrow"></i>
+</a>
+<div class="collapse" id="jig-loading">
+<ul class="nav flex-column sub-menu">
+<li class="nav-item">
+<a class="nav-link" href="{% url 'JigView' %}">Pick Table</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="{% url 'JigCompletedTable' %}">Completed Table</a>
+</li>
+</ul>
+</div>
+</li>
+<!-- Jig Unloading Menu -->
+<li class="nav-item">
+<a class="nav-link" data-bs-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="jig-loading">
+<i class="ti-truck menu-icon"></i>
+<span class="menu-title">Jig Unloading</span>
+<i class="menu-arrow"></i>
+</a>
+<div class="collapse" id="tables">
+<ul class="nav flex-column sub-menu">
+<li class="nav-item">
+<a class="nav-link" href="{% url 'Jig_Unloading_MainTable' %}">JUL Main Table</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="{% url 'JigUnloading_Completedtable' %}">JUL Completed</a>
+</li>
+</ul>
+</div>
+</li>
 <!-- In-process Inspection Menu -->
-
 <li class="nav-item">
-  <a class="nav-link" data-bs-toggle="collapse" href="#inprocessInspectionMenu" aria-expanded="false" aria-controls="inprocessInspectionMenu">
-    <i class="ti-eye menu-icon"></i>
-    <span class="menu-title">Ip Inspection</span>
-    <i class="menu-arrow"></i>
-  </a>
-  <div class="collapse" id="inprocessInspectionMenu">
-    <ul class="nav flex-column sub-menu">
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'inprocess_inspection_main' %}">IP Main</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'inprocess_inspection_complete' %}">IP Completed</a>
-      </li>
-      
-    </ul>
-  </div>
-</li>
-
-
- <!-- Jig Unloading Menu -->
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="jig-loading">
-              <i class="ti-truck menu-icon"></i>
-              <span class="menu-title">Jig Unloading</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="tables">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'Jig_Unloading_MainTable' %}">JUL Main Table</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'JigUnloading_Completedtable' %}">JUL Completed</a>
-                </li>
-              </ul>
-            </div>
-          </li>
-
-<!-- Nickel Inspection Menu -->
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#NI" aria-expanded="false" aria-controls="jig-loading">
-                <i class="ti-eye menu-icon"></i>
-                <span class="menu-title">Nickel Inspection</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="NI">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'Nickel_Inspection' %}">Main Table</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'NI_Completed' %}">Completed Table</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'NI_Rejected' %}">Reject Table</a>
-                </li>
-                
-              </ul>
-            </div>
-          </li>
-
-<!-- Nickel Audit Menu -->
+<a class="nav-link" data-bs-toggle="collapse" href="#inprocessInspectionMenu" aria-expanded="false" aria-controls="inprocessInspectionMenu">
+<i class="ti-eye menu-icon"></i>
+<span class="menu-title">Ip Inspection</span>
+<i class="menu-arrow"></i>
+</a>
+<div class="collapse" id="inprocessInspectionMenu">
+<ul class="nav flex-column sub-menu">
 <li class="nav-item">
-  <a class="nav-link" data-bs-toggle="collapse" href="#nickelAuditMenu" aria-expanded="false" aria-controls="nickelAuditMenu">
-    <i class="ti-medall menu-icon"></i>
-    <span class="menu-title">Nickel Audit</span>
-    <i class="menu-arrow"></i>
-  </a>
-  <div class="collapse" id="nickelAuditMenu">
-    <ul class="nav flex-column sub-menu">
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'NA_Main_Table' %}">NA Pick Table</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'NA_Complete_Table' %}">NA Completed</a>
-      </li>
-    </ul>
-  </div>
+<a class="nav-link" href="{% url 'inprocess_inspection_main' %}">IP Main</a>
 </li>
-
-
+<li class="nav-item">
+<a class="nav-link" href="{% url 'inprocess_inspection_complete' %}">IP Completed</a>
+</li>
+</ul>
+</div>
+</li>
+<!-- In-Nickel Inspection Menu -->
+<li class="nav-item">
+<a class="nav-link" data-bs-toggle="collapse" href="#NI" aria-expanded="false" aria-controls="jig-loading">
+<i class="ti-eye menu-icon"></i>
+<span class="menu-title">Nickel Inspection</span>
+<i class="menu-arrow"></i>
+</a>
+<div class="collapse" id="NI">
+<ul class="nav flex-column sub-menu">
+<li class="nav-item">
+<a class="nav-link" href="{% url 'Nickel_Inspection' %}">Main Table</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="{% url 'NI_Completed' %}">Completed Table</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="{% url 'NI_Rejected' %}">Reject Table</a>
+</li>
+</ul>
+</div>
+</li>
+ 
+          <!-- Nickel Audit Menu -->
+<li class="nav-item">
+<a class="nav-link" data-bs-toggle="collapse" href="#nickelAuditMenu" aria-expanded="false" aria-controls="nickelAuditMenu">
+<i class="ti-medall menu-icon"></i>
+<span class="menu-title">Nickel Audit</span>
+<i class="menu-arrow"></i>
+</a>
+<div class="collapse" id="nickelAuditMenu">
+<ul class="nav flex-column sub-menu">
+<li class="nav-item">
+<a class="nav-link" href="{% url 'NA_Main_Table' %}">NA Pick Table</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" href="{% url 'NA_Complete_Table' %}">NA Completed</a>
+</li>
+</ul>
+</div>
+</li>
+ 
+ 
 <!-- Spider Spindle Menu -->
 <li class="nav-item">
-  <a class="nav-link" data-bs-toggle="collapse" href="#spiderSpindleMenu" aria-expanded="false" aria-controls="spiderSpindleMenu">
-    <i class="ti-control-shuffle menu-icon"></i>
-    <span class="menu-title">Spider Spindle</span>
-    <i class="menu-arrow"></i>
-  </a>
-  <div class="collapse" id="spiderSpindleMenu">
-    <ul class="nav flex-column sub-menu">
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'spider_pick_table' %}">Spider Pick Table</a>
-      </li>
-      
-    </ul>
-  </div>
-</li>
-
-<!-- User Management Menu -->
+<a class="nav-link" data-bs-toggle="collapse" href="#spiderSpindleMenu" aria-expanded="false" aria-controls="spiderSpindleMenu">
+<i class="ti-control-shuffle menu-icon"></i>
+<span class="menu-title">Spider Spindle</span>
+<i class="menu-arrow"></i>
+</a>
+<div class="collapse" id="spiderSpindleMenu">
+<ul class="nav flex-column sub-menu">
 <li class="nav-item">
-  <a class="nav-link" data-bs-toggle="collapse" href="#userManagementMenu" aria-expanded="false" aria-controls="userManagementMenu">
-    <i class="ti-user menu-icon"></i>
-    <span class="menu-title">User Management</span>
-    <i class="menu-arrow"></i>
-  </a>
-  <div class="collapse" id="userManagementMenu">
-    <ul class="nav flex-column sub-menu">
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'admin_panel' %}">Admin Panel</a>
-      </li>
-    
-    </ul>
-  </div>
+<a class="nav-link" href="{% url 'spider_pick_table' %}">Spider Pick Table</a>
+</li> 
+</ul>
+</div>
 </li>
-
-
-
+ 
+ 
         </ul>
-      </nav>
+</nav>
       <!-- partial -->
       <div class="main-panel">
-        <div class="content-wrapper">
+               <div class="content-wrapper">
+          {% block page_title %}{% endblock %}
           <div class="row">
             <div class="col-md-12 grid-margin">
-                <div class="row">
-                    {% block content %}{% endblock %}
-                </div>
+              <div class="row">
+                {% block content %}{% endblock %}
+              </div>
             </div>
           </div>
-
-        <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
-        <footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2025.  Pinesphere </span>
-            
-          </div>
-        </footer>
-        <!-- partial -->
-      </div>
       
     </div>
     <!-- page-body-wrapper ends -->
@@ -1496,6 +1434,14 @@ body {
       </div>
     </div>
 
+
+<footer class="footer">
+  <span>
+    &copy; 2025 Pinesphere. All rights reserved.
+  </span>
+</footer>
+
+
     <!-- Script for Tray Identification Form -->
 
 
@@ -1685,6 +1631,9 @@ document.getElementById('swapUserModal').onclick = function(e) {
   if (e.target === this) this.style.display = 'none';
 };
 </script>
+
+
+
 
 </body>
 

@@ -39,6 +39,10 @@ urlpatterns = [
     path('input_screening/',include('InputScreening.urls')),
     path('user_management/', include('User_Management.urls')),
     path('nickel_inspection/', include('Nickel_Inspection.urls')),
+    path('iqf/', include('IQF.urls')),
+    
+    
+    path('recovery_dp/',include('Recovery_DP.urls')),
  
 
 

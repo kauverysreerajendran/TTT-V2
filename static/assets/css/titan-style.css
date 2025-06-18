@@ -1,12 +1,5 @@
 /* Common styles */
 
-/* Start Inprocess Inspection styles K*/
-
-/* End Inprocess Inspection styles K*/
-
-
-
-
 /* Start Jig Composition styles K*/
 .model-columns {
   display: flex;
@@ -51,25 +44,7 @@
   text-align: center;
   min-width: 60px;
 }
-.card-body {
-  width: 100%;
-  max-width: 100vw;
-  min-width: 0;
-  min-height: 0;
-  height: auto;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
-  overflow-x: auto;
-  width: 100%;
-  overflow-x: auto;
-  max-height: none !important; /* Remove unnecessary vertical space */
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
+
 
 @media (max-width: 900px) {
   .card-body {
@@ -78,7 +53,6 @@
     max-width: 100vw;
   }
 }
-
 
 .case-badge img {
   width: 28px;
@@ -774,10 +748,9 @@ body {
 /* End base.html styles K */
 
 /* Start Day Planning Completed Table Styles K*/
-
 #order-listing thead th {
   height: 38px !important; /* Increase as needed */
-  background: #023E4DCC !important; /* existing bg */
+  background: #023e4dcc !important; /* existing bg */
   color: #e5fcff !important; /* existing color */
   vertical-align: middle !important;
 }
@@ -866,7 +839,14 @@ thead th {
 /* End Day Planning Completed Table Styles K */
 
 /* Start Day Planning Bulk Upload Styles KK */
-
+@media (max-width: 900px) {
+  .card-body {
+    padding: 1rem 0.3rem;
+    width: 100vw;
+    max-width: 100%;
+    overflow-y: scroll;
+  }
+}
 :root {
   --clr-primary: #126a83; /* Teal */
   --clr-secondary: #023e4d; /* Deep Navy */
@@ -1225,16 +1205,16 @@ body {
 #trayScanDetails.table-grid > div.tray-validation-status-header {
   background-color: #e0f7fa !important;
   font-weight: bold !important;
-  color: #023E4DCC !important;
+  color: #023e4dcc !important;
 }
 #trayScanDetails.table-grid > div.tray-validation-status-cell {
   background-color: #f1fcff !important;
   font-weight: bold !important;
-  color: #023E4DCC !important;
+  color: #023e4dcc !important;
 }
 #order-listing thead th {
   height: 38px !important; /* Increase as needed */
-  background: #023E4DCC !important; /* existing bg */
+  background: #023e4dcc !important; /* existing bg */
   color: #e5fcff !important; /* existing color */
   vertical-align: middle !important;
 }
@@ -1358,7 +1338,7 @@ body {
   display: inline-block;
   vertical-align: middle;
   font-weight: 600;
-  color: #023E4DCC;
+  color: #023e4dcc;
 }
 
 .dp-row-action-highlight {
@@ -1727,6 +1707,5 @@ thead th {
   z-index: 10; /* ensure it stays above the table rows */
   box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* optional shadow for better separation */
 }
-
 
 /* End Day Planning Pick Table Styles K */

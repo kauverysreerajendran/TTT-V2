@@ -1,7 +1,7 @@
-{% extends "base.html" %} {% load static %} {% block content %}
+ {% extends "base.html" %} {% load static %} {% block content %}
 <style>
-  /* Base Styles for Popups */
-   .tray-scan-modal-IQF h5 {
+/* Center and style the tray scan table title */
+   .tray-scan-modal-BQ h5 {
    text-align: center !important;
    margin: 0 auto 8px auto !important;
    font-size: 1.15rem !important;
@@ -9,23 +9,23 @@
    width: 100%;
    display: block;
    }
-   #trayScanDetails_IQF.table-grid > div.tray-validation-status-header {
+   #trayScanDetails_BQ.table-grid > div.tray-validation-status-header {
    background-color: #e0f7fa !important;
    font-weight: bold !important;
-   color: #023E4DCC !important;
+   color: #028084 !important;
    }
-   #trayScanDetails_IQF.table-grid > div.tray-validation-status-cell {
+   #trayScanDetails_BQ.table-grid > div.tray-validation-status-cell {
    background-color: #f1fcff !important;
    font-weight: bold !important;
-   color: #023E4DCC !important;
+   color: #028084 !important;
    }
       /* When modal is active, dim the content */
-   .tray-scan-modal-IQF.active ~ .content-wrapper {
+   .tray-scan-modal-BQ.active ~ .content-wrapper {
    opacity: 0.3;
    pointer-events: none; /* Optional: disable interaction */
    }
-   /* trayScanDetails_IQF 3-column grid with scroll */
-   #trayScanDetails_IQF.table-grid {
+   /* trayScanDetails_BQ 3-column grid with scroll */
+   #trayScanDetails_BQ.table-grid {
    display: grid !important; /* override any existing grid or flex */
    grid-template-columns: repeat(4, 1fr) !important; /* Table column max limit */
    gap: 0px !important;
@@ -34,8 +34,8 @@
    padding-right: 10px; /* prevent scrollbar overlay */
    margin-top: 10px;
    }
-   /* Styling individual grid cells, only inside trayScanDetails_IQF */
-   #trayScanDetails_IQF.table-grid > div {
+   /* Styling individual grid cells, only inside trayScanDetails_BQ */
+   #trayScanDetails_BQ.table-grid > div {
    background: #f7f7f7;
    padding: 8px 12px;
    font-size: 12px;
@@ -43,8 +43,8 @@
    margin: 0; /* reset any margin from 
    <p> or others */
       }
-      /* Sticky header row: first 3 divs inside trayScanDetails_IQF */
-      #trayScanDetails_IQF.table-grid > div:nth-child(-n + 3) {
+      /* Sticky header row: first 3 divs inside trayScanDetails_BQ */
+      #trayScanDetails_BQ.table-grid > div:nth-child(-n + 3) {
       background-color: #e0e0e0;
       font-weight: 600;
       position: sticky;
@@ -53,21 +53,21 @@
       align-items: center;
       }
       /* Override only when modal is open */
-      .tray-scan-modal-IQF.open {
+      .tray-scan-modal-BQ.open {
       width: 600px; /* your desired expanded width */
       margin-right: 20px;
       }
       /* Keep it hidden with negative offset matching default width */
-      .tray-scan-modal-IQF {
+      .tray-scan-modal-BQ {
       right: -500px; /* must match the new width above to stay hidden properly */
       }
-      #trayScanModal_IQF {
+      #trayScanModal_BQ {
       border-radius: 12px;
       max-height: 90vh;
       top: 40px; /* Moves the entire modal down from the top of the viewport */
       height: calc(100% - 40px); /* Keeps height correct */
       }
-      #trayScanDetails_IQF {
+      #trayScanDetails_BQ {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
@@ -75,14 +75,14 @@
       }
       /* Make each 
    <p> act like a table cell */
-      #trayScanDetails_IQF p {
+      #trayScanDetails_BQ p {
       margin: 0;
       padding: 4px 8px;
       background: #f7f7f7;
       border-radius: 6px;
       font-size: 14px;
       }
-      .tray-scan-modal-IQF {
+      .tray-scan-modal-BQ {
       position: fixed;
       top: 0;
       right: -400px; /* Hidden by default */
@@ -96,10 +96,10 @@
       padding: 20px;
       font-family: Arial, sans-serif;
       }
-      .tray-scan-modal-IQF.open {
+      .tray-scan-modal-BQ.open {
       right: 0; /* Slide in */
       }
-      .tray-scan-modal-IQF-content {
+      .tray-scan-modal-BQ-content {
       position: relative;
       height: 100%;
       }
@@ -153,14 +153,14 @@
         }
  #order-listing thead th {
   height: 38px !important; /* Increase as needed */
-  background: #023E4DCC !important; /* existing bg */
+  background: #028084 !important; /* existing bg */
   color: #e5fcff !important;      /* existing color */
   vertical-align: middle !important;
   
 }
 thead th {
   height: 38px !important; /* Increase as needed */
-  background: #023E4DCC !important; /* existing bg */
+  background: #028084 !important; /* existing bg */
   color: #e5fcff !important;      /* existing color */
   vertical-align: middle !important;
   
@@ -250,7 +250,6 @@ thead th {
     z-index: 2;
     align-items: center;
   }
-    
   /* Override only when modal is open */
   .tray-scan-modal.open {
     width: 600px; /* your desired expanded width */
@@ -270,6 +269,7 @@ thead th {
     grid-template-columns: 1fr 1fr;
     gap: 12px;
   }
+
   .ms-2{
         margin-top: 8px;
   }
@@ -428,7 +428,7 @@ thead th {
   .image-slider-modal.open {
     display: block;
   }
-  .modal-close {
+  .modal-close-BQ {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -436,7 +436,7 @@ thead th {
     cursor: pointer;
     color: #666;
   }
-  .modal-close:hover {
+  .modal-close-BQ:hover {
     color: #333;
   }
   /* Slider styles */
@@ -489,129 +489,7 @@ thead th {
     .slider { height: 250px; }
     .slide img { height: 250px; }
   }
-  /* Base Styles for Popups */
-  .avatar-group {
-  display: flex;
-  align-items: center;
-    }
 
-    .avatar {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    color: white;
-    font-weight: bold;
-    font-family: Arial, sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: -3px;
-    z-index: 1;
-    box-shadow: 0 0 0 2px white;
-    }
-
-    .avatar:first-child {
-    margin-left: 0;
-    }
-
-    .blue   { background-color: #1e88e5; } /* D */
-    .green  { background-color: #43a047; } /* S */
-    .purple { background-color: #8e24aa; } /* T */
-    .orange { background-color: #fb8c00; } /* F */
-    .teal   { background-color: #4dd0e1; } /* A */
-    .gray   {
-        background-color: #d3d3d3;
-        color: #666;
-        font-size: 20px;
-        margin-left: 5px;
-        width: 10px;
-        height: 10px;
-    }
-
-    .arrow {
-        font-size: 10px;
-        line-height: 1;
-        align-items: center;
-        display: flex;
-        justify-content: center;
-        margin-top: -3px;
-    }
-
-        /* Add smooth transition for margin and scaling */
-                                .avatar {
-                                    transition: margin 0.3s ease, transform 0.3s ease;
-                                }
-                                /* When hovering over the avatar group, adjust the margin to show full circles */
-                                .avatar-group:hover .avatar:not(:first-child) {
-                                    margin-left: 5px;
-                                }
-                                /* Additionally, scale up individual avatar on hover */
-                                .avatar:hover {
-                                    transform: scale(1.1);
-                                }
-    /* Rejection Popup Modal Styling */
-    .new-popup-modal {
-        display: none;
-        position: fixed;
-        top: 50px;
-        right: 20px;
-        width: 400px;
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        padding: 20px;
-        z-index: 10000;
-        transition: right 0.3s ease, opacity 0.3s ease;
-    }
-    .new-popup-modal.open {
-        display: block;
-    }
-    .tray-scan-close {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        font-size: 24px;
-        font-weight: bold;
-        cursor: pointer;
-        color: #666;
-    }
-    .tray-scan-close:hover {
-        color: #333;
-    }
-    /* Modal Header */
-    .modal-title {
-        margin-top: 0;
-        margin-bottom: 15px;
-        padding-bottom: 8px;
-        border-bottom: 2px solid #117057;
-        color: #117057;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        font-size: 18px;
-    }
-    /* Rejection Content & Table Styles */
-    .rejection-content {
-        max-height: 300px;
-        overflow-y: auto;
-    }
-    .rejection-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    .rejection-table th,
-    .rejection-table td {
-        border: 1px solid #ddd;
-        padding: 10px;
-        text-align: center;
-        font-size: 14px;
-    }
-    .rejection-table thead {
-        background-color: #117057;
-        color: #fff;
-    }
-    .rejection-table tbody tr:nth-child(even) {
-        background-color: #f8f8f8;
-    } 
 </style>
 <style id="dp-row-action-highlight-style">
   .dp-row-action-highlight {
@@ -621,7 +499,7 @@ thead th {
   }
 </style>
 <div class="content-wrapper">
-  <h5 class="text-left mt-0 mb-3">IQF/ Pick Table</h5>
+  <h5 class="text-left mt-0 mb-3">IQF / Completed Table</h5>
   <div class="row">
     <div class="col-12 grid-margin stretch-card">
       <div class="card">
@@ -666,7 +544,7 @@ thead th {
                       No of Tray <i class="fa fa-filter" aria-hidden="true"></i>
                     </th>
                     <th>
-                      RW Quantity
+                      LOT Quantity
                       <i class="fa fa-filter" aria-hidden="true"></i>
                     </th>
                     <th>
@@ -698,62 +576,62 @@ thead th {
                     <th>
                       Remarks <i class="fa fa-filter" aria-hidden="true"></i>
                     </th>
-                    <th>
-                       Rejection Reason
-                      <i class="fa fa-filter" aria-hidden="true"></i>   
-                    </th>
+                   
                   </tr>
                 </thead>
                 <tbody>
                   <!-- Row 1 - Highlighted -->
+                     {% for data in master_data %}
+
                   <tr class="highlighted-tray-scan">
-                    <td>1</td>
-                    <td>2025-05-22 10:00 AM</td>
+                  <td>{{ forloop.counter }}
+                   
+
+                  </td>
+                   <td>{{ data.date_time }}</td>
                     <!-- Model/Stock No - Image hover -->  
                     <td style="position: relative;">
-                      <span class="model-hover-trigger" style="cursor: pointer;">1805
+                      <span class="model-hover-trigger" style="cursor: pointer;">
+                        {{ data.model_stock_no__model_no }}
                         <div class="model-image-tooltip" style="position: absolute; left: 50%; top: 110%; transform: translateX(-50%); background: #fff; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 12px 18px; z-index: 9999; display: flex; align-items: center; gap: 8px; opacity: 0; pointer-events: none; transition: opacity 0.2s;">
                           <button class="img-scroll-left" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8592;</button>
                           <div class="img-gallery" style="display: flex; gap: 6px; overflow: hidden; width: 180px;">
-                            <img src="/static/assets/images/imagePlaceholder.png" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
-                            <img src="/static/assets/images/imagePlaceholder.png" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
-                            <img src="/static/assets/images/imagePlaceholder.png" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
-                            <img src="/static/assets/images/dashboard.jpg" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
-
+                            {% for img_url in data.model_images %}
+                              <img src="{{ img_url }}" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
+                            {% endfor %}
                           </div>
-
-
                           <button class="img-scroll-right" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8594;</button>
                         </div>
                       </span>
                     </td>
-                    <td>ISP</td>
-                    <td>A - Buffed</td>
-                    <td>A</td>
-                    <td>Nil</td>
-                    <td>Normal 16</td>
-                    <td>10</td>
+                    <td>{{ data.plating_color }}</td>
+                    <td>{{ data.polish_finish }}</td>
+                    <td>{{ data.version__version_name }}</td>
+                    <td>{{ data.vendor_internal }} - {{ data.location__location_name }}</td>
+                    <td>{{ data.tray_type }} {{ data.tray_capacity }}</td>
+                    <td>{{ data.no_of_trays }}</td>
                     <td>
-                      150
+                     {{data.iqf_accepted_qty}}
                     </td>
                     <td>
-                       30
+                      {{data.iqf_physical_qty}}
                     </td>
                     <td>
-                        130
+                        {{data.iqf_accepted_qty}}
                     </td>
                     <td>
-                        20
+                        {{data.iqf_rejection_qty|default:0}}
                     </td>
-                    <td>
+                   <td>
                       <div class="d-flex">
+                        <!-- Q: Green if iqf_accepted_qty_verified, else gray -->
                         <div
                           title="Tray Scan"
                           class="d-flex align-items-center justify-content-center rounded-circle ms-1"
                           style="
                             width: 20px;
                             height: 20px;
-                            background-color: #0c8249;
+                            background-color: {% if data.iqf_accepted_qty_verified %}#0c8249{% else %}#bdbdbd{% endif %};
                             color: white;
                             font-weight: bold;
                             line-height: 20px;
@@ -764,14 +642,14 @@ thead th {
                         >
                           Q
                         </div>
+                        <!-- QC: Green if iqf_rejection or iqf_acceptance, else gray -->
                         <div
                           title="Tray Scan"
                           class="d-flex align-items-center justify-content-center rounded-circle ms-1"
                           style="
-                            font-size: 10px;
                             width: 20px;
                             height: 20px;
-                            background-color: #0c8249;
+                            background-color: {% if data.iqf_rejection or data.iqf_acceptance or data.iqf_few_cases_acceptance %}#0c8249{% else %}#bdbdbd{% endif %};
                             color: white;
                             font-weight: bold;
                             line-height: 20px;
@@ -780,31 +658,97 @@ thead th {
                             padding-right: 1px;
                           "
                         >
-                          IQF
+                          QC
                         </div>
-                       
                       </div>
                     </td>
                     <td>
-                        <span style="opacity:0.5; pointer-events:none; display:inline-block;">
-                        <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit Disabled" style="width: 20px; margin-right: 8px; height: auto; filter: grayscale(1) opacity(0.5);" />
+                      
+                      {% if not data.iqf_acceptance and not data.iqf_rejection and not data.iqf_accepted_tray_scan_status and not data.iqf_few_cases_acceptance %}
+                        <a href="#" class="edit-qty-btn" data-batch-id="{{ data.batch_id }}">
+                          <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit" style="width: 28px; margin-right: 8px; height: auto"/>
+                        </a>
+                      <a href="#" class="delete-batch-btn" title="Delete" data-batch-id="{{ data.batch_id }}" data-stock-lot-id="{{ data.stock_lot_id }}">
+                        <img src="{% static 'assets/icons/bin.png' %}" alt="Delete" style="width: 20px; margin-right: 8px; height: auto" />
+                      </a>
+                      {% else %}
+                        <span title="Edit Disabled" style="opacity: 0.5; pointer-events: none;">
+                          <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit Disabled" style="width: 20px; margin-right: 8px; height: auto; filter: grayscale(1) opacity(0.5);" />
                         </span>
-                        <span style="opacity:0.5; pointer-events:none; display:inline-block;">
-                        <img src="{% static 'assets/icons/bin.png' %}" alt="Delete Disabled" style="width: 20px; height: auto; filter: grayscale(1) opacity(0.5);" />
+                        <span title="Delete Disabled" style="opacity: 0.5; pointer-events: none;">
+                          <img src="{% static 'assets/icons/bin.png' %}" alt="Delete Disabled" style="width: 20px; margin-right: 8px; height: auto; filter: grayscale(1) opacity(0.5);" />
                         </span>
-                      <button
-                        type="button"
-                        class="btn btn-social-icon-text btn-twitter"
-                        style="background-color: #66bb6a"
-                      >
-                        <i class="fa fa-check-circle"></i>Accepted
-                      </button>
-                       <!-- Eye icon to view submitted "Tray Scan Table" -->
+                      {% endif %}
+                       
+
+                      {% if data.iqf_acceptance %}
+                        <!-- Brass QC Acceptance (disabled) -->
+                        <span class="btn btn-social-icon-text btn-twitter"
+                              style="background-color: #66bb6a; pointer-events: none; opacity: 0.8; cursor: not-allowed;">
+                          <i class="fa fa-check-circle"></i>Accepted
+                        </span>
+                        <button type="button" class="btn btn-social-icon-text btn-youtube tray-scan-btn"
+                                style="background-color: #e57373; opacity: 0.6; cursor: not-allowed; pointer-events: none;"
+                                data-stock-lot-id="{{ data.stock_lot_id }}"
+                                data-batch-id="{{ data.batch_id }}"
+                                disabled
+                        {% if not data.iqf_accepted_qty_verified %}disabled{% endif %}>
+
+                          <i class="fa fa-times-circle"></i>Reject
+                        </button>
+
+                      {% elif data.brass_onhold_picking %}
+                        <!-- Brass On-Hold Picking -->
+                        <button type="button" class="btn btn-social-icon-text btn-twitter"
+                                style="background-color: #66bb6a; opacity: 0.6; cursor: not-allowed; pointer-events: none;"
+                                data-lot-id="{{ data.stock_lot_id }}"
+                                disabled>
+                          <i class="fa fa-check-circle"></i>Accept
+                        </button>
+                        <button type="button" class="btn btn-social-icon-text btn-youtube tray-scan-btn"
+                                style="background-color: #e57373;"
+                                data-stock-lot-id="{{ data.stock_lot_id }}"
+                                data-batch-id="{{ data.batch_id }}">
+                          <i class="fa fa-times-circle"></i> Partial Reject
+                        </button>
+
+                      {% elif data.iqf_rejection or data.iqf_few_cases_acceptance %}
+                        <!-- Brass QC Rejection or Few Cases Acceptance (disabled) -->
+                        <button type="button" class="btn btn-social-icon-text btn-twitter"
+                                style="background-color: #66bb6a; pointer-events: none; opacity: 0.6; cursor: not-allowed;"
+                                disabled>
+                          <i class="fa fa-check-circle"></i>Accept
+                        </button>
+                        <span class="btn btn-social-icon-text btn-youtube"
+                              style="background-color: #e57373; pointer-events: none; opacity: 0.8; cursor: not-allowed;">
+                          <i class="fa fa-times-circle"></i>Rejected
+                        </span>
+
+                      {% else %}
+                        <!-- Default state - Both buttons enabled -->
+                        <button type="button" class="btn btn-social-icon-text btn-twitter"
+                                style="background-color: #66bb6a"
+                                data-lot-id="{{ data.stock_lot_id }}"
+                                {% if not data.iqf_accepted_qty_verified %}disabled{% endif %}>
+                          <i class="fa fa-check-circle"></i>Accept
+                        </button>
+                        <button type="button" class="btn btn-social-icon-text btn-youtube tray-scan-btn"
+                                style="background-color: #e57373;"
+                                data-stock-lot-id="{{ data.stock_lot_id }}"
+                                data-batch-id="{{ data.batch_id }}"
+                                {% if not data.iqf_accepted_qty_verified %}disabled{% endif %}>
+                          <i class="fa fa-times-circle"></i>Reject
+                        </button>
+                      {% endif %}
+                      <!-- Eye icon to view submitted "Tray Scan Table" -->
+                      {% if data.iqf_acceptance or data.iqf_rejection or data.iqf_few_cases_acceptance %}                
+                      <!-- Eye icon to view submitted "Tray Scan Table" -->
                          <a
                               href="#"
                               title="View"
-                              class="text-primary tray-scan-btn-IQF"
+                              class="text-primary tray-scan-btn-BQ-view"
                               style="text-decoration: underline"
+                              data-stock-lot-id="{{ data.stock_lot_id }}"
                               data-batch-id="{{ data.batch_id }}"
                               data-model-no="{{ data.model_stock_no__model_no }}"
                               data-no-of-trays="{{ data.no_of_trays }}"
@@ -818,726 +762,82 @@ thead th {
                               style="width: 20px; margin-right: 8px; height: auto; cursor:pointer;"
                               />
                       </a>
+                      {% endif %}
                     </td>
                     <td>
-                      <div
-                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-                        style="
-                          border: 2px solid #0d5d17;
-                          background-color: #c5f9c2;
-                          color: #2f801b;
-                          font-size: clamp(0.3rem, 2vw, 0.875rem);
-                          white-space: nowrap;
-                          padding: 0.3rem;
-                        "
-                      >
-                        Released
-                      </div>
-                    </td>
-                    <td>
-                      <div
-                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-                        style="
-                          border: 2px solid #9adeed;
-                          background-color: #d1edf3;
-                          color: #033b5d;
-                          font-size: clamp(0.3rem, 2vw, 0.875rem);
-                          white-space: nowrap;
-                          padding: 0.3rem;
-                        "
-                      >
-                        IQF
-                      </div>
-                    </td>
-                    <td>
-                         <a href="#" title="Add Audio Remark" class="remark-tooltip-trigger" style="display: inline-flex; align-items: center; height: 28px; margin-left: 0; position: relative; cursor: pointer;">
-                          <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec" style="width: 20px; height: 20px"/>
-                          <div class="remark-tooltip" style="position: absolute; top: 110%; left: 50%; transform: translateX(-50%); width: 300px; background: #fff; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: 15px; z-index: 1000;">
-                            <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid #fff;"></div>
-                            <!-- Audio recording UI placeholder -->
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                              <button type="button" style="background: #28a745; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; display: flex; align-items: center; justify-content: center;">
-                                <i class="fa fa-microphone"></i>
-                              </button>
-                              <span style="font-size: 14px; color: #333;">Hold to record audio</span>
-                            </div>
-                            <div style="text-align: right; margin-top: 10px;">
-                              <button type="button" style="background-color: #007bff; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 14px;">
-                                <i class="fa fa-send"></i>
-                              </button>
-                            </div>
-                          </div>
-                        </a>
-                      <a
-                        href="#"
-                        title="Add Remark"
-                        class="remark-tooltip-trigger"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                          margin-left: 5px;
-                          position: relative;
-                          cursor: pointer;
-                        "
-                      >
-                        <img
-                          src="{% static 'assets/icons/chat1.png' %}"
-                          alt="Chat"
-                          style="width: 20px; height: 20px"
-                        />
+                      {% if data.brass_onhold_picking  %}
                         <div
-                          class="remark-tooltip"
-                          style="
-                            position: absolute;
-                            top: 110%;
-                            left: 50%;
-                            transform: translateX(-50%);
-                            width: 300px;
-                            background: #fff;
-                            border: 1px solid #ccc;
-                            border-radius: 6px;
-                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                            opacity: 0;
-                            visibility: hidden;
-                            transition: opacity 0.3s ease, visibility 0.3s ease;
-                            padding: 15px;
-                            z-index: 1000;
-                          "
-                        >
-                          <div
-                            style="
-                              position: absolute;
-                              top: -10px;
-                              left: 50%;
-                              transform: translateX(-50%);
-                              width: 0;
-                              height: 0;
-                              border-left: 10px solid transparent;
-                              border-right: 10px solid transparent;
-                              border-bottom: 10px solid #fff;
-                            "
-                          ></div>
-                          <textarea
-                            placeholder="Type your remark..."
-                            style="
-                              width: 85%;
-                              height: 40px;
-                              resize: vertical;
-                              border: 1px solid #ccc;
-                              padding: 5px;
-                              border-radius: 4px;
-                              font-family: Arial, sans-serif;
-                              font-size: 14px;
-                            "
-                          ></textarea>
-                          <div style="text-align: right; margin-top: -35px">
-                            <button
-                              type="button"
-                              style="
-                                background-color: #007bff;
-                                color: #fff;
-                                border: none;
-                                padding: 6px 12px;
-                                border-radius: 4px;
-                                cursor: pointer;
-                                font-size: 14px;
-                              "
-                            >
-                              <i class="fa fa-send"></i>
-                            </button>
-                          </div>
-                        </div>
-                      </a>
-                    </td>
-                     <td>
-                        <div class="avatar-group rejection-popup-trigger" style="cursor:pointer;">
-                            <div class="avatar blue">D</div>
-                            <div class="avatar green">S</div>
-                            <div class="avatar purple">T</div>
-                            <div class="avatar orange">F</div>
-                            <div class="avatar teal">A</div>
-                            <div class="avatar gray">
-                                <span class="arrow">&rsaquo;</span>
-                            </div>
-                        </div>
-                    </td>
-                  </tr>
-                  <!-- Row 2 -->
-                  <tr>
-                    <td>2</td>
-                    <td>2025-05-22 10:00 AM</td>
-                    <td>2565</td>
-                    <td>ISP</td>
-                    <td>A - Buffed</td>
-                    <td>A</td>
-                    <td>Nil</td>
-                    <td>Jumbo 14</td>
-                    <td>10</td>
-                    <td>
-                      50
-                    </td>
-                    <td>
-                      70
-                    </td>
-                    <td>
-                    40
-                    </td>
-                    <td>
-                      10
-                    </td>
-                    <td>
-                      <div class="d-flex">
-                        <div
-                          title="Tray Scan"
-                          class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-                          style="
-                            width: 20px;
-                            height: 20px;
-                            background-color: #0c8249;
-                            color: white;
-                            font-weight: bold;
-                            line-height: 20px;
-                            text-align: center;
-                            padding-top: 1px;
-                            padding-right: 1px;
-                          "
-                        >
-                          Q
-                        </div>
-                        <div
-                          title="Tray Scan"
-                          class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-                          style="
-                            width: 20px;
-                            height: 20px;
-                            background-color: #0c8249;
-                            color: white;
-                            font-weight: bold;
-                            line-height: 20px;
-                            text-align: center;
-                            padding-top: 1px;
-                            padding-right: 1px;
-                          "
-                        >
-                          QC
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <span style="opacity:0.5; pointer-events:none; display:inline-block;">
-                      <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit Disabled" style="width: 20px; margin-right: 8px; height: auto; filter: grayscale(1) opacity(0.5);" />
-                    </span>
-                    <span style="opacity:0.5; pointer-events:none; display:inline-block;">
-                      <img src="{% static 'assets/icons/bin.png' %}" alt="Delete Disabled" style="width: 20px; height: auto; filter: grayscale(1) opacity(0.5);" />
-                    </span>
-                      
-                      <button
-                        type="button"
-                        class="btn btn-social-icon-text btn-youtube tray-scan-btn"
-                      >
-                        <i class="fa fa-close"></i>Rejected
-                      </button>
-                                           <!-- Eye icon to view submitted "Tray Scan Table" -->
-                        <a href="#viewModal">
-                            <img
-                                src="{% static 'assets/icons/view.png' %}"
-                                alt="View"
-                                class="view-icon"
-                            />
-                        </a>
-                    </td>
-                    <td>
-                      <div
-                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-                        style="
-                          border: 2px solid #0d5d17;
-                          background-color: #c5f9c2;
-                          color: #2f801b;
-                          font-size: clamp(0.3rem, 2vw, 0.875rem);
-                          white-space: nowrap;
-                          padding: 0.3rem;
-                        "
-                      >
-                        Released
-                      </div>
-                    </td>
-                    <td>
-                      <div
-                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-                        style="
-                          border: 2px solid #9adeed;
-                          background-color: #d1edf3;
-                          color: #033b5d;
-                          font-size: clamp(0.3rem, 2vw, 0.875rem);
-                          white-space: nowrap;
-                          padding: 0.3rem;
-                        "
-                      >
-                        IQF
-                      </div>
-                    </td>
-                    <td>
-                      <!-- VoiceRec with tooltip (audio remark) -->
-                        <a href="#" title="Add Audio Remark" class="remark-tooltip-trigger" style="display: inline-flex; align-items: center; height: 28px; margin-left: 0; position: relative; cursor: pointer;">
-                          <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec" style="width: 20px; height: 20px"/>
-                          <div class="remark-tooltip" style="position: absolute; top: 110%; left: 50%; transform: translateX(-50%); width: 300px; background: #fff; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: 15px; z-index: 1000;">
-                            <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid #fff;"></div>
-                            <!-- Audio recording UI placeholder -->
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                              <button type="button" style="background: #28a745; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; display: flex; align-items: center; justify-content: center;">
-                                <i class="fa fa-microphone"></i>
-                              </button>
-                              <span style="font-size: 14px; color: #333;">Hold to record audio</span>
-                            </div>
-                            <div style="text-align: right; margin-top: 10px;">
-                              <button type="button" style="background-color: #007bff; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 14px;">
-                                <i class="fa fa-send"></i>
-                              </button>
-                            </div>
-                          </div>
-                        </a>
-
-                      <a
-                        href="#"
-                        title="Add Remark"
-                        class="remark-tooltip-trigger"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                          margin-left: 5px;
-                          position: relative;
-                          cursor: pointer;
-                        "
-                      >
-                        <img
-                          src="{% static 'assets/icons/chat1.png' %}"
-                          alt="Chat"
-                          style="width: 20px; height: 20px"
-                        />
-                        <div
-                          class="remark-tooltip"
-                          style="
-                            position: absolute;
-                            top: 110%;
-                            left: 50%;
-                            transform: translateX(-50%);
-                            width: 300px;
-                            background: #fff;
-                            border: 1px solid #ccc;
-                            border-radius: 6px;
-                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                            opacity: 0;
-                            visibility: hidden;
-                            transition: opacity 0.3s ease, visibility 0.3s ease;
-                            padding: 15px;
-                            z-index: 1000;
-                          "
-                        >
-                          <div
-                            style="
-                              position: absolute;
-                              top: -10px;
-                              left: 50%;
-                              transform: translateX(-50%);
-                              width: 0;
-                              height: 0;
-                              border-left: 10px solid transparent;
-                              border-right: 10px solid transparent;
-                              border-bottom: 10px solid #fff;
-                            "
-                          ></div>
-                          <textarea
-                            placeholder="Type your remark..."
-                            style="
-                              width: 85%;
-                              height: 40px;
-                              resize: vertical;
-                              border: 1px solid #ccc;
-                              padding: 5px;
-                              border-radius: 4px;
-                              font-family: Arial, sans-serif;
-                              font-size: 14px;
-                            "
-                          ></textarea>
-                          <div style="text-align: right; margin-top: -35px">
-                            <button
-                              type="button"
-                              style="
-                                background-color: #007bff;
-                                color: #fff;
-                                border: none;
-                                padding: 6px 12px;
-                                border-radius: 4px;
-                                cursor: pointer;
-                                font-size: 14px;
-                              "
-                            >
-                              <i class="fa fa-send"></i>
-                            </button>
-                          </div>
-                        </div>
-                      </a>
-                    </td>
-                    <td>
-                      <div class="avatar-group rejection-popup-trigger" style="cursor:pointer;">
-                        <div class="avatar blue">D</div>
-                        <div class="avatar green">S</div>
-                        <div class="avatar purple">T</div>
-                        <div class="avatar orange">F</div>
-                        <div class="avatar teal">A</div>
-                        <div class="avatar gray">
-                          <span class="arrow">&rsaquo;</span>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <!-- Row 3 (new, same static data) -->
-                  <tr>
-                    <td>3</td>
-                    <td>2025-05-22 10:00 AM</td>
-                    <td>7346</td>
-                    <td>ISP</td>
-                    <td>A - Buffed</td>
-                    <td>A</td>
-                    <td>Nil</td>
-                    <td>Jumbo 14</td>
-                    <td>10</td>
-                    <td>
-                      45
-                    </td>
-                    <td>
-                      10
-                    </td>
-                    <td>
-                      35
-                    </td>
-                    <td>
-                      10
-                    </td>
-                     <td>
-                      <div class="d-flex">
-                        <div
-                          title="Tray Scan"
-                          class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-                          style="
-                            width: 20px;
-                            height: 20px;
-                            background-color: #0c8249;
-                            color: white;
-                            font-weight: bold;
-                            line-height: 20px;
-                            text-align: center;
-                            padding-top: 1px;
-                            padding-right: 1px;
-                          "
-                        >
-                          Q
-                        </div>
-                        <div
-                          title="Tray Scan"
-                          class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-                          style="
-                            width: 20px;
-                            height: 20px;
-                            background-color: #0c8249;
-                            color: white;
-                            font-weight: bold;
-                            line-height: 20px;
-                            text-align: center;
-                            padding-top: 1px;
-                            padding-right: 1px;
-                          "
-                        >
-                          QC
-                        </div>
-                        
-                      </div>
-                    </td>
-                    <td>
-                    <span style="opacity:0.5; pointer-events:none; display:inline-block;">
-                        <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit Disabled" style="width: 20px; margin-right: 8px; height: auto; filter: grayscale(1) opacity(0.5);" />
-                    </span>
-                    <span style="opacity:0.5; pointer-events:none; display:inline-block;">
-                        <img src="{% static 'assets/icons/bin.png' %}" alt="Delete Disabled" style="width: 20px; height: auto; filter: grayscale(1) opacity(0.5);" />
-                    </span>
-                     
-                      <button
-                        type="button"
-                        class="btn btn-social-icon-text btn-youtube"
-                      >
-                        <i class="fa fa-close"></i>Rejected
-                      </button>
-                                           <!-- Eye icon to view submitted "Tray Scan Table" -->
-                        <a href="#viewModal">
-                            <img
-                                src="{% static 'assets/icons/view.png' %}"
-                                alt="View"
-                                class="view-icon"
-                            />
-                        </a>
-                    </td>
-                    <td>
-                      <div
                           class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-                         
                           style="
-                          border: 2px solid #0d5d17;
-                            background-color: #c5f9c2;
-                            color: #2f801b;
-                          font-size: 11px;
-                          white-space: nowrap;
-                          padding: 6px;
-                        "
+                            border: 2px solid #4997ac;
+                            background-color: #d1f2f3;
+                            color: #03425d;
+                            font-size: clamp(0.75rem, 2vw, 0.875rem);
+                            white-space: nowrap;
+                            padding-top: 0.5rem;
+                            padding-bottom: 0.5rem;
+                          "
                         >
-                          Yet To Release
+                          On-Hold
                         </div>
+                      {% elif data.iqf_rejection or data.iqf_few_cases_acceptance or data.iqf_acceptance %}
+                        <div class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                            style="border: 2px solid #0d5d17; background-color: #c5f9c2; color: #2f801b; font-size: clamp(0.3rem, 2vw, 0.875rem); white-space: nowrap; padding: 0.3rem;">
+                          Yet to Release
+                        </div>
+                      {% else %}
+                        <div class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                            style="border: 2px solid #f9a825; background-color: #fff8e1; color: #b26a00; font-size: clamp(0.3rem, 2vw, 0.875rem); white-space: nowrap; padding: 0.3rem;">
+                          Yet to Start
+                        </div>
+                      {% endif %}
                     </td>
                     <td>
                       <div
                         class="d-inline-block px-3 fw-semibold text-center rounded-pill"
                         style="
-                          border: 2px solid #9adeed;
-                          background-color: #d1edf3;
-                          color: #033b5d;
-                          font-size: clamp(0.3rem, 2vw, 0.875rem);
+                          border: 2px solid
+                            {% if data.last_process_module == 'Input screening' %}
+                              #0d5d17
+                            {% elif data.last_process_module == 'Brass QC' %}
+                              #f9a825
+                            {% elif data.last_process_module == 'DayPlanning' %}
+                              #1976d2
+                            {% else %}
+                              #9adeed
+                            {% endif %};
+                          background-color:
+                            {% if data.last_process_module == 'Input screening' %}
+                              #c5f9c2
+                            {% elif data.last_process_module == 'Brass QC' %}
+                              #fff8e1
+                            {% elif data.last_process_module == 'DayPlanning' %}
+                              #d1eaff
+                            {% else %}
+                              #d1edf3
+                            {% endif %};
+                          color:
+                            {% if data.last_process_module == 'Input screening' %}
+                              #2f801b
+                            {% elif data.last_process_module == 'Brass QC' %}
+                              #b26a00
+                            {% elif data.last_process_module == 'DayPlanning' %}
+                              #033b5d
+                            {% else %}
+                              #033b5d
+                            {% endif %};
+                          font-size: clamp(0.75rem, 2vw, 0.875rem);
                           white-space: nowrap;
-                          padding: 0.3rem;
+                          padding-top: 0.5rem;
+                          padding-bottom: 0.5rem;
                         "
                       >
-                        IQF
+                        {{ data.last_process_module|default:"N/A" }}
                       </div>
                     </td>
                     <td>
-                         <a href="#" title="Add Audio Remark" class="remark-tooltip-trigger" style="display: inline-flex; align-items: center; height: 28px; margin-left: 0; position: relative; cursor: pointer;">
-                          <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec" style="width: 20px; height: 20px"/>
-                          <div class="remark-tooltip" style="position: absolute; top: 110%; left: 50%; transform: translateX(-50%); width: 300px; background: #fff; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: 15px; z-index: 1000;">
-                            <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid #fff;"></div>
-                            <!-- Audio recording UI placeholder -->
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                              <button type="button" style="background: #28a745; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; display: flex; align-items: center; justify-content: center;">
-                                <i class="fa fa-microphone"></i>
-                              </button>
-                              <span style="font-size: 14px; color: #333;">Hold to record audio</span>
-                            </div>
-                            <div style="text-align: right; margin-top: 10px;">
-                              <button type="button" style="background-color: #007bff; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 14px;">
-                                <i class="fa fa-send"></i>
-                              </button>
-                            </div>
-                          </div>
-                        </a>
-                      <a
-                        href="#"
-                        title="Add Remark"
-                        class="remark-tooltip-trigger"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                          margin-left: 5px;
-                          position: relative;
-                          cursor: pointer;
-                        "
-                      >
-                        <img
-                          src="{% static 'assets/icons/chat1.png' %}"
-                          alt="Chat"
-                          style="width: 20px; height: 20px"
-                        />
-                        <div
-                          class="remark-tooltip"
-                          style="
-                            position: absolute;
-                            top: 110%;
-                            left: 50%;
-                            transform: translateX(-50%);
-                            width: 300px;
-                            background: #fff;
-                            border: 1px solid #ccc;
-                            border-radius: 6px;
-                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                            opacity: 0;
-                            visibility: hidden;
-                            transition: opacity 0.3s ease, visibility 0.3s ease;
-                            padding: 15px;
-                            z-index: 1000;
-                          "
-                        >
-                          <div
-                            style="
-                              position: absolute;
-                              top: -10px;
-                              left: 50%;
-                              transform: translateX(-50%);
-                              width: 0;
-                              height: 0;
-                              border-left: 10px solid transparent;
-                              border-right: 10px solid transparent;
-                              border-bottom: 10px solid #fff;
-                            "
-                          ></div>
-                          <textarea
-                            placeholder="Type your remark..."
-                            style="
-                              width: 85%;
-                              height: 40px;
-                              resize: vertical;
-                              border: 1px solid #ccc;
-                              padding: 5px;
-                              border-radius: 4px;
-                              font-family: Arial, sans-serif;
-                              font-size: 14px;
-                            "
-                          ></textarea>
-                          <div style="text-align: right; margin-top: -35px">
-                            <button
-                              type="button"
-                              style="
-                                background-color: #007bff;
-                                color: #fff;
-                                border: none;
-                                padding: 6px 12px;
-                                border-radius: 4px;
-                                cursor: pointer;
-                                font-size: 14px;
-                              "
-                            >
-                              <i class="fa fa-send"></i>
-                            </button>
-                          </div>
-                        </div>
-                      </a>
-                    </td>
-                    <td>
-                      <div class="avatar-group rejection-popup-trigger" style="cursor:pointer;">
-                        <div class="avatar blue">D</div>
-                        <div class="avatar green">S</div>
-                        <div class="avatar purple">T</div>
-                        <div class="avatar orange">F</div>
-                        <div class="avatar teal">A</div>
-                        <div class="avatar gray">
-                          <span class="arrow">&rsaquo;</span>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <!-- Row 4 -->
-                  <tr>
-                    <td>4</td>
-                    <td>2025-05-22 10:00 AM</td>
-                    <td>2565</td>
-                    <td>ISP</td>
-                    <td>A - Buffed</td>
-                    <td>A</td>
-                    <td>Nil</td>
-                    <td>Jumbo 14</td>
-                    <td>10</td>
-                    <td>
-                      120
-                    </td>
-                    <td>
-                      20
-                    </td>
-                    <td> 35 </td>
-                    <td>
-                     10
-                    </td>
-                    <td>
-                      <div class="d-flex">
-                        <div
-                          title="Tray Scan"
-                          class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-                          style="
-                            width: 20px;
-                            height: 20px;
-                            background-color: #0c8249;
-                            color: white;
-                            font-weight: bold;
-                            line-height: 20px;
-                            text-align: center;
-                            padding-top: 1px;
-                            padding-right: 1px;
-                          "
-                        >
-                          Q
-                        </div>
-                        <div
-                          title="Tray Scan"
-                          class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-                          style="
-                            width: 20px;
-                            height: 20px;
-                            background-color: #0c8249;
-                            color: white;
-                            font-weight: bold;
-                            line-height: 20px;
-                            text-align: center;
-                            padding-top: 1px;
-                            padding-right: 1px;
-                          "
-                        >
-                          QC
-                        </div>
-                       
-                      </div>
-                    </td>
-                    <td>
-                        <span style="opacity:0.5; pointer-events:none; display:inline-block;">
-                        <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit Disabled" style="width: 20px; margin-right: 8px; height: auto; filter: grayscale(1) opacity(0.5);" />
-                        </span>
-                        <span style="opacity:0.5; pointer-events:none; display:inline-block;">
-                        <img src="{% static 'assets/icons/bin.png' %}" alt="Delete Disabled" style="width: 20px; height: auto; filter: grayscale(1) opacity(0.5);" />
-                        </span>
-                      <button
-                        type="button"
-                        class="btn btn-social-icon-text btn-twitter"
-                        style="background-color: #66bb6a"
-                      >
-                        <i class="fa fa-check-circle"></i>Accepted
-                      </button>
+                      {% if not data.iqf_acceptance and not data.iqf_rejection and not data.iqf_accepted_tray_scan_status and not data.iqf_few_cases_acceptance %}
 
-                        <!-- Eye icon to view submitted "Tray Scan Table" -->
-                        <a href="#viewModal">
-                          <img
-                              src="{% static 'assets/icons/view.png' %}"
-                              alt="View"
-                              class="view-icon"
-                          />
-                      </a>
-                    </td>
-                    <td>
-                      <div
-                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-                        style="
-                          border: 2px solid #0d5d17;
-                          background-color: #c5f9c2;
-                          color: #2f801b;
-                          font-size: clamp(0.3rem, 2vw, 0.875rem);
-                          white-space: nowrap;
-                          padding: 0.3rem;
-                        "
-                      >
-                        Released
-                      </div>
-                    </td>
-                    <td>
-                      <div
-                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-                        style="
-                          border: 2px solid #9adeed;
-                          background-color: #d1edf3;
-                          color: #033b5d;
-                          font-size: clamp(0.3rem, 2vw, 0.875rem);
-                          white-space: nowrap;
-                          padding: 0.3rem;
-                        "
-                      >
-                        IQF
-                      </div>
-                    </td>
-                    <td>
                       <!-- VoiceRec with tooltip (audio remark) -->
                         <a href="#" title="Add Audio Remark" class="remark-tooltip-trigger" style="display: inline-flex; align-items: center; height: 28px; margin-left: 0; position: relative; cursor: pointer;">
                           <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec" style="width: 20px; height: 20px"/>
@@ -1558,18 +858,11 @@ thead th {
                           </div>
                         </a>
 
-                      <a
+                                            <a
                         href="#"
                         title="Add Remark"
                         class="remark-tooltip-trigger"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                          margin-left: 5px;
-                          position: relative;
-                          cursor: pointer;
-                        "
+                        style="display: inline-flex; align-items: center; height: 20px; margin-left: 5px; position: relative; cursor: pointer;"
                       >
                         <img
                           src="{% static 'assets/icons/chat1.png' %}"
@@ -1578,93 +871,115 @@ thead th {
                         />
                         <div
                           class="remark-tooltip"
-                          style="
-                            position: absolute;
-                            top: 110%;
-                            left: 50%;
-                            transform: translateX(-50%);
-                            width: 300px;
-                            background: #fff;
-                            border: 1px solid #ccc;
-                            border-radius: 6px;
-                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                            opacity: 0;
-                            visibility: hidden;
-                            transition: opacity 0.3s ease, visibility 0.3s ease;
-                            padding: 15px;
-                            z-index: 1000;
-                          "
+                          style="position: absolute; top: 110%; left: 50%; transform: translateX(-50%); width: 300px; background: #fff; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: 15px; z-index: 1000;"
                         >
                           <div
-                            style="
-                              position: absolute;
-                              top: -10px;
-                              left: 50%;
-                              transform: translateX(-50%);
-                              width: 0;
-                              height: 0;
-                              border-left: 10px solid transparent;
-                              border-right: 10px solid transparent;
-                              border-bottom: 10px solid #fff;
-                            "
+                            style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid #fff;"
                           ></div>
                           <textarea
                             placeholder="Type your remark..."
-                            style="
-                              width: 85%;
-                              height: 40px;
-                              resize: vertical;
-                              border: 1px solid #ccc;
-                              padding: 5px;
-                              border-radius: 4px;
-                              font-family: Arial, sans-serif;
-                              font-size: 14px;
-                            "
-                          ></textarea>
+                            style="width: 85%; height: 40px; resize: vertical; border: 1px solid #ccc; padding: 5px; border-radius: 4px; font-family: Arial, sans-serif; font-size: 14px;"
+                            {% if data.IQF_pick_remarks %}readonly{% endif %}
+                          >{{ data.IQF_pick_remarks|default_if_none:"" }}</textarea>
                           <div style="text-align: right; margin-top: -35px">
+                            {% if not data.IQF_pick_remarks %}
                             <button
                               type="button"
-                              style="
-                                background-color: #007bff;
-                                color: #fff;
-                                border: none;
-                                padding: 6px 12px;
-                                border-radius: 4px;
-                                cursor: pointer;
-                                font-size: 14px;
-                              "
+                              style="background-color: #007bff; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 14px;"
                             >
                               <i class="fa fa-send"></i>
                             </button>
+                            {% else %}
+                            <div style="margin-top: 40px; color: #31708f; background: #d9edf7; border: 1px solid #bce8f1; border-radius: 4px; padding: 8px 12px; font-size: 10px; text-align: left;">
+                              <i class="fa fa-info-circle" style="margin-right: 6px;"></i>
+                              Remark already saved and cannot be edited.
+                            </div>
+                            {% endif %}
                           </div>
                         </div>
                       </a>
+                       {% else %}
+                      <!-- Audio Remark Icon (disabled) -->
+                      <span title="Disabled after moved" style="display: inline-flex; align-items: center; height: 28px; margin-left: 0; opacity: 0.5; pointer-events: none;">
+                        <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec Disabled" style="width: 20px; height: 20px; filter: grayscale(1) opacity(0.5);" />
+                      </span>
+                      <!-- Chat Remark Icon (disabled) -->
+                      <span title="Disabled after moved" style="display: inline-flex; align-items: center; height: 20px; margin-left: 5px; opacity: 0.5; pointer-events: none;">
+                        <img src="{% static 'assets/icons/chat1.png' %}" alt="Chat Disabled" style="width: 20px; height: 20px; filter: grayscale(1) opacity(0.5);" />
+                      </span>
+                    {% endif %}
                     </td>
-                    <td>
-                      <div class="avatar-group rejection-popup-trigger" style="cursor:pointer;">
-                        <div class="avatar blue">D</div>
-                        <div class="avatar green">S</div>
-                        <div class="avatar purple">T</div>
-                        <div class="avatar orange">F</div>
-                        <div class="avatar teal">A</div>
-                        <div class="avatar gray">
-                          <span class="arrow">&rsaquo;</span>
-                        </div>
-                      </div>
-                    </td>
-
+                   
                   </tr>
+           
+                 {% endfor %}
                 </tbody>
               </table>
-               <!-- Modal Structure -->
-          <!-- Tray Scan (hyperlink) - Right side modal -->
+
+                                                  <div
+                    id="trayScanModal_BQ_ReadOnly"
+                    class="tray-scan-modal-BQ"
+                    style="display:none;"
+                  >
+                    <div class="tray-scan-modal-BQ-content">
+                      <span id="closeTrayScanModal_BQ_ReadOnly" class="tray-scan-close"
+                        >&times;</span
+                      >
+
+                      <div class="modal-top-header" style="display: flex; align-items: center; gap: 20px; padding-bottom: 10px;">
+                        <div class="user-profile" style="display: flex; align-items: center; gap: 8px">
+                          <img
+                            src="/static/assets/images/imagePlaceholder.png"
+                            alt="User Profile"
+                            style="border-radius: 50%; width: 50px; height: 50px; object-fit: cover;"
+                          />
+                          <span>Model No:</span>
+                          <h6 id="modalModelNo_BQ_ReadOnly">(Fetch Dynamically)</h6>
+                        </div>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                        <h5 style="text-align: center; margin: 0; flex: 1; font-weight: 600; color:#595959">
+                          Brass QC - Tray Scan (Read Only)
+                        </h5>
+
+                        <button id="trayValidateBtn" type="button" style="display: flex; align-items: center; gap: 6px; background: #f5faff; border: 1px solid #023E4DCC; color: #023E4DCC; border-radius: 20px; padding: 4px 14px; font-size: 13px; font-weight: 500; cursor: pointer;">
+                      <img src="{% static 'assets/icons/validate.png' %}" alt="Validate" style="width: 20px; height: 20px; margin-right: 4px;" />
+                      Tray Validate
+                  </button>
+                  
+
+                  <!-- Hidden input field - completely invisible to users -->
+                  <input
+                    id="trayValidateInput"
+                    type="text"
+                    placeholder="Scan or enter Tray ID"
+                    style="position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none;"
+                  />                  <img
+                      src="{% static 'assets/icons/redo2.png' %}"
+                      alt="Redo"
+                      id="trayScanRedoBtn"
+                      style="width: 24px; height: 24px; cursor: pointer; margin-left: 8px;"
+                      title="Clear Tray IDs"
+                  />
+                  
+
+                      </div>
+                      <div id="trayErrorMessage" style="display: none; background-color: #ffebee; border: 1px solid #f44336; color: #c62828; padding: 8px 12px; border-radius: 4px; margin-bottom: 10px; font-size: 14px; text-align: center;">
+                        <span id="trayErrorText"></span>
+                      </div>
+                      <div id="trayScanDetails_BQ_ReadOnly" class="table-grid">
+                        <!-- Dynamic content will be loaded here -->
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Tray Scan (hyperlink) - Right side modal -->
                   <div
-                     id="trayScanModal_IQF"
-                     class="tray-scan-modal-IQF active"
-                     id="trayScanModal_IQF"
+                     id="trayScanModal_BQ"
+                     class="tray-scan-modal-BQ active"
+                     id="trayScanModal_BQ"
                      >
-                     <div class="tray-scan-modal-IQF-content">
-                        <span id="closetrayScanModal_IQF" class="tray-scan-close"
+                     <div class="tray-scan-modal-BQ-content">
+                        <span id="closetrayScanModal_BQ" class="tray-scan-close"
                            >&times;</span
                            >
                         <!-- New top header container: title + user profile aligned left -->
@@ -1698,10 +1013,10 @@ thead th {
                         <!-- Redo icon for clearing "tray ID" -->
                         <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
                            <h5 style="text-align: center; margin: 0; flex: 1; font-weight: 600; color:#595959">
-                              Brass QC - Tray Scan
+                              BrassQC - Tray Scan
                            </h5>
                            <!-- Tray Validate Button (NEW) -->
-                           <button id="trayValidateBtn" type="button" style="display: flex; align-items: center; gap: 6px; background: #f5faff; border: 1px solid #023E4DCC; color: #023E4DCC; border-radius: 20px; padding: 4px 14px; font-size: 13px; font-weight: 500; cursor: pointer;">
+                           <button id="trayValidateBtn" type="button" style="display: flex; align-items: center; gap: 6px; background: #f5faff; border: 1px solid #028084; color: #028084; border-radius: 20px; padding: 4px 14px; font-size: 13px; font-weight: 500; cursor: pointer;">
                            <img src="{% static 'assets/icons/validate.png' %}" alt="Validate" style="width: 20px; height: 20px; margin-right: 4px;" />
                            Tray Validate
                            </button>
@@ -1713,8 +1028,8 @@ thead th {
                               title="Clear Tray IDs"
                               />
                         </div>
-                        <!-- trayScanDetails_IQF will be a scrollable 3-column grid with headers and unlimited rows -->
-                        <div id="trayScanDetails_IQF" class="table-grid">
+                        <!-- trayScanDetails_BQ will be a scrollable 3-column grid with headers and unlimited rows -->
+                        <div id="trayScanDetails_BQ" class="table-grid">
                            <!-- Headers -->
                            <div>S.no</div>
                            <div>Tray ID</div>
@@ -1723,7 +1038,7 @@ thead th {
                            <!-- Example rows (replace with dynamic content) -->
                         </div>
                         <!-- ✅ NEW BUTTONS SECTION -->
-                        <div class="tray-scan-modal-IQF-buttons"
+                        <div class="tray-scan-modal-BQ-buttons"
                            style="
                            display: flex;
                            justify-content: center;
@@ -1778,13 +1093,12 @@ thead th {
                   <span id="closeTrayScanModal" class="tray-scan-close"
                     >&times;</span
                   >
-                  <h3>Tray Scan Details:</h3><p>IQF/ Model No. / Rejection Window </p>
+                  <h3>Tray Scan Details:</h3><p>Brass Qc / Model No. / Rejection Window </p>
                   <div id="trayScanDetails">
                     <!-- Dynamic content will be loaded here -->
                   </div>
                 </div>
               </div>
-              
               <!-- New Popup Modal (Right Popup) -->
               <div id="newPopupModal" class="new-popup-modal">
                 <div class="tray-scan-modal-content">
@@ -1816,14 +1130,14 @@ thead th {
                         "
                       />
                       <span>Model No:</span>
-                      <h6>(Fetch Dynamically) /Tray scan</h6>
+                      <h6>(Fetch Dynamically) / Accepted Tray Rescan</h6>
                     </div>
                   </div>
                   <!-- Existing centered h3 title -->
                   <!-- Redo icon for clearing "tray ID" -->
                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
                     <h5 style="text-align: center; margin: 0; flex: 1; font-weight: 600; color:#595959">
-                      IQF- Accepted case tray scan table
+                      Brass Qc - Accepted case tray scan table
                     </h5>
                     <img
                       src="{% static 'assets/icons/redo2.png' %}"
@@ -1887,28 +1201,46 @@ thead th {
            
           </div>
           <!-- Pagination Section -->
-            <div class="pagination-wrapper">
-              <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-end mb-0">
-                  <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+<div class="pagination-wrapper">
+            <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-end mb-0">
+                {% if page_obj.has_previous %}
                   <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
                   </li>
-                </ul>
-              </nav>
-            </div>
+                {% else %}
+                  <li class="page-item disabled">
+                    <span class="page-link">Previous</span>
+                  </li>
+                {% endif %}
+          
+                {% for num in paginator.page_range %}
+                  {% if page_obj.number == num %}
+                    <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                  {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                  {% endif %}
+                {% endfor %}
+          
+                {% if page_obj.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <span class="page-link">Next</span>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
     </div>
   </div>
   <!-- Image Slider Modal (popup) -->
   <div id="imageSliderModal" class="image-slider-modal">
-    <span id="closeImageSliderModal" class="modal-close">&times;</span>
+    <span id="closeImageSliderModal" class="modal-close-BQ">&times;</span>
     <h3>Visual Aid</h3>
     <div class="slider" id="slider">
       <div class="slides" id="slidesContainer">
@@ -1928,60 +1260,410 @@ thead th {
   </div>
   <!-- Image Slider Modal -->
   <div id="imageSliderModal" class="image-slider-modal">
-    <span id="closeImageSliderModal" class="modal-close">&times;</span>
+    <span id="closeImageSliderModal" class="modal-close-BQ">&times;</span>
     <div class="slider" id="slider">
       <button class="prev" id="prevBtn">&#8592;</button>
       <div class="slides"></div>
       <button class="next" id="nextBtn">&#8594;</button>
     </div>
   </div>
-                          <div id="rejectionPopupModal" class="new-popup-modal">
-                            <span class="tray-scan-close" id="closeRejectionPopup">&times;</span>
-                            <h3 class="modal-title">Rejection Details</h3>
-                            <div class="rejection-content">
-                              <table class="rejection-table">
-                                <thead>
-                                  <tr>
-                                    <th>Rejected Reason</th>
-                                    <th>Rejection Qty</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                    <td>Reason - A</td>
-                                    <td>50</td>
-                                  </tr>
-                                  <tr>
-                                    <td>Reason - B</td>
-                                    <td>50</td>
-                                  </tr>
-                                  <tr>
-                                    <td>Reason - C</td>
-                                    <td>50</td>
-                                  </tr>
-                                  <tr>
-                                    <td>Reason - D</td>
-                                    <td>50</td>
-                                  </tr>
-                                  <tr>
-                                    <td>Reason - E</td>
-                                    <td>50</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                        </div>
+
             
   {% block script %}
 
+      <script nonce="{{ csp_nonce }}">
+    document.querySelectorAll('.tray-scan-btn-BQ-view').forEach(function(link) {
+      link.addEventListener('click', async function (e) {
+        e.preventDefault();
+    
+        // Get modal elements
+        const modal = document.getElementById("trayScanModal_BQ_ReadOnly");
+        const detailsDiv = document.getElementById("trayScanDetails_BQ_ReadOnly");
+        const modalModelNo = document.getElementById("modalModelNo_BQ_ReadOnly");
+    
+        // Get data attributes
+        const lotId = link.getAttribute('data-stock-lot-id');
+        
+        const modelNo = link.getAttribute('data-model-no');
+    
+        // Set model number in modal
+        if (modalModelNo && modelNo) {
+          modalModelNo.textContent = modelNo;
+        }
+    
+        // Fetch tray list from new API
+        let traysData = [];
+        try {
+          const resp = await fetch(`/iqf/iqf_view_tray_list/?lot_id=${encodeURIComponent(lotId)}`);
+          const result = await resp.json();
+          if (result.success && Array.isArray(result.trays)) {
+            traysData = result.trays;
+          }
+        } catch (e) {}
+    
+        // Build modal content as a table
+        let html = `
+          <table class="table table-bordered table-sm" style="width:100%; margin-bottom:0;">
+            <thead>
+              <tr>
+                <th style="width:50px;">S.no</th>
+                <th>Tray ID</th>
+                <th>Tray Qty</th>
+                <th>Tray Validation Status</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+        for (let i = 0; i < traysData.length; i++) {
+          const tray = traysData[i] || {};
+          html += `
+            <tr>
+              <td>${i === 0 ? '1 (Top Tray)' : (i + 1)}</td>
+              <td>
+                <input type="text" class="form-control" value="${tray.tray_id || ''}" readonly style="width: 100%;" />
+              </td>
+              <td>
+                <input type="number" class="form-control" value="${tray.tray_qty || ''}" readonly style="width: 100%;" />
+              </td>
+              <td>
+                <img src="{% static 'assets/icons/fail.png' %}" alt="Fail" title="Fail" style="width:18px; height:18px; margin-right:6px; vertical-align:middle;" />
+                <img src="{% static 'assets/icons/pass.png' %}" alt="Pass" title="Pass" style="width:18px; height:18px; vertical-align:middle;" />
+              </td>
+            </tr>
+          `;
+        }
+        html += `
+            </tbody>
+          </table>
+         
+        `;
+        detailsDiv.innerHTML = html;
+    
+        // Attach event listeners to the new buttons
+        const validateBtn = detailsDiv.querySelector("#trayValidateBtn");
+        const validateInput = detailsDiv.querySelector("#trayValidateInput");
+        const redoBtn = detailsDiv.querySelector("#trayScanRedoBtn");
+    
+        if (validateBtn && validateInput) {
+          validateBtn.addEventListener("click", function () {
+            validateInput.value = "";
+            validateBtn.style.background = "#e8f5e8";
+            validateBtn.style.borderColor = "#4caf50";
+            validateBtn.style.color = "#2e7d32";
+            validateInput.focus();
+          });
+        }
+        if (redoBtn && validateBtn && validateInput) {
+          redoBtn.addEventListener("click", function () {
+            validateInput.value = "";
+            validateInput.blur();
+            validateBtn.style.background = "#f5faff";
+            validateBtn.style.borderColor = "#023E4DCC";
+            validateBtn.style.color = "#023E4DCC";
+          });
+        }
+    
+        // Show the read-only modal
+        if (modal) modal.style.display = "block";
+        modal.classList.add("open");
+      });
+    });
+    </script>
   
+<script nonce="{{ csp_nonce }}">
+document.querySelectorAll('.tray-scan-btn-BQ-view').forEach(function(link) {
+  link.addEventListener('click', async function (e) {
+    e.preventDefault();
+
+    // Get modal elements
+    const modal = document.getElementById("trayScanModal_BQ_ReadOnly");
+    const detailsDiv = document.getElementById("trayScanDetails_BQ_ReadOnly");
+    const modalModelNo = document.getElementById("modalModelNo_BQ_ReadOnly");
+
+    // Get data attributes
+    const lotId = link.getAttribute('data-stock-lot-id');
+    const modelNo = link.getAttribute('data-model-no');
+
+    // Set model number in modal
+    if (modalModelNo && modelNo) {
+      modalModelNo.textContent = modelNo;
+    }
+
+    // Store lot_id in modal for later use
+    if (modal && lotId) {
+      modal.setAttribute('data-lot-id', lotId);
+    }
+
+    // Fetch tray list from new API
+    let traysData = [];
+    try {
+      const resp = await fetch(`/iqf/iqf_view_tray_list/?lot_id=${encodeURIComponent(lotId)}`);
+      const result = await resp.json();
+      if (result.success && Array.isArray(result.trays)) {
+        traysData = result.trays;
+      }
+    } catch (e) {
+      console.error('Error fetching tray data:', e);
+    }
+
+    // Build modal content as a table
+    let html = `
+      <table class="table table-bordered table-sm" style="width:100%; margin-bottom:0;">
+        <thead>
+          <tr>
+            <th style="width:50px;">S.no</th>
+            <th>Tray ID</th>
+            <th>Tray Qty</th>
+            <th>Tray Validation Status</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+    for (let i = 0; i < traysData.length; i++) {
+      const tray = traysData[i] || {};
+      html += `
+        <tr data-tray-index="${i}">
+          <td>${i === 0 ? '1 (Top Tray)' : (i + 1)}</td>
+          <td>
+            <input type="text" class="form-control" value="${tray.tray_id || ''}" readonly style="width: 100%;" />
+          </td>
+          <td>
+            <input type="number" class="form-control" value="${tray.tray_qty || ''}" readonly style="width: 100%;" />
+          </td>
+          <td class="validation-status-cell">
+            <img src="{% static 'assets/icons/fail.png' %}" alt="Fail" title="Fail" style="width:18px; height:18px; margin-right:6px; vertical-align:middle;" />
+            <img src="{% static 'assets/icons/pass.png' %}" alt="Pass" title="Pass" style="width:18px; height:18px; vertical-align:middle;" />
+          </td>
+        </tr>
+      `;
+    }
+    html += `
+        </tbody>
+      </table>
+    `;
+    detailsDiv.innerHTML = html;
+
+    // Setup event listeners for dynamically created elements
+    setupModalEventListeners(modal, detailsDiv, lotId, traysData);
+
+    // Show the read-only modal
+    if (modal) {
+      modal.style.display = "block";
+      modal.classList.add("open");
+    }
+  });
+});
+
+// Function to setup event listeners for modal elements
+function setupModalEventListeners(modal, detailsDiv, lotId, traysData) {
+  const validateBtn = document.getElementById("trayValidateBtn");
+  const validateInput = document.getElementById("trayValidateInput");
+  const redoBtn = document.getElementById("trayScanRedoBtn");
+  const errorMessage = document.getElementById("trayErrorMessage");
+  const errorText = document.getElementById("trayErrorText");
+
+  // Tray Validate button click
+  if (validateBtn && validateInput) {
+    // Remove previous event listeners
+    validateBtn.onclick = null;
+    validateBtn.addEventListener("click", function () {
+      validateInput.value = "";
+      validateBtn.style.background = "#e8f5e8";
+      validateBtn.style.borderColor = "#4caf50";
+      validateBtn.style.color = "#2e7d32";
+      validateInput.focus();
+    });
+  }
+
+  // Tray Validate Input keydown
+  if (validateInput) {
+    // Remove previous event listeners
+    validateInput.onkeydown = null;
+    validateInput.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const trayId = validateInput.value.trim();
+        
+        if (!trayId) {
+          showError("Please enter a Tray ID");
+          return;
+        }
+
+        if (!lotId) {
+          showError("Lot ID not found");
+          return;
+        }
+
+        // Make API call to validate tray
+        fetch("/iqf/iqf_tray_validate/", {  // Updated endpoint
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie('csrftoken')
+          },
+          body: JSON.stringify({
+            batch_id: lotId,  // Send as batch_id
+            lot_id: lotId,    // Also send as lot_id for compatibility
+            tray_id: trayId
+          })
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+              if (data.exists) {
+                // Tray is valid - update UI to show success
+                updateTrayValidationStatus(trayId, true, traysData);
+                hideError(); // <-- Add this line to hide any previous error
+                // showSuccess(`Tray ${trayId} validated successfully!`); // No need to show success
+              } else {
+                showError(`Tray ${trayId} not found in the system`);
+              }
+            } else {
+              showError(data.error || 'Validation failed');
+            }
+            validateInput.value = "";
+            validateInput.focus();
+          })
+        .catch(error => {
+          validateInput.value = "";
+          validateInput.focus();
+        });
+      }
+    });
+  }
+
+  // Redo button click
+  if (redoBtn) {
+    redoBtn.onclick = null;
+    redoBtn.addEventListener("click", function () {
+      resetValidationUI(validateBtn, validateInput, detailsDiv);
+      hideError();
+    });
+  }
+
+  // Helper functions
+  function showError(message) {
+    if (errorMessage && errorText) {
+      errorText.textContent = message;
+      errorMessage.style.display = "block";
+      setTimeout(() => {
+        errorMessage.style.display = "none";
+      }, 5000);
+    } else {
+      alert(message); // Fallback if error elements don't exist
+    }
+  }
+
+  function hideError() {
+    if (errorMessage) {
+      errorMessage.style.display = "none";
+    }
+  }
+
+  function updateTrayValidationStatus(trayId, isValid, traysData) {
+    // Find the tray row and update its validation status
+    const rows = detailsDiv.querySelectorAll("tbody tr");
+    rows.forEach(row => {
+      const trayInput = row.querySelector("td:nth-child(2) input");
+      if (trayInput && trayInput.value === trayId) {
+        const statusCell = row.querySelector(".validation-status-cell");
+        if (statusCell) {
+          if (isValid) {
+            statusCell.innerHTML = `
+              <img src="{% static 'assets/icons/pass.png' %}" alt="Pass" title="Pass" style="width:18px; height:18px; vertical-align:middle;" />
+              <span style="color: green; margin-left: 6px; font-weight: 500;">Validated</span>
+            `;
+          } else {
+            statusCell.innerHTML = `
+              <img src="{% static 'assets/icons/fail.png' %}" alt="Fail" title="Fail" style="width:18px; height:18px; vertical-align:middle;" />
+              <span style="color: red; margin-left: 6px; font-weight: 500;">Invalid</span>
+            `;
+          }
+        }
+      }
+    });
+  }
+
+  function resetValidationUI(validateBtn, validateInput, detailsDiv) {
+    // Clear input
+    if (validateInput) {
+      validateInput.value = "";
+      validateInput.blur();
+    }
+
+    // Reset validate button
+    if (validateBtn) {
+      validateBtn.style.background = "#f5faff";
+      validateBtn.style.borderColor = "#023E4DCC";
+      validateBtn.style.color = "#023E4DCC";
+    }
+
+    // Reset all validation status icons
+    const rows = detailsDiv.querySelectorAll("tbody tr");
+    rows.forEach(row => {
+      const statusCell = row.querySelector(".validation-status-cell");
+      if (statusCell) {
+        statusCell.innerHTML = `
+          <img src="{% static 'assets/icons/fail.png' %}" alt="Fail" title="Fail" style="width:18px; height:18px; margin-right:6px; vertical-align:middle;" />
+          <img src="{% static 'assets/icons/pass.png' %}" alt="Pass" title="Pass" style="width:18px; height:18px; vertical-align:middle;" />
+        `;
+      }
+    });
+  }
+}
+
+// Helper function for CSRF token
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+</script>
+
+<!-- Modal close functionality -->
+<script nonce="{{ csp_nonce }}">
+document.addEventListener("DOMContentLoaded", function () {
+  const closeBtn = document.getElementById("closeTrayScanModal_BQ_ReadOnly");
+  const modal = document.getElementById("trayScanModal_BQ_ReadOnly");
+
+  if (closeBtn && modal) {
+    closeBtn.addEventListener("click", function () {
+      modal.style.display = "none";
+      modal.classList.remove("open");
+    });
+  }
+
+  // Close modal on outside click
+  window.addEventListener("click", function (event) {
+    if (event.target === modal) {
+      modal.style.display = "none";
+      modal.classList.remove("open");
+    }
+  });
+});
+</script>
+
    <script nonce="{{ csp_nonce }}">
       document.addEventListener("DOMContentLoaded", function () {
       
         const cancelBtn = document.getElementById("trayScanCancelBtn");
         if (cancelBtn) {
           cancelBtn.addEventListener("click", function () {
-            const modal = document.getElementById("trayScanModal_IQF");
+            const modal = document.getElementById("trayScanModal_BQ");
             if (modal) modal.classList.remove("open");
           });
         }
@@ -1992,7 +1674,7 @@ thead th {
             e.preventDefault();
             const row = btn.closest('tr');
             if (!row) return;
-            const trayScanLink = row.querySelector('.tray-scan-btn-IQF');
+            const trayScanLink = row.querySelector('.tray-scan-btn-BQ');
             if (!trayScanLink) return;
             const batchId = trayScanLink.getAttribute('data-batch-id');
             if (!batchId) {
@@ -2157,10 +1839,10 @@ thead th {
       }
       
       document.addEventListener("DOMContentLoaded", () => {
-          const trayScanLinks = document.querySelectorAll(".tray-scan-btn-IQF");
-          const modal = document.getElementById("trayScanModal_IQF");
-          const closeBtn = document.getElementById("closetrayScanModal_IQF");
-          const detailsDiv = document.getElementById("trayScanDetails_IQF");
+          const trayScanLinks = document.querySelectorAll(".tray-scan-btn-BQ");
+          const modal = document.getElementById("trayScanModal_BQ");
+          const closeBtn = document.getElementById("closetrayScanModal_BQ");
+          const detailsDiv = document.getElementById("trayScanDetails_BQ");
           const modalModelNo = document.getElementById("modalModelNo");
       
           trayScanLinks.forEach((link) => {
@@ -2271,7 +1953,7 @@ thead th {
                   }
                   
                   // Hide buttons if Released
-                  const buttonSection = modal.querySelector('.tray-scan-modal-IQF-content > div[style*="justify-content: center"]');
+                  const buttonSection = modal.querySelector('.tray-scan-modal-BQ-content > div[style*="justify-content: center"]');
                   if (buttonSection) {
                       buttonSection.style.display = isReleased ? "none" : (showButtons ? "flex" : "none");
                   }
@@ -2458,7 +2140,7 @@ thead th {
                                               });
                                               modal.classList.remove("open");
                                               // Update the batch status cell in the row
-                                              const currentRow = document.querySelector(`.tray-scan-btn-IQF[data-batch-id="${batchId}"]`)?.closest('tr');
+                                              const currentRow = document.querySelector(`.tray-scan-btn-BQ[data-batch-id="${batchId}"]`)?.closest('tr');
                                               if (currentRow) {
                                                   const statusCell = currentRow.querySelector('td:nth-child(13)'); // 13th column is Batch Status
                                                   if (statusCell) {
@@ -2562,7 +2244,7 @@ thead th {
                                     showConfirmButton: false
                                   });
                                   modal.classList.remove("open");
-                                  const currentRow = document.querySelector(`.tray-scan-btn-IQF[data-batch-id="${batchId}"]`)?.closest('tr');
+                                  const currentRow = document.querySelector(`.tray-scan-btn-BQ[data-batch-id="${batchId}"]`)?.closest('tr');
                                   if (currentRow) {
                                       const statusCell = currentRow.querySelector('td:nth-child(13)');
                                       if (statusCell) {
@@ -2709,7 +2391,7 @@ thead th {
               }
               // Find the batch_id from the row (tr) data attribute or from a hidden field
               var row = trigger.closest("tr");
-              var trayScanLink = row ? row.querySelector('.tray-scan-btn-IQF') : null;
+              var trayScanLink = row ? row.querySelector('.tray-scan-btn-BQ') : null;
               var batchId = trayScanLink ? trayScanLink.getAttribute('data-batch-id') : null;
               if (!batchId) {
                 Swal.fire('Error', 'Batch ID not found.', 'error');
@@ -2781,7 +2463,7 @@ thead th {
           redoBtn.title = "Redo"; // Set tooltip on mouse hover
         }
       
-        const detailsDiv = document.getElementById("trayScanDetails_IQF");
+        const detailsDiv = document.getElementById("trayScanDetails_BQ");
         const table = document.getElementById('order-listing');
         let msgBar = document.getElementById('dp-table-msg-bar');
       
@@ -2805,7 +2487,7 @@ thead th {
       
         // --- FIX: Show alert inside modal form, not on table ---
         let formMsgBar = document.getElementById('tray-id-clear-msg-bar');
-        const modal = document.getElementById('trayScanModal_IQF');
+        const modal = document.getElementById('trayScanModal_BQ');
         if (!formMsgBar && modal) {
           formMsgBar = document.createElement('div');
           formMsgBar.id = 'tray-id-clear-msg-bar';
@@ -2820,7 +2502,7 @@ thead th {
           formMsgBar.style.fontSize = '14px';      // 14px font
           formMsgBar.style.textAlign = 'center';
           formMsgBar.style.transition = 'opacity 0.3s, background 0.3s, color 0.3s';
-          const modalContent = modal.querySelector('.tray-scan-modal-IQF-content');
+          const modalContent = modal.querySelector('.tray-scan-modal-BQ-content');
           if (modalContent) {
             modalContent.insertBefore(formMsgBar, modalContent.firstChild);
           }
@@ -2852,7 +2534,7 @@ thead th {
    <script nonce="{{ csp_nonce }}">
       document.addEventListener("DOMContentLoaded", function () {
         const validateBtn = document.getElementById("trayValidateBtn");
-        const detailsDiv = document.getElementById("trayScanDetails_IQF");
+        const detailsDiv = document.getElementById("trayScanDetails_BQ");
         let validationEnabled = false;
       
         if (validateBtn && detailsDiv) {
@@ -3133,7 +2815,6 @@ thead th {
 
   <!-- Image Slider Script -->
   <!-- Script for Model / Stock No - Image Mouse Hover -->
-
 <script nonce="{{ csp_nonce }}">
   document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.model-hover-trigger').forEach(function(trigger) {
@@ -3265,57 +2946,6 @@ thead th {
   });
 </script>
 
-<!-- Pagination Script -->
-  <script nonce="{{ csp_nonce }}">
-    document.addEventListener("DOMContentLoaded", function () {
-      const table = document.getElementById("order-listing");
-      if (!table) return;
-      const tbody = table.querySelector("tbody");
-      const rows = Array.from(tbody.querySelectorAll("tr"));
-      const rowsPerPage = 10;
-      let currentPage = 1;
-    
-      function renderTable(page) {
-        tbody.innerHTML = "";
-        const start = (page - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-        rows.slice(start, end).forEach(row => tbody.appendChild(row));
-        renderPagination(page);
-      }
-    
-      function renderPagination(page) {
-        let totalPages = Math.ceil(rows.length / rowsPerPage);
-        const pagination = document.querySelector(".pagination");
-        if (!pagination) return;
-        pagination.innerHTML = "";
-    
-        // Previous
-        const prev = document.createElement("li");
-        prev.className = "page-item" + (page === 1 ? " disabled" : "");
-        prev.innerHTML = `<a class="page-link" href="#">Previous</a>`;
-        prev.onclick = function(e) { e.preventDefault(); if(page > 1) renderTable(page - 1); };
-        pagination.appendChild(prev);
-    
-        // Page numbers
-        for (let i = 1; i <= totalPages; i++) {
-          const li = document.createElement("li");
-          li.className = "page-item" + (i === page ? " active" : "");
-          li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
-          li.onclick = function(e) { e.preventDefault(); renderTable(i); };
-          pagination.appendChild(li);
-        }
-    
-        // Next
-        const next = document.createElement("li");
-        next.className = "page-item" + (page === totalPages ? " disabled" : "");
-        next.innerHTML = `<a class="page-link" href="#">Next</a>`;
-        next.onclick = function(e) { e.preventDefault(); if(page < totalPages) renderTable(page + 1); };
-        pagination.appendChild(next);
-      }
-    
-      renderTable(currentPage);
-    });
-  </script>
 <!-- Show alert and highlight row -->
 <script nonce="{{ csp_nonce }}">
   // filepath: a:\Workspace\Track_and_Trace_v2\static\templates\Day_Planning\DP_PickTable.html
@@ -3458,25 +3088,4 @@ thead th {
     });
   });
 </script>
-
-                      <!-- Rejection Popup Script -->
-                        <script nonce="{{ csp_nonce }}">
-                          document.addEventListener("DOMContentLoaded", function() {
-                            var rejectionTrigger = document.querySelector('.rejection-popup-trigger');
-                            var rejectionModal = document.getElementById('rejectionPopupModal');
-                            var closeRejection = document.getElementById('closeRejectionPopup');
-
-                            if (rejectionTrigger) {
-                              rejectionTrigger.addEventListener('click', function() {
-                                rejectionModal.classList.add("open");
-                              });
-                            }
-
-                            if (closeRejection) {
-                              closeRejection.addEventListener('click', function() {
-                                rejectionModal.classList.remove("open");
-                              });
-                            }
-                          });
-                        </script>
 {% endblock %} {% endblock content %}

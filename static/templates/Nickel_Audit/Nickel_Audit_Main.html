@@ -1,5 +1,14 @@
+
+
 {% extends "base.html" %} {% load static %} {% block content %}
 
+/**
+  * Nickel Audit Main Table
+  * This template displays a table with various columns related to nickel audit data.
+  * It includes features like pagination, modals for tray scanning, and dynamic row actions.
+  */
+  
+  {% endblock content %}
 
 <style>
 
@@ -17,6 +26,12 @@
       border-radius: 30px !important;
     }
 </style>
+
+/**
+  * Nickel Audit Main Table
+  * This template displays a table with various columns related to nickel audit data.
+  * It includes features like pagination, modals for tray scanning, and dynamic row actions.
+  */
 <div class="content-wrapper">
   <h5 class="text-left mt-0 mb-3">
     Nickel Audit Main Table
@@ -26,6 +41,11 @@
       <div class="card">
         <div class="card-body">
           <div class="table-responsive">
+            /**
+  * Main Table for Nickel Audit 
+  * This table displays various columns related to nickel audit data.
+  * It includes features like pagination, modals for tray scanning, and dynamic row actions.
+  */
             <table id="order-listing" class="table">
               <thead>
                 <tr>
@@ -302,6 +322,11 @@
       </div>
     </div>
   </div>
+
+  /**
+  * Model Image Tooltip
+  * This script handles the display of model images in a tooltip when hovering over the Model/Stock No column.
+  */
 
   <!-- Add this modal markup at the end of your Nickel_Audit_Main.html -->
 <div id="nickelTrayScanModal" class="tray-scan-modal">
@@ -615,7 +640,12 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 
-
+/**
+  * Script for active row highlight and moving to top
+  * This script highlights the row when the "View" icon is clicked and moves it to the top of the table.
+  */
+  
+  
 <!-- Script for active row highlight and moving to top -->
 
 <script nonce="{{ csp_nonce }}">

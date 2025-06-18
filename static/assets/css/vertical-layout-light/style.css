@@ -26460,6 +26460,12 @@ dl li {
     -moz-transition: 0.4s ease;
   }
 }
+@media screen and (max-width: 991px) {
+  .sidebar-offcanvas {
+right: -300px;
+}
+}
+
 .email-wrapper .mail-sidebar .menu-bar {
   width: 100%;
   float: right;

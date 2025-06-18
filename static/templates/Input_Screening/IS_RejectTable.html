@@ -175,9 +175,6 @@
     border-radius: 6px;
     font-size: 14px;
   }
-  .highlighted-tray-scan {
-    background-color: #88c4e3 !important;
-  }
   /* Responsive adjustments for screens below 768px */
   @media (max-width: 767px) {
     .tray-scan-modal,
@@ -258,7 +255,7 @@
   thead th {
     position: sticky;
     top: 0;
-    background-color: #117057 !important;
+    background-color: #028084!important;
     color: #fff !important;
     z-index: 10;
     box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
@@ -464,7 +461,7 @@
 </style>
 
 <div class="content-wrapper">
-  <h5 class="text-left mt-0 mb-3">Input Screening / Input Screening Reject Table</h5>
+  <h5 class="text-left mt-0 mb-3">Input Screening / Rejected Table</h5>
   <div class="row">
     <div class="col-12 grid-margin stretch-card">
       <div class="card">
@@ -516,24 +513,25 @@
                       Reject Reason
                       <i class="fa fa-filter" aria-hidden="true"></i>
                     </th>
-                    <th>
-  Lot ID <i class="fa fa-filter" aria-hidden="true"></i>
-</th>
                    
                   </tr>
                 </thead>
                 <tbody>
-                  {% for row in master_data %}
-                  <tr{% if forloop.first %} class="highlighted-tray-scan"{% endif %}>
-                    <td>{{ row.sno }}</td>
-                    <td>{{ row.date_time }}</td>
-                    <td style="position: relative;">
+                {% for data in master_data %}
+
+                  <tr class="highlighted-tray-scan"
+                    data-lot-id="{{ data.stock_lot_id }}">
+                     <td>{{ forloop.counter }}
+
+                    </td>                 
+                    <td>{{ data.date_time }}</td>
+                     <td style="position: relative;">
                       <span class="model-hover-trigger" style="cursor: pointer;">
-                        {{ row.model_stock_no }}
+                        {{ data.model_stock_no__model_no }}
                         <div class="model-image-tooltip" style="position: absolute; left: 50%; top: 110%; transform: translateX(-50%); background: #fff; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 12px 18px; z-index: 9999; display: flex; align-items: center; gap: 8px; opacity: 0; pointer-events: none; transition: opacity 0.2s;">
                           <button class="img-scroll-left" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8592;</button>
                           <div class="img-gallery" style="display: flex; gap: 6px; overflow: hidden; width: 180px;">
-                            {% for img_url in row.model_images %}
+                            {% for img_url in data.model_images %}
                               <img src="{{ img_url }}" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
                             {% endfor %}
                           </div>
@@ -541,33 +539,34 @@
                         </div>
                       </span>
                     </td>
-                    <td>{{ row.plating_color }}</td>
-                    <td>{{ row.polish_finish }}</td>
-                    <td>{{ row.version }}</td>
-                    <td>{{ row.vendor_location }}</td>
-                    <td>{{ row.tray_type_capacity }}</td>
-                    <td>{{ row.no_of_trays }}</td>
-                    <td>{{ row.reject_quantity }}</td>
-                        <td>{{ row.lot_id }}</td> <!-- Added -->
-<td>
-  <div class="avatar-group rejection-popup-trigger"
-       style="cursor:pointer;"
-       data-reasons='{{ row.reasons|escapejs }}'
-       data-lotid="{{ row.lot_id }}">
-    {% if row.reasons %}
-      {% for reason in row.reasons %}
-        <div class="avatar" style="background: {{ reason.color }}">{{ reason.letter }}</div>
-      {% endfor %}
-      <div class="avatar gray">
-        <span class="arrow">&rsaquo;</span>
-      </div>
-    {% else %}
-      <span style="color: #888; font-size: 13px; padding-left: 6px;">No reasons</span>
-    {% endif %}
-  </div>
-</td>
+                    <td>{{ data.plating_color }}</td>
+                    <td>{{data.polish_finish}}</td>
+                    <td>{{data.version__version_name}}</td>
+                    <td>{{data.vendor_internal}} {{data.location__location_name}}</td>
+                    <td>{{data.tray_type}} {{data.tray_capacity}}</td>
+                    <td>{{data.no_of_trays}}</td>
+                    <td>
+                      {{data.ip_rejection_total_qty}}
+                    </td>
+                    <td>
+                      <div class="avatar-group rejection-popup-trigger" style="cursor:pointer;">
+                        {% for letter in data.rejection_reason_letters %}
+                          <div class="avatar blue">{{ letter }}</div>
+                        {% endfor %}
+                        {% if data.rejection_reason_letters %}
+                          <div class="avatar gray">
+                            <span class="arrow">&rsaquo;</span>
+                          </div>
+                        {% elif data.batch_rejection %}
+                          <span style="color:#fb8c00;font-weight:bold;white-space:nowrap;">
+                            Batch rejection: No individual reasons recorded
+                          </span>
+                        {% endif %}
+                      </div>
+                    </td>
                   </tr>
-                  {% endfor %}
+                {% endfor %}
+
                 </tbody>
               </table>
               <!-- Rejection Popup Modal -->
@@ -575,6 +574,7 @@
                             <span class="tray-scan-close" id="closeRejectionPopup">&times;</span>
                             <h3 class="modal-title">Rejection Details</h3>
                             <div class="rejection-content">
+                              <div id="rejection-details-loader" style="display:none;text-align:center;">Loading...</div>
                               <table class="rejection-table">
                                 <thead>
                                   <tr>
@@ -582,29 +582,47 @@
                                     <th>Rejection Qty</th>
                                   </tr>
                                 </thead>
-                                <tbody id="rejection-table-body">
-                                  <!-- Will be filled by JS -->
+                                <tbody id="rejection-details-body">
+                                  <!-- Dynamic rows go here -->
                                 </tbody>
                               </table>
                             </div>
                         </div>
             
-            <!-- Pagination Section -->
-            <div class="pagination-wrapper">
-              <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-end mb-0">
-                  <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <!-- Pagination Section -->
+          <div class="pagination-wrapper">
+            <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-end mb-0">
+                {% if page_obj.has_previous %}
                   <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
                   </li>
-                </ul>
-              </nav>
-            </div>
+                {% else %}
+                  <li class="page-item disabled">
+                    <span class="page-link">Previous</span>
+                  </li>
+                {% endif %}
+          
+                {% for num in paginator.page_range %}
+                  {% if page_obj.number == num %}
+                    <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                  {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                  {% endif %}
+                {% endfor %}
+          
+                {% if page_obj.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <span class="page-link">Next</span>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+          </div>
           </div>
         </div>
       </div>
@@ -669,39 +687,76 @@
       });
     });
   </script>
-<script nonce="{{ csp_nonce }}">
-document.addEventListener("DOMContentLoaded", function() {
-  document.querySelectorAll('.rejection-popup-trigger').forEach(function(trigger) {
-    trigger.addEventListener('click', function() {
-      var reasons = [];
-      try {
-        reasons = JSON.parse(this.getAttribute('data-reasons'));
-          console.log('Parsed reasons:', reasons);
 
-      } catch(e) {
-  console.log('JSON parse error:', e);
-}
-      var tbody = document.getElementById('rejection-table-body');
-      tbody.innerHTML = '';
-      if (reasons && reasons.length) {
-        reasons.forEach(function(reason) {
-          var row = document.createElement('tr');
-          row.innerHTML = `<td>${reason.text}</td><td>${reason.rejected_tray_quantity}</td>`;
-          tbody.appendChild(row);
+
+
+
+  <script nonce="{{ csp_nonce }}">
+  document.addEventListener("DOMContentLoaded", function() {
+    // Attach event to all .rejection-popup-trigger elements
+    document.querySelectorAll('.rejection-popup-trigger').forEach(function(trigger, idx) {
+      trigger.addEventListener('click', function(e) {
+        // Find the closest row and get the lot_id from data attribute or hidden cell
+        const row = trigger.closest('tr');
+        let lot_id = null;
+        if (row) {
+          // Try to get from a hidden cell or data attribute
+          lot_id = row.querySelector('[data-lot-id]')?.getAttribute('data-lot-id');
+          if (!lot_id) {
+            // Try to get from a hidden cell if you render it in the template
+            lot_id = row.querySelector('.lot-id-cell')?.textContent?.trim();
+          }
+          // Or, if you render lot_id as a data attribute on the row:
+          if (!lot_id && row.dataset.lotId) lot_id = row.dataset.lotId;
+        }
+        // Fallback: try to get from Django context if you render it in the table
+        if (!lot_id) {
+          lot_id = "{{ data.stock_lot_id|default:'' }}";
+        }
+        if (!lot_id) {
+          alert("Lot ID not found for this row.");
+          return;
+        }
+  
+        // Show loader
+        document.getElementById('rejection-details-loader').style.display = 'block';
+        document.getElementById('rejection-details-body').innerHTML = '';
+  
+        // Open modal
+        document.getElementById('rejectionPopupModal').classList.add("open");
+  
+        // Fetch rejection details
+        fetch(`/inputscreening/get_rejection_details/?lot_id=${encodeURIComponent(lot_id)}`, {
+          headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(resp => resp.json())
+        .then(data => {
+          document.getElementById('rejection-details-loader').style.display = 'none';
+          const tbody = document.getElementById('rejection-details-body');
+          tbody.innerHTML = '';
+          if (data.success && data.reasons.length > 0) {
+            data.reasons.forEach(item => {
+              const tr = document.createElement('tr');
+              tr.innerHTML = `<td>${item.reason}</td><td>${item.qty}</td>`;
+              tbody.appendChild(tr);
+            });
+          } else {
+            tbody.innerHTML = `<tr><td colspan="2">No rejection details found.</td></tr>`;
+          }
+        })
+        .catch(err => {
+          document.getElementById('rejection-details-loader').style.display = 'none';
+          document.getElementById('rejection-details-body').innerHTML = `<tr><td colspan="2">Error loading data.</td></tr>`;
         });
-      } else {
-        var row = document.createElement('tr');
-        row.innerHTML = `<td colspan="2">No reasons</td>`;
-        tbody.appendChild(row);
-      }
-      document.getElementById('rejectionPopupModal').classList.add("open");
+      });
+    });
+  
+    // Close modal
+    document.getElementById('closeRejectionPopup').addEventListener('click', function() {
+      document.getElementById('rejectionPopupModal').classList.remove("open");
     });
   });
-  document.getElementById('closeRejectionPopup').addEventListener('click', function() {
-    document.getElementById('rejectionPopupModal').classList.remove("open");
-  });
-});
-</script>
+  </script>
 <!-- Script for Model / Stock No - Image Mouse Hover -->
 <script nonce="{{ csp_nonce }}">
 document.addEventListener('DOMContentLoaded', function() {

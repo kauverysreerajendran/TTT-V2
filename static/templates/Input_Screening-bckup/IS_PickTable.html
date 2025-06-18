@@ -1,0 +1,1985 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<style>
+#trayScanDetails.table-grid > div:nth-child(-n + 4) {
+  background-color: #e0e0e0;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  align-items: center;
+}
+  
+#newPopupModal.new-popup-modal {
+  width: 700px !important;
+  max-width: 98vw;
+  height: 80vh !important;
+  max-height: 90vh !important;
+  right: 0 !important;
+  top: 40px !important;
+  overflow-y: auto;
+}
+#trayScanDetails.table-grid {
+  grid-template-columns: repeat(4, 1fr) !important;
+}
+
+  .highlighted-tray-scan {
+  background-color: #b3e6ff !important;
+}
+  /* Base Styles for Popups */
+  #order-listing {
+    border-collapse: collapse;
+  }
+
+  #order-listing th,
+  #order-listing td {
+    border-right: 1px solid #d1d1d1;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  #order-listing th:last-child,
+  #order-listing td:last-child {
+    border-right: none;
+  }
+  /* Overall Table Shrink */
+  #order-listing tr,
+  #order-listing td,
+  #order-listing th {
+    height: 20px !important;
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+  .content-wrapper {
+    transition: opacity 0.3s ease;
+    padding-bottom: 20px !important; /* Reduce space above footer */
+  }
+  .tray-scan-modal,
+  .new-popup-modal {
+    position: fixed;
+    top: 0;
+    width: 400px;
+    height: 100%;
+    background: white;
+    box-shadow: -3px 0 10px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    transition: right 0.3s ease, width 0.3s ease, padding 0.3s ease;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  .tray-scan-modal {
+    right: -400px; /* hidden by default */
+    z-index: 9999;
+  }
+  .tray-scan-modal.open {
+    right: 400px; /* When open, sits next to New Popup */
+  }
+  .new-popup-modal {
+    right: -440px; /* hidden by default */
+    z-index: 10000;
+  }
+  .new-popup-modal.open {
+    right: 0; /* When open, slides in from the right */
+  }
+  .tray-scan-close {
+    position: absolute;
+    right: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .modal-top-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 12px;
+  }
+  #trayScanDetails.table-grid {
+    display: grid !important; /* override any existing grid or flex */
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 0px !important;
+    max-height: 300px !important;
+    overflow-y: auto !important;
+    padding-right: 10px; /* prevent scrollbar overlay */
+    margin-top: 10px;
+  }
+ 
+  /* Sticky header row: first 3 divs inside trayScanDetails */
+  #trayScanDetails.table-grid > div:nth-child(-n + 3) {
+    background-color: #e0e0e0;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    align-items: center;
+  }
+  /* Override only when modal is open */
+  .tray-scan-modal.open {
+    width: 600px; /* your desired expanded width */
+    margin-right: 20px;
+  }
+  /* Keep it hidden with negative offset matching default width */
+  .tray-scan-modal {
+    right: -500px; /* must match the new width above to stay hidden properly */
+  }
+  #trayScanModal {
+    border-radius: 12px;
+    max-height: 90vh;
+    top: 40px; /* Moves the entire modal down from the top of the viewport */
+    height: calc(100% - 40px); /* Keeps height correct */
+  }
+  #trayScanDetails {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding-top: 10px;
+  }
+  /* Make each 
+   <p> act like a table cell */
+  #trayScanDetails p {
+    margin: 0;
+    padding: 4px 8px;
+    background: #f7f7f7;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+
+  /* Responsive adjustments for screens below 768px */
+  @media (max-width: 767px) {
+    .tray-scan-modal,
+    .new-popup-modal {
+      width: 100%;
+      padding: 10px;
+    }
+     .tray-scan-modal.open {
+    width: 100% !important; /* your desired expanded width */
+    margin-right: 0px !important;
+  }
+    /* On very small screens, stacking is more appropriate */
+    .tray-scan-modal.open {
+      right: 0;
+      top: 0;
+    }
+    .new-popup-modal.open {
+      right: 0;
+      top: 0;
+      /* Optionally, you can add margin-top to separate them */
+      margin-top: 20px;
+    }
+  }
+  /* Responsive adjustments for tablets (768px to 1024px) */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .tray-scan-modal,
+    .new-popup-modal {
+      width: 300px;
+      padding: 15px;
+    }
+    .tray-scan-modal {
+      right: -300px;
+    }
+    .tray-scan-modal.open {
+      right: 300px;
+    }
+    .new-popup-modal {
+      right: -300px;
+    }
+    .new-popup-modal.open {
+      right: 0;
+    }
+  }
+  /* ... remaining styles unchanged ... */
+  .pagination-wrapper {
+    position: fixed;
+    top: 530px;
+    right: 20px;
+    background: transparent;
+    z-index: 999;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .table-responsive {
+      max-height: 800px;
+    }
+  }
+  @media (min-width: 1025px) {
+    .table-responsive {
+      max-height: 100%;
+    }
+  }
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .table-responsive {
+      max-height: 600px;
+    }
+  }
+  .table-responsive {
+    max-height: 100%;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .table-responsive::-webkit-scrollbar {
+    display: none;
+  }
+  thead th {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 10;
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+  }
+  #trayScanModal thead th,
+#trayScanModal thead tr {
+    background-color: #9ac5f4 !important;
+    color: #fff !important;
+}
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  .content-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 70px;
+  }
+  /* Make the table header sticky */
+  thead th {
+    position: sticky;
+    top: 0;
+    background-color: white; /* or your table header bg color */
+    z-index: 10; /* ensure it stays above the table rows */
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* optional shadow for better separation */
+  }
+  .card-body {
+    width: 100%;
+    overflow-x: auto;
+    max-height: 400px;
+  }
+  footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+  }
+  .btn-twitter.btn-social-icon-text i {
+    margin-right: 0.5rem !important;
+    padding: 0.3rem !important;
+    background: #2e7d32;
+  }
+  .btn-youtube.btn-social-icon-text i {
+    margin-right: 0.5rem !important;
+    padding: 0.3rem !important;
+  }
+  /* Modal styles */
+  .image-slider-modal {
+    display: none;
+    position: fixed;
+    top: 40px; /* Leaves room at the top */
+    right: 20px;
+    width: 600px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    padding: 20px;
+    z-index: 10000;
+    transition: right 0.3s ease;
+  }
+  .image-slider-modal.open {
+    display: block;
+  }
+  .modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+  }
+  .modal-close:hover {
+    color: #333;
+  }
+  /* Slider styles */
+  .slider {
+    position: relative;
+    overflow: hidden;
+    height: 350px;
+  }
+  .slides {
+    display: flex;
+    transition: transform 0.5s ease;
+  }
+  .slide {
+    flex: 0 0 100%;
+    box-sizing: border-box;
+    display: none;
+  }
+  .slide.active {
+    display: block;
+  }
+  .slide img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    display: block;
+  }
+  .prev,
+  .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    border: none;
+    color: #fff;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 50%;
+    user-select: none;
+  }
+  .prev { left: 10px; }
+  .next { right: 10px; }
+  @media (max-width: 767px) {
+    .image-slider-modal {
+      width: 100%;
+      right: 0;
+      top: 0;
+      border-radius: 0;
+      padding: 10px;
+    }
+    .slider { height: 250px; }
+    .slide img { height: 250px; }
+  }
+</style>
+
+<div class="content-wrapper">
+  <h5 class="text-left mt-0 mb-3">Input Screening / Input Screening Pick Table</h5>
+  <div class="row">
+    <div class="col-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <!-- Table Section -->
+            <div class="table-responsive">
+              <table id="order-listing" class="table">
+                <thead>
+                  <tr>
+                    <th>
+                      S.No <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Date and Time
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Model/Stock No
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Plating Color
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Polish Finish
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Version <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Source - Location
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Tray Type Capacity
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      No of Tray <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      LOT Quantity
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Physical Quantity
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Wiping Req <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Process Status
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Action <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Batch Status
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Current Location
+                      <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th>
+                      Remarks <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                    <th class="d-none">
+                      Lot id <i class="fa fa-filter" aria-hidden="true"></i>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for row in master_data %}
+                  <tr data-batch-id="{{ row.batch_id }}" data-stock-lot-id="{{ row.stock_lot_id }}" data-available-qty="{{ row.available_qty }}">                    <td>{{ forloop.counter }}</td>
+                    <td>{{ row.date_time }}</td>
+                    <td style="position: relative;">
+                      <span class="model-hover-trigger" style="cursor: pointer;">
+                        {{ row.model_stock_no__model_no }}
+                        <div class="model-image-tooltip" style="position: absolute; left: 50%; top: 110%; transform: translateX(-50%); background: #fff; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 12px 18px; z-index: 9999; display: flex; align-items: center; gap: 8px; opacity: 0; pointer-events: none; transition: opacity 0.2s;">
+                          <button class="img-scroll-left" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8592;</button>
+                          <div class="img-gallery" style="display: flex; gap: 6px; overflow: hidden; width: 180px;">
+                            {% for img_url in row.model_images %}
+                              <img src="{{ img_url }}" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
+                            {% endfor %}
+                          </div>
+                          <button class="img-scroll-right" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8594;</button>
+                        </div>
+                      </span>
+                    </td>
+                    <td>{{ row.plating_color }}</td>
+                    <td>{{ row.polish_finish }}</td>
+                    <td>{{ row.version__version_name }}</td>
+                    <td>{{ row.vendor_location }}</td>
+                    <td>{{ row.tray_type }} {{ row.tray_capacity }}</td>
+                    <td>{{ row.no_of_trays }}</td>
+                    <td>
+                      <span class="lot-qty" style="min-width: 30px; text-align: right">{{ row.total_batch_quantity }}</span> 
+                        <input type="checkbox"
+                               class="ip-checkbox"
+                               data-lot-id="{{ row.stock_lot_id }}"
+                               style="width: 15px; height: 15px"
+                               {% if row.ip_person_qty_verified %}checked disabled{% endif %} />
+                        <input type="text"
+                               class="missing-qty-input"
+                               value="{{ row.dp_missing_qty|default_if_none:'' }}"
+                               style="width: 36px; padding: 1px 3px; font-size: 13px; border: 1px solid #ccc; border-radius: 4px;"
+                               {% if row.ip_person_qty_verified %}disabled{% endif %} />
+
+                      <div>
+                    </td>
+                   <td>
+                      <input
+                        type="text"
+                        class="physical-qty-input"
+                        value="{{ row.dp_physical_qty }}"
+                        style="width: 36px; padding: 1px 3px; font-size: 13px; border: 1px solid #ccc; border-radius: 4px;
+                              {% if row.dp_physical_qty_edited %}background-color: #fff3cd; border-color: #ffc107;{% endif %}"
+                        readonly
+                        {% if row.dp_physical_qty_edited %}title="This quantity was edited"{% endif %}
+                      />
+                    </td>
+
+                    <!-- Wiping Req (STATIC) -->
+                                        <td>
+                      {% if row.wiping_required %}
+                        <div class="d-inline-block px-3 fw-semibold text-center rounded-pill" style="border: 2px solid #0d5d17; background-color: #c5f9c2; color: #2f801b;">
+                          Yes
+                        </div>
+                      {% else %}
+                        <div class="d-inline-block px-3 fw-semibold text-center rounded-pill" style="border: 2px solid #5d0d0d; background-color: #f9c2c2; color: #801b1b;">
+                          No
+                        </div>
+                      {% endif %}
+                    </td>
+                    <!-- Process Status  -->
+                    <td>
+
+                      <!-- Radio buttons for Process Status -->
+                                           <div class="d-flex" style="gap: 16px;">
+                        <div title="Input Screening"
+                             class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+                             style="width: 20px; height: 20px;
+                                background-color: {% if row.ip_person_qty_verified %}#0c8249{% else %}#c3c2c2{% endif %};
+                                color: white; font-weight: bold; line-height: 20px; text-align: center; padding-top: 1px; padding-right: 1px;">
+                          Q
+                        </div>
+                        <div title="Next Process"
+                             class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+                             style="width: 20px; height: 20px; color: #333; font-weight: bold; line-height: 20px; text-align: center; padding-top: 1px; padding-right: 1px; background: none;">
+                          <input type="radio" class="process-status-w" name="process_status_w_{{ forloop.counter }}" style="margin:0;vertical-align:middle; accent-color: #c3c2c2;">
+                          <span class="w-label" style="margin-left:2px;">W</span>
+                        </div>
+                        <div title="Accept Reject"
+                             class="d-flex align-items-center justify-content-center rounded-circle ms-1"
+                             style="width: 20px; height: 20px;
+                                    background-color: {% if row.accepted_Ip_stock or row.few_cases_accepted_Ip_stock %}#0c8249{% else %}#c3c2c2{% endif %};
+                                    color: white; font-weight: bold; line-height: 20px; text-align: center; padding-top: 1px; padding-right: 1px;">
+                          S
+                        </div>
+                      </div>
+                    </td>
+                    <!-- Action (STATIC) -->
+                    <td>
+                      
+                      {% if not row.accepted_Ip_stock and not row.rejected_ip_stock and not row.accepted_tray_scan_status %}
+                         <a href="#" class="edit-qty-btn" data-batch-id="{{ row.batch_id }}">
+                          <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit" style="width: 28px; margin-right: 8px; height: auto"/>
+                        </a>
+                        <a href="#" title="Delete">
+                          <img src="{% static 'assets/icons/bin.png' %}" alt="Delete" style="width: 20px; margin-right: 8px; height: auto" />
+                        </a>
+                      {% else %}
+                        <span title="Edit Disabled" style="opacity: 0.5; pointer-events: none;">
+                          <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit Disabled" style="width: 20px; margin-right: 8px; height: auto; filter: grayscale(1) opacity(0.5);" />
+                        </span>
+                        <span title="Delete Disabled" style="opacity: 0.5; pointer-events: none;">
+                          <img src="{% static 'assets/icons/bin.png' %}" alt="Delete Disabled" style="width: 20px; margin-right: 8px; height: auto; filter: grayscale(1) opacity(0.5);" />
+                        </span>
+                      {% endif %}
+                      
+                                            {% if row.accepted_Ip_stock %}
+                        <span class="btn btn-social-icon-text btn-twitter"
+                              style="background-color: #66bb6a; pointer-events: none; opacity: 0.8; cursor: not-allowed;">
+                          <i class="fa fa-check-circle"></i>Accepted
+                        </span>
+                       
+                        <button type="button" class="btn btn-social-icon-text btn-youtube tray-scan-btn"
+                                disabled
+                                style="opacity: 0.6; pointer-events: none;">
+                          <i class="fa fa-close"></i>Reject
+                        </button>
+                       <img src="{% static 'assets/icons/view.png' %}" alt="View" title="View" style="width: 24px; height: 24px; margin-left: 8px; vertical-align: middle; cursor: pointer;" />
+                      {% elif row.rejected_ip_stock or row.accepted_tray_scan_status %}
+                        <button type="button" class="btn btn-social-icon-text btn-twitter"
+                                style="background-color: #66bb6a; pointer-events: none; opacity: 0.6; cursor: not-allowed;"
+                                disabled>
+                          <i class="fa fa-check-circle"></i>Accept
+                        </button>
+                        <span class="btn btn-social-icon-text btn-youtube"
+                              style="background-color: #e57373; pointer-events: none; opacity: 0.8; cursor: not-allowed;">
+                          <i class="fa fa-times-circle"></i>Rejected
+                        </span>
+                      {% else %}
+                        <button type="button" class="btn btn-social-icon-text btn-twitter"
+                                style="background-color: #66bb6a"
+                                data-lot-id="{{ row.stock_lot_id }}"
+                                {% if not row.ip_person_qty_verified %}disabled{% endif %}>
+                          <i class="fa fa-check-circle"></i>Accept
+                        </button>
+                        <button type="button"
+                                class="btn btn-social-icon-text btn-youtube tray-scan-btn"
+                                data-stock-lot-id="{{ row.stock_lot_id }}"
+                                data-batch-id="{{ row.batch_id }}"
+                                {% if not row.ip_person_qty_verified %}disabled{% endif %}>
+                          <i class="fa fa-close"></i>Reject
+                        </button>
+                      {% endif %}
+                    </td>
+                      <td>
+                      {% if row.few_cases_accepted_Ip_stock and not row.accepted_tray_scan_status %}
+                        <div class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                            style="border: 2px solid #f9a825; background-color: #fff8e1; color: #b26a00; font-size: clamp(0.3rem, 2vw, 0.875rem); white-space: nowrap; padding: 0.3rem;">
+                          Onhold
+                        </div>
+                      {% elif row.accepted_Ip_stock or row.few_cases_accepted_Ip_stock %}
+                        <div class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                            style="border: 2px solid #0d5d17; background-color: #c5f9c2; color: #2f801b; font-size: clamp(0.3rem, 2vw, 0.875rem); white-space: nowrap; padding: 0.3rem;">
+                          Yet to Release
+                        </div>
+                      {% else %}
+                        <div class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                            style="border: 2px solid #f9a825; background-color: #fff8e1; color: #b26a00; font-size: clamp(0.3rem, 2vw, 0.875rem); white-space: nowrap; padding: 0.3rem;">
+                          Yet to Start
+                        </div>
+                      {% endif %}
+                    </td>
+                    <td>
+                      <div
+                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                        style="
+                          border: 2px solid
+                            {% if row.last_process_module == 'Input screening' %}
+                              #0d5d17
+                            {% elif row.last_process_module == 'Brass QC' %}
+                              #f9a825
+                            {% elif row.last_process_module == 'DayPlanning' %}
+                              #1976d2
+                            {% else %}
+                              #9adeed
+                            {% endif %};
+                          background-color:
+                            {% if row.last_process_module == 'Input screening' %}
+                              #c5f9c2
+                            {% elif row.last_process_module == 'Brass QC' %}
+                              #fff8e1
+                            {% elif row.last_process_module == 'DayPlanning' %}
+                              #d1eaff
+                            {% else %}
+                              #d1edf3
+                            {% endif %};
+                          color:
+                            {% if row.last_process_module == 'Input screening' %}
+                              #2f801b
+                            {% elif row.last_process_module == 'Brass QC' %}
+                              #b26a00
+                            {% elif row.last_process_module == 'DayPlanning' %}
+                              #033b5d
+                            {% else %}
+                              #033b5d
+                            {% endif %};
+                          font-size: clamp(0.75rem, 2vw, 0.875rem);
+                          white-space: nowrap;
+                          padding-top: 0.5rem;
+                          padding-bottom: 0.5rem;
+                        "
+                      >
+                        {{ row.last_process_module|default:"N/A" }}
+                      </div>
+                    </td>
+                    <td>
+                        {% if not row.accepted_tray_scan_status or row.accpted_IP_stock %}
+
+                      <!-- VoiceRec with tooltip (audio remark) -->
+                        <a href="#" title="Add Audio Remark" class="remark-tooltip-trigger" style="display: inline-flex; align-items: center; height: 28px; margin-left: 0; position: relative; cursor: pointer;">
+                          <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec" style="width: 20px; height: 20px"/>
+                          <div class="remark-tooltip" style="position: absolute; top: 110%; left: 50%; transform: translateX(-50%); width: 300px; background: #fff; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: 15px; z-index: 1000;">
+                            <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid #fff;"></div>
+                            <!-- Audio recording UI placeholder -->
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                              <button type="button" style="background: #28a745; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fa fa-microphone"></i>
+                              </button>
+                              <span style="font-size: 14px; color: #333;">Hold to record audio</span>
+                            </div>
+                            <div style="text-align: right; margin-top: 10px;">
+                              <button type="button" style="background-color: #007bff; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                                <i class="fa fa-send"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </a>
+
+                                            <a
+                        href="#"
+                        title="Add Remark"
+                        class="remark-tooltip-trigger"
+                        style="display: inline-flex; align-items: center; height: 20px; margin-left: 5px; position: relative; cursor: pointer;"
+                      >
+                        <img
+                          src="{% static 'assets/icons/chat1.png' %}"
+                          alt="Chat"
+                          style="width: 20px; height: 20px"
+                        />
+                        <div
+                          class="remark-tooltip"
+                          style="position: absolute; top: 110%; left: 50%; transform: translateX(-50%); width: 300px; background: #fff; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: 15px; z-index: 1000;"
+                        >
+                          <div
+                            style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid #fff;"
+                          ></div>
+                          <textarea
+                            placeholder="Type your remark..."
+                            style="width: 85%; height: 40px; resize: vertical; border: 1px solid #ccc; padding: 5px; border-radius: 4px; font-family: Arial, sans-serif; font-size: 14px;"
+                            {% if row.IP_pick_remarks %}readonly{% endif %}
+                          >{{ row.IP_pick_remarks|default_if_none:"" }}</textarea>
+                          <div style="text-align: right; margin-top: -35px">
+                            {% if not row.IP_pick_remarks %}
+                            <button
+                              type="button"
+                              style="background-color: #007bff; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 14px;"
+                            >
+                              <i class="fa fa-send"></i>
+                            </button>
+                            {% else %}
+                            <div style="margin-top: 40px; color: #31708f; background: #d9edf7; border: 1px solid #bce8f1; border-radius: 4px; padding: 8px 12px; font-size: 10px; text-align: left;">
+                              <i class="fa fa-info-circle" style="margin-right: 6px;"></i>
+                              Remark already saved and cannot be edited.
+                            </div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </a>
+                       {% else %}
+                      <!-- Audio Remark Icon (disabled) -->
+                      <span title="Disabled after moved" style="display: inline-flex; align-items: center; height: 28px; margin-left: 0; opacity: 0.5; pointer-events: none;">
+                        <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec Disabled" style="width: 20px; height: 20px; filter: grayscale(1) opacity(0.5);" />
+                      </span>
+                      <!-- Chat Remark Icon (disabled) -->
+                      <span title="Disabled after moved" style="display: inline-flex; align-items: center; height: 20px; margin-left: 5px; opacity: 0.5; pointer-events: none;">
+                        <img src="{% static 'assets/icons/chat1.png' %}" alt="Chat Disabled" style="width: 20px; height: 20px; filter: grayscale(1) opacity(0.5);" />
+                      </span>
+                    {% endif %}
+                    </td>
+                    <td class="d-none">
+                      <span class="badge badge-info">{{ row.stock_lot_id }}</span>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              <!-- Tray Scan Details Modal (Left Popup) -->
+              <div id="trayScanModal" class="tray-scan-modal">
+                <div class="tray-scan-modal-content">
+                  <span id="closeTrayScanModal" class="tray-scan-close"
+                    >&times;</span
+                  >
+                  <h3>Tray Scan Details:</h3>
+                  <p id="trayScanModalHeader">Input Screening / <span class="modal-model-no">Model No.</span> / Rejection Window</p>                  <div id="trayScanDetails">
+                    <!-- Dynamic content will be loaded here -->
+                  </div>
+                </div>
+              </div>
+              <!-- New Popup Modal (Right Popup) -->
+              <div id="newPopupModal" class="new-popup-modal" style="display: none;">
+  <div class="tray-scan-modal-content">
+    <span id="closeNewPopupModal" class="tray-scan-close">&times;</span>
+    <div class="modal-top-header" style="display: flex; align-items: center; gap: 20px; padding-bottom: 10px;">
+      <div class="user-profile" style="display: flex; align-items: center; gap: 8px">
+        <img src="{% static 'assets/images/userProfile.png' %}" alt="User Profile" style="border-radius: 50%; width: 50px; height: 50px; object-fit: cover;" />
+        <span>Model No:</span>
+        <h6>(Fetch Dynamically) / Accepted Tray Rescan</h6>
+      </div>
+    </div>
+    <h5 style="text-align: center">Input Screening - Accepted case tray scan table</h5>
+    <div id="trayScanDetails" class="table-grid"></div>
+    <!-- Action buttons at bottom -->
+        
+    <div style="display: flex; justify-content: center; gap: 24px; margin-top: 32px;">
+      <button id="trayScanCancelBtn" type="button" class="btn" style="min-width: 110px; background: #e57373; color: #fff; border: none; border-radius: 22px; font-weight: 600; font-size: 16px;">
+        Cancel
+      </button>
+      <button id="trayScanSubmitBtn" type="button" class="btn" style="min-width: 110px; background: #4caf50; color: #fff; border: none; border-radius: 22px; font-weight: 600; font-size: 16px;">
+        Submit
+      </button>
+    </div>
+  </div>
+</div>
+            </div>
+            
+            <!-- Pagination Section -->
+                        <div class="pagination-wrapper">
+              <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-end mb-0">
+                  {% if page_obj.has_previous %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                    </li>
+                  {% else %}
+                    <li class="page-item disabled">
+                      <a class="page-link" href="#">Previous</a>
+                    </li>
+                  {% endif %}
+            
+                  {% for num in paginator.page_range %}
+                    {% if page_obj.number == num %}
+                      <li class="page-item active">
+                        <a class="page-link" href="#">{{ num }}</a>
+                      </li>
+                    {% else %}
+                      <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+            
+                  {% if page_obj.has_next %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                    </li>
+                  {% else %}
+                    <li class="page-item disabled">
+                      <a class="page-link" href="#">Next</a>
+                    </li>
+                  {% endif %}
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Image Slider Modal (popup) -->
+  <div id="imageSliderModal" class="image-slider-modal">
+    <span id="closeImageSliderModal" class="modal-close">&times;</span>
+    <h3>Visual Aid</h3>
+    <div class="slider" id="slider">
+      <div class="slides" id="slidesContainer">
+        <div class="slide active">
+          <img src="{% static 'assets/images/carousel/banner_1.jpg' %}" alt="Slide 1">
+        </div>
+        <div class="slide">
+          <img src="{% static 'assets/images/carousel/banner_2.jpg' %}" alt="Slide 2">
+        </div>
+        <div class="slide">
+          <img src="{% static 'assets/images/carousel/banner_3.jpg' %}" alt="Slide 3">
+        </div>
+      </div>
+      <button class="prev" id="prevBtn">&#10094;</button>
+      <button class="next" id="nextBtn">&#10095;</button>
+    </div>
+  </div>
+  <!-- Image Slider Modal -->
+  <div id="imageSliderModal" class="image-slider-modal">
+    <span id="closeImageSliderModal" class="modal-close">&times;</span>
+    <div class="slider" id="slider">
+      <button class="prev" id="prevBtn">&#8592;</button>
+      <div class="slides"></div>
+      <button class="next" id="nextBtn">&#8594;</button>
+    </div>
+  </div>
+  {% block script %}
+
+  <script nonce="{{ csp_nonce }}">
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll('.ip-checkbox').forEach(function (checkbox) {
+        const row = checkbox.closest('tr');
+        const lotQtySpan = row.querySelector('.lot-qty');
+        const totalQty = parseInt(lotQtySpan.textContent.trim(), 10);
+        const missingQtyInput = row.querySelector('.missing-qty-input');
+        const physicalQtyInput = row.querySelector('.physical-qty-input');
+    
+        // Enable input on page load if not checked/disabled
+        if (!checkbox.checked && !checkbox.disabled) {
+          missingQtyInput.disabled = false;
+        }
+    
+        // Live update physical qty as user types
+        missingQtyInput.addEventListener('input', function () {
+          let missingQty = parseInt(missingQtyInput.value, 10);
+          if (isNaN(missingQty) || missingQty < 0) {
+            physicalQtyInput.value = totalQty;
+            return;
+          }
+          if (missingQty > totalQty) {
+            missingQtyInput.value = totalQty;
+            missingQty = totalQty;
+          }
+          physicalQtyInput.value = totalQty - missingQty;
+        });
+    
+        checkbox.addEventListener('change', function () {
+          if (checkbox.checked && !checkbox.disabled) {
+            missingQtyInput.disabled = false;
+            missingQtyInput.focus();
+          } else {
+            missingQtyInput.value = '';
+            missingQtyInput.disabled = false;
+            if (physicalQtyInput) physicalQtyInput.value = totalQty;
+          }
+        });
+    
+        // Save on checkbox check
+        checkbox.addEventListener('change', function () {
+          if (!checkbox.checked || checkbox.disabled) return;
+          const lotId = checkbox.getAttribute('data-lot-id');
+          let missingQty = missingQtyInput.value.trim();
+          if (!lotId) {
+            Swal.fire('Error', 'Lot ID not found.', 'error');
+            checkbox.checked = false;
+            return;
+          }
+          if (!missingQty || isNaN(missingQty) || parseInt(missingQty) < 0) {
+            Swal.fire('Error', 'Enter a valid missing quantity.', 'error');
+            checkbox.checked = false;
+            return;
+          }
+          fetch('/inputscreening/save_ip_checkbox/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+              lot_id: lotId,
+              missing_qty: missingQty
+            })
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              checkbox.checked = true;
+              checkbox.disabled = true;
+              missingQtyInput.disabled = true;
+              // Update physical qty
+              if (physicalQtyInput) {
+                physicalQtyInput.value = totalQty - parseInt(missingQty);
+              }
+              // Update process status icon to green
+              const processIcons = row.querySelectorAll('.d-flex > div');
+              if (processIcons.length > 0) {
+                processIcons[0].style.backgroundColor = '#0c8249';
+              }
+             
+
+              
+
+              // Enable Accept and Reject buttons
+              const acceptBtn = row.querySelector('.btn-twitter');
+              const rejectBtn = row.querySelector('.btn-youtube');
+              if (acceptBtn) acceptBtn.disabled = false;
+              if (rejectBtn) rejectBtn.disabled = false;
+            } else {
+              Swal.fire('Error', data.error || 'Failed to save checkbox', 'error');
+              checkbox.checked = false;
+            }
+          })
+          .catch(() => {
+            Swal.fire('Error', 'Network error', 'error');
+            checkbox.checked = false;
+          });
+        });
+      });
+    });
+    </script>
+
+
+    <script nonce="{{ csp_nonce }}">
+  function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+  }
+  </script>
+
+  <!--Accept functioanlity-->
+  <script nonce="{{csp_nonce}}">
+        document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll('.btn-twitter').forEach(function (acceptBtn) {
+        acceptBtn.addEventListener('click', function () {
+          if (acceptBtn.disabled) return;
+          const row = acceptBtn.closest('tr');
+          const lotId = row.querySelector('.ip-checkbox').getAttribute('data-lot-id');
+          fetch('/inputscreening/is_accepted_form/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({ stock_lot_id: lotId })
+          })
+          .then(res => {
+            if (res.redirected) {
+              window.location.href = res.url; // handle Django redirect
+              return;
+            }
+            return res.json();
+          })
+          .then(data => {
+            if (data && data.success) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Accepted successfully!',
+              showConfirmButton: false,
+              timer: 1200
+            }).then(() => {
+              // Change Accept button to "Accepted" and disable it
+                acceptBtn.innerHTML = '<i class="fa fa-check-circle"></i>Accepted';
+                acceptBtn.style.backgroundColor = '#66bb6a';
+                acceptBtn.disabled = true;
+                acceptBtn.style.pointerEvents = 'none';
+                acceptBtn.style.opacity = '0.8';
+                // Disable Reject button as well
+                const rejectBtn = row.querySelector('.btn-youtube');
+                if (rejectBtn) {
+                  rejectBtn.disabled = true;
+                  rejectBtn.style.pointerEvents = 'none';
+                  rejectBtn.style.opacity = '0.6';
+                }
+                // Find the Batch Status cell (adjust index if needed)
+                const batchStatusCell = row.querySelectorAll('td')[row.children.length - 4];
+                if (batchStatusCell) {
+                  batchStatusCell.innerHTML = `
+                    <div class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                        style="border: 2px solid #0d5d17; background-color: #c5f9c2; color: #2f801b; font-size: clamp(0.3rem, 2vw, 0.875rem); white-space: nowrap; padding: 0.3rem;">
+                      Yet to Release
+                    </div>
+                  `;
+                }
+
+                // Find the Current Location cell (adjust index if needed)
+                const currentLocationCell = row.querySelectorAll('td')[row.children.length - 3];
+                if (currentLocationCell) {
+                  currentLocationCell.innerHTML = `
+                    <div class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                         style="border: 2px solid #0d5d17; background-color: #c5f9c2; color: #2f801b; font-size: clamp(0.75rem, 2vw, 0.875rem); white-space: nowrap; padding-top: 0.5rem; padding-bottom: 0.5rem;">
+                      Input screening
+                    </div>
+                  `;
+                }
+                // Update Accept Reject status icon to green
+                const processIcons = row.querySelectorAll('.d-flex > div');
+                if (processIcons.length > 2) {
+                  processIcons[2].style.backgroundColor = '#0c8249';
+                }
+                // ...existing code...
+                
+                
+            });              
+            } else if (data && data.error) {
+              Swal.fire('Error', data.error, 'error');
+            }
+          })
+          .catch(() => {
+            Swal.fire('Error', 'Network error', 'error');
+          });
+        });
+      });
+    });
+  </script>
+  <!-- Table Sorting Script -->
+  <script nonce="{{ csp_nonce }}">
+    document.addEventListener("DOMContentLoaded", function () {
+      const table = document.getElementById("order-listing");
+      if (!table) return;
+      const headers = table.querySelectorAll("thead th");
+      const tbody = table.querySelector("tbody");
+      let sortDirection = {};
+      headers.forEach((header, index) => {
+        header.style.cursor = "pointer";
+        header.addEventListener("click", function () {
+          const rows = Array.from(tbody.querySelectorAll("tr"));
+          const dir = sortDirection[index] === "asc" ? "desc" : "asc";
+          sortDirection[index] = dir;
+          rows.sort((a, b) => {
+            const cellA = a.children[index].textContent.trim();
+            const cellB = b.children[index].textContent.trim();
+            const valA = isNaN(cellA) ? cellA : parseFloat(cellA);
+            const valB = isNaN(cellB) ? cellB : parseFloat(cellB);
+            if (valA < valB) return dir === "asc" ? -1 : 1;
+            if (valA > valB) return dir === "asc" ? 1 : -1;
+            return 0;
+          });
+          tbody.innerHTML = "";
+          rows.forEach((row) => tbody.appendChild(row));
+        });
+      });
+    });
+  </script>
+   <!-- Tray Scan Modal & New Popup Script -->
+  <script nonce="{{ csp_nonce }}">
+    
+  document.addEventListener("DOMContentLoaded", () => {
+    
+  
+    // --- Highlight feature for Accepted View icon ---
+    let highlightedRow = null;
+    let originalRowIndex = null;
+    let originalRowParent = null;
+  
+    // Attach click handler to all view.png icons (Accepted status)
+    document.querySelectorAll('img[alt="View"]').forEach(function(viewIcon) {
+      viewIcon.addEventListener('click', function(e) {
+        const row = viewIcon.closest('tr');
+        if (!row) return;
+        // Remove highlight from any previously highlighted row
+        document.querySelectorAll('.highlighted-tray-scan').forEach(r => r.classList.remove('highlighted-tray-scan'));
+        // Save original row and index
+        highlightedRow = row;
+        originalRowParent = row.parentNode;
+        originalRowIndex = Array.from(originalRowParent.children).filter(n => n.tagName === "TR").indexOf(row);
+        // Move the highlighted row to the top of tbody
+        const firstRow = Array.from(originalRowParent.children).find(n => n.tagName === "TR");
+        if (firstRow && firstRow !== row) {
+          originalRowParent.insertBefore(row, firstRow);
+        }
+        row.classList.add('highlighted-tray-scan');
+      });
+    });
+  
+    // Always restore highlighted row to original position and remove highlight
+    const closeNewPopupBtn = document.getElementById("closeNewPopupModal");
+    if (closeNewPopupBtn) {
+      closeNewPopupBtn.addEventListener("click", function () {
+        if (highlightedRow && originalRowParent) {
+          highlightedRow.classList.remove('highlighted-tray-scan');
+          // Restore to original position if not already there
+          const rows = Array.from(originalRowParent.children).filter(n => n.tagName === "TR");
+          if (originalRowIndex >= 0 && originalRowIndex < rows.length && rows[originalRowIndex] !== highlightedRow) {
+            if (originalRowIndex === rows.length - 1) {
+              originalRowParent.appendChild(highlightedRow);
+            } else {
+              originalRowParent.insertBefore(highlightedRow, rows[originalRowIndex]);
+            }
+          }
+          highlightedRow = null;
+          originalRowIndex = null;
+          originalRowParent = null;
+        }
+      });
+    }
+  
+    
+  });
+  
+  
+    
+    // Helper: Get unique key for this modal instance (e.g., by batchId + lotId)
+    function getTrayScanKey() {
+      
+    }
+    
+  });
+  </script>
+
+
+
+
+  <!-- Script for Text Remarks (unchanged) -->
+  <script nonce="{{ csp_nonce }}">
+    document.addEventListener("DOMContentLoaded", function () {
+      var triggers = document.querySelectorAll(".remark-tooltip-trigger");
+      triggers.forEach(function (trigger) {
+        var tooltip = trigger.querySelector(".remark-tooltip");
+        var sendButton = tooltip ? tooltip.querySelector("button") : null;
+        function showTooltip() {
+          tooltip.style.opacity = "1";
+          tooltip.style.visibility = "visible";
+          var rect = tooltip.getBoundingClientRect();
+          if (rect.right > window.innerWidth) {
+            tooltip.style.left = "auto";
+            tooltip.style.right = "0";
+            tooltip.style.transform = "none";
+          }
+          if (rect.left < 0) {
+            tooltip.style.left = "0";
+            tooltip.style.transform = "none";
+          }
+          var textarea = tooltip.querySelector("textarea");
+          if (textarea) {
+            textarea.focus();
+          }
+        }
+        function hideTooltip() {
+          tooltip.style.opacity = "0";
+          tooltip.style.visibility = "hidden";
+        }
+        trigger.addEventListener("mouseenter", showTooltip);
+        trigger.addEventListener("mouseleave", function () {
+          setTimeout(function () {
+            if (!trigger.matches(":hover") && !tooltip.matches(":hover")) {
+              hideTooltip();
+            }
+          }, 100);
+        });
+        tooltip.addEventListener("mouseleave", function () {
+          setTimeout(function () {
+            if (!tooltip.matches(":hover") && !trigger.matches(":hover")) {
+              hideTooltip();
+            }
+          }, 100);
+        });
+        trigger.addEventListener("click", function (e) {
+          e.preventDefault();
+        });
+        if (sendButton) {
+          sendButton.addEventListener("click", hideTooltip);
+        }
+      });
+    });
+  </script>
+  <!-- Image Slider Script -->
+  <!-- Script for Model / Stock No - Image Mouse Hover -->
+<script nonce="{{ csp_nonce }}">
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.model-hover-trigger').forEach(function(trigger) {
+    const tooltip = trigger.querySelector('.model-image-tooltip');
+    let currentIndex = 0;
+    let tooltipPinned = false;
+    const images = Array.from(tooltip.querySelectorAll('.img-gallery img'));
+
+    function showImages(start) {
+      images.forEach((img, i) => {
+        img.style.display = (i >= start && i < start + 3) ? 'block' : 'none';
+      });
+    }
+    showImages(currentIndex);
+
+    trigger.addEventListener('mouseenter', function() {
+      if (!tooltipPinned) {
+        tooltip.style.opacity = '1';
+        tooltip.style.pointerEvents = 'auto';
+      }
+    });
+    trigger.addEventListener('mouseleave', function() {
+      if (!tooltipPinned) {
+        tooltip.style.opacity = '0';
+        tooltip.style.pointerEvents = 'none';
+      }
+    });
+    tooltip.addEventListener('mouseenter', function() {
+      if (!tooltipPinned) {
+        tooltip.style.opacity = '1';
+        tooltip.style.pointerEvents = 'auto';
+      }
+    });
+    tooltip.addEventListener('mouseleave', function() {
+      if (!tooltipPinned) {
+        tooltip.style.opacity = '0';
+        tooltip.style.pointerEvents = 'none';
+      }
+    });
+
+    // Pin tooltip on click
+    trigger.addEventListener('click', function(e) {
+      e.preventDefault();
+      tooltipPinned = true;
+      tooltip.style.opacity = '1';
+      tooltip.style.pointerEvents = 'auto';
+    });
+
+    // Unpin tooltip if user clicks outside
+    document.addEventListener('mousedown', function(e) {
+      if (!trigger.contains(e.target) && !tooltip.contains(e.target)) {
+        tooltipPinned = false;
+        tooltip.style.opacity = '0';
+        tooltip.style.pointerEvents = 'none';
+      }
+    });
+
+    tooltip.querySelector('.img-scroll-left').addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (currentIndex > 0) {
+        currentIndex--;
+        showImages(currentIndex);
+      }
+    });
+    tooltip.querySelector('.img-scroll-right').addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (currentIndex < images.length - 3) {
+        currentIndex++;
+        showImages(currentIndex);
+      }
+    });
+
+    // Add click event to images for modal slider
+    images.forEach(function(img, idx) {
+      img.style.cursor = 'pointer';
+      img.addEventListener('click', function(e) {
+        e.stopPropagation();
+        openImageSlider(images.map(i => i.src), idx);
+      });
+    });
+  });
+
+  // Modal slider functions
+  const modal = document.getElementById("imageSliderModal");
+  const closeModal = document.getElementById("closeImageSliderModal");
+  const slidesContainer = modal.querySelector(".slides");
+  let sliderImages = [];
+  let currentSlide = 0;
+
+  function openImageSlider(srcArray, startIdx) {
+    sliderImages = srcArray;
+    slidesContainer.innerHTML = '';
+    sliderImages.forEach(src => {
+      const slide = document.createElement('div');
+      slide.className = 'slide';
+      const img = document.createElement('img');
+      img.src = src;
+      slide.appendChild(img);
+      slidesContainer.appendChild(slide);
+    });
+    currentSlide = startIdx;
+    showSlide(currentSlide);
+    modal.classList.add('open');
+  }
+
+  function showSlide(n) {
+    const slides = slidesContainer.querySelectorAll('.slide');
+    if (!slides.length) return;
+    currentSlide = (n + slides.length) % slides.length;
+    slides.forEach((slide, idx) => {
+      slide.classList.toggle('active', idx === currentSlide);
+    });
+  }
+
+  modal.querySelector("#prevBtn").addEventListener("click", function(e) {
+    e.stopPropagation();
+    showSlide(currentSlide - 1);
+  });
+  modal.querySelector("#nextBtn").addEventListener("click", function(e) {
+    e.stopPropagation();
+    showSlide(currentSlide + 1);
+  });
+  closeModal.addEventListener("click", function() {
+    modal.classList.remove("open");
+  });
+  modal.addEventListener("click", function(e) {
+    if (e.target === modal) modal.classList.remove("open");
+  });
+});
+</script>
+
+ <script nonce="{{ csp_nonce }}">
+    document.addEventListener("DOMContentLoaded", function () {
+      var triggers = document.querySelectorAll(".remark-tooltip-trigger");
+      triggers.forEach(function (trigger) {
+        var tooltip = trigger.querySelector(".remark-tooltip");
+        var sendButton = tooltip ? tooltip.querySelector("button") : null;
+        function showTooltip() {
+          tooltip.style.opacity = "1";
+          tooltip.style.visibility = "visible";
+          var rect = tooltip.getBoundingClientRect();
+          if (rect.right > window.innerWidth) {
+            tooltip.style.left = "auto";
+            tooltip.style.right = "0";
+            tooltip.style.transform = "none";
+          }
+          if (rect.left < 0) {
+            tooltip.style.left = "0";
+            tooltip.style.transform = "none";
+          }
+          var textarea = tooltip.querySelector("textarea");
+          if (textarea) {
+            textarea.focus();
+          }
+        }
+        function hideTooltip() {
+          tooltip.style.opacity = "0";
+          tooltip.style.visibility = "hidden";
+        }
+        trigger.addEventListener("mouseenter", showTooltip);
+        trigger.addEventListener("mouseleave", function () {
+          setTimeout(function () {
+            if (!trigger.matches(":hover") && !tooltip.matches(":hover")) {
+              hideTooltip();
+            }
+          }, 100);
+        });
+        tooltip.addEventListener("mouseleave", function () {
+          setTimeout(function () {
+            if (!tooltip.matches(":hover") && !trigger.matches(":hover")) {
+              hideTooltip();
+            }
+          }, 100);
+        });
+        trigger.addEventListener("click", function (e) {
+          e.preventDefault();
+        });
+        if (sendButton) {
+          sendButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            // Find the textarea and get its value
+            var textarea = tooltip.querySelector("textarea");
+            var remark = textarea ? textarea.value.trim() : "";
+            if (!remark) {
+              Swal.fire('Error', 'Please enter a remark before sending.', 'error');
+              return;
+            }
+            // Find the batch_id from the row (tr) data attribute or from a hidden field
+            var row = trigger.closest("tr");
+            var trayScanLink = row ? row.querySelector('.tray-scan-btn') : null;
+            var batchId = row ? row.getAttribute('data-batch-id') : null;
+            if (!batchId) {
+              Swal.fire('Error', 'Batch ID not found.', 'error');
+              return;
+            }
+            fetch('/inputscreening/save_ip_pick_remark/', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+              },
+              body: JSON.stringify({
+                batch_id: batchId,
+                remark: remark
+              })
+            })
+            .then(res => res.json())
+            .then(data => {
+              if (data.success) {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Remark saved!',
+                  timer: 1200,
+                  showConfirmButton: false
+                }).then(() => {
+                  // Make the textarea readonly
+                  if (textarea) {
+                    textarea.setAttribute("readonly", true);
+                  }
+
+                  // Replace send button with info message
+                  if (sendButton && tooltip) {
+                    const infoDiv = document.createElement("div");
+                    infoDiv.style.marginTop = "40px";
+                    infoDiv.style.color = "#31708f";
+                    infoDiv.style.background = "#d9edf7";
+                    infoDiv.style.border = "1px solid #bce8f1";
+                    infoDiv.style.borderRadius = "4px";
+                    infoDiv.style.padding = "8px 12px";
+                    infoDiv.style.fontSize = "10px";
+                    infoDiv.style.textAlign = "left";
+                    infoDiv.innerHTML = `
+                      <i class="fa fa-info-circle" style="margin-right: 6px;"></i>
+                      Remark already saved and cannot be edited.
+                    `;
+                    sendButton.parentNode.replaceChild(infoDiv, sendButton);
+                  }
+
+                  hideTooltip(); // optional if you still want to hide the tooltip
+                });
+
+              } else {
+                Swal.fire('Error', data.error || 'Failed to save remark', 'error');
+              }
+            })
+            .catch(() => {
+              Swal.fire('Error', 'Network error', 'error');
+            });
+          });
+        }
+      });
+    });
+  </script>
+
+   <script nonce="{{ csp_nonce }}">
+    document.addEventListener("DOMContentLoaded", function () {
+
+      const cancelBtn = document.getElementById("trayScanCancelBtn");
+      if (cancelBtn) {
+        cancelBtn.addEventListener("click", function () {
+          const modal = document.getElementById("trayScanModal");
+          if (modal) modal.classList.remove("open");
+        });
+      }
+
+       // DELETE BUTTON HANDLER
+      document.querySelectorAll('a[title="Delete"]').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const row = btn.closest('tr');
+          if (!row) return;
+          // Get stock_lot_id from the row's data attribute
+          const stockLotId = row.getAttribute('data-stock-lot-id');
+          if (!stockLotId) {
+            Swal.fire('Error', 'Stock Lot ID not found!', 'error');
+            return;
+          }
+          Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you really want to delete this batch?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              fetch('/inputscreening/ip_delete_batch/', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ stock_lot_id: stockLotId })
+              })
+              .then(res => res.json())
+              .then(data => {
+                if (data.success) {
+                  row.remove();
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: 'Batch has been deleted.',
+                    timer: 1200,
+                    showConfirmButton: false
+                  });                  
+                } else {
+                  Swal.fire('Error', data.error || 'Delete failed', 'error');
+                }
+              });
+            }
+          });
+        });
+      });
+
+      document.querySelectorAll('.edit-qty-btn').forEach(function(btn) {
+          btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const row = btn.closest('tr');
+            if (!row) return;
+            const qtyCell = row.querySelector('.physical-qty-input');
+            if (!qtyCell) return;
+            const batchId = btn.getAttribute('data-batch-id');
+            const oldValue = qtyCell.value.trim();
+            // Prevent multiple inputs
+            if (qtyCell.hasAttribute('data-editing')) return;
+            qtyCell.setAttribute('data-editing', 'true');
+            qtyCell.readOnly = false;
+            qtyCell.focus();
+            qtyCell.select();
+        
+            qtyCell.addEventListener('keydown', function(ev) {
+              if (ev.key === 'Enter') {
+                const newValue = qtyCell.value.trim();
+                if (!newValue || isNaN(newValue) || parseInt(newValue) <= 0) {
+                  Swal.fire('Error', 'Enter a valid quantity.', 'error');
+                  qtyCell.value = oldValue;
+                  qtyCell.readOnly = true;
+                  qtyCell.removeAttribute('data-editing');
+                  return;
+                }
+                fetch('/inputscreening/ip_update_batch_quantity/', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                  },
+                  body: JSON.stringify({ batch_id: batchId, dp_physical_qty: newValue })
+                })
+                .then(res => res.json())
+                .then(data => {
+                  if (data.success) {
+                    qtyCell.value = newValue;
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'Quantity updated!',
+                      timer: 1200,
+                      showConfirmButton: false
+                     }).then(() => {
+                      location.reload(); // Reloads the page after the alert closes
+                    });
+                  } else {
+                    Swal.fire('Error', data.error || 'Update failed', 'error');
+                    qtyCell.value = oldValue;
+                  }
+                  qtyCell.readOnly = true;
+                  qtyCell.removeAttribute('data-editing');
+                })
+                .catch(() => {
+                  Swal.fire('Error', 'Network error', 'error');
+                  qtyCell.value = oldValue;
+                  qtyCell.readOnly = true;
+                  qtyCell.removeAttribute('data-editing');
+                });
+              }
+              if (ev.key === 'Escape') {
+                qtyCell.value = oldValue;
+                qtyCell.readOnly = true;
+                qtyCell.removeAttribute('data-editing');
+              }
+            });
+        
+            qtyCell.addEventListener('blur', function() {
+              qtyCell.value = oldValue;
+              qtyCell.readOnly = true;
+              qtyCell.removeAttribute('data-editing');
+            }, { once: true });
+          });
+        });
+    
+
+
+      const table = document.getElementById("order-listing");
+      if (!table) {
+        console.warn("Table with ID 'order-listing' not found.");
+        return;
+      }
+
+      const headers = table.querySelectorAll("thead th");
+      const tbody = table.querySelector("tbody");
+
+      let sortDirection = {};
+
+      headers.forEach((header, index) => {
+        header.style.cursor = "pointer";
+
+        header.addEventListener("click", function () {
+          const rows = Array.from(tbody.querySelectorAll("tr"));
+          const dir = sortDirection[index] === "asc" ? "desc" : "asc";
+          sortDirection[index] = dir;
+
+          rows.sort((a, b) => {
+            const cellA = a.children[index].textContent.trim();
+            const cellB = b.children[index].textContent.trim();
+            const valA = isNaN(cellA) ? cellA : parseFloat(cellA);
+            const valB = isNaN(cellB) ? cellB : parseFloat(cellB);
+
+            if (valA < valB) return dir === "asc" ? -1 : 1;
+            if (valA > valB) return dir === "asc" ? 1 : -1;
+            return 0;
+          });
+
+          tbody.innerHTML = "";
+          rows.forEach((row) => tbody.appendChild(row));
+        });
+      });
+    });
+  </script>
+
+  <!-- Script for Wiping Status - Radio Button active/inactive-->
+   <script nonce="{{ csp_nonce }}">
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll('.process-status-w').forEach(function(radio) {
+    radio.addEventListener('change', function() {
+      if (radio.checked) {
+        radio.style.accentColor = "#0c8249"; // green when selected
+      } else {
+        radio.style.accentColor = "#c3c2c2"; // grey when unselected
+      }
+    });
+    // Set initial color
+    if (radio.checked) {
+      radio.style.accentColor = "#0c8249";
+    } else {
+      radio.style.accentColor = "#c3c2c2";
+    }
+  });
+});
+</script>
+
+
+<script nonce="{{ csp_nonce }}">
+document.addEventListener("DOMContentLoaded", function() {
+  let originalRowIndex = null;
+  let movedRow = null;
+  let placeholderRow = null;
+
+  document.querySelectorAll('img[alt="View"]').forEach(function(viewIcon) {
+    viewIcon.addEventListener('click', function(event) {
+      document.querySelectorAll('tbody tr').forEach(function(row) {
+        row.classList.remove('highlighted-tray-scan');
+      });
+      var row = event.target.closest('tr');
+      if (row && row.parentNode) {
+        const tbody = row.parentNode;
+        if (tbody.firstElementChild !== row) {
+          if (movedRow && placeholderRow && placeholderRow.parentNode) {
+            placeholderRow.parentNode.insertBefore(movedRow, placeholderRow);
+            placeholderRow.parentNode.removeChild(placeholderRow);
+            movedRow.classList.remove('highlighted-tray-scan');
+            movedRow = null;
+            placeholderRow = null;
+            originalRowIndex = null;
+          }
+          originalRowIndex = Array.from(tbody.children).indexOf(row);
+          movedRow = row;
+          placeholderRow = document.createElement('tr');
+          placeholderRow.style.display = 'none';
+          tbody.insertBefore(placeholderRow, tbody.children[originalRowIndex]);
+          tbody.insertBefore(row, tbody.firstElementChild);
+        }
+        row.classList.add('highlighted-tray-scan');
+      }
+    });
+  });
+
+  var closeBtn = document.getElementById('closeNewPopupModal');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', function() {
+      if (movedRow && placeholderRow && placeholderRow.parentNode) {
+        placeholderRow.parentNode.insertBefore(movedRow, placeholderRow);
+        placeholderRow.parentNode.removeChild(placeholderRow);
+        movedRow.classList.remove('highlighted-tray-scan');
+        movedRow = null;
+        placeholderRow = null;
+        originalRowIndex = null;
+      }
+      document.querySelectorAll('tbody tr').forEach(function(row) {
+        row.classList.remove('highlighted-tray-scan');
+      });
+    });
+  }
+});
+</script>
+
+<script nonce="{{ csp_nonce }}">
+// Row highlight for Tray Scan (matches DP_PickTable.html logic) + Move active row to top and restore on close
+document.addEventListener("DOMContentLoaded", function() {
+  // Add highlight style if not present
+  if (!document.getElementById('is-row-action-highlight-style')) {
+    var style = document.createElement('style');
+    style.id = 'is-row-action-highlight-style';
+    style.innerHTML = `
+      .highlighted-tray-scan {
+        transition: box-shadow 1.3s;
+        background-color: #b3e6ff !important;
+        animation: highlightAnimation 2s ease-in-out;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  let originalRowIndex = null;
+  let movedRow = null;
+  let placeholderRow = null;
+
+  document.querySelectorAll('img[alt="View"]').forEach(function(viewIcon) {
+    viewIcon.addEventListener('click', function(event) {
+      // Remove highlight from all rows
+      document.querySelectorAll('tbody tr').forEach(function(row) {
+        row.classList.remove('is-row-action-highlight');
+      });
+      // Move the clicked row to the top and highlight
+      var row = event.target.closest('tr');
+      if (row && row.parentNode) {
+        const tbody = row.parentNode;
+        // Only move if not already at top
+        if (tbody.firstElementChild !== row) {
+          // If a previous move exists, restore it first
+          if (movedRow && placeholderRow && placeholderRow.parentNode) {
+            placeholderRow.parentNode.insertBefore(movedRow, placeholderRow);
+            placeholderRow.parentNode.removeChild(placeholderRow);
+            movedRow.classList.remove('is-row-action-highlight');
+            movedRow = null;
+            placeholderRow = null;
+            originalRowIndex = null;
+          }
+          // Store original index and row
+          originalRowIndex = Array.from(tbody.children).indexOf(row);
+          movedRow = row;
+          // Insert a placeholder at the original position
+          placeholderRow = document.createElement('tr');
+          placeholderRow.style.display = 'none';
+          tbody.insertBefore(placeholderRow, tbody.children[originalRowIndex]);
+          // Move row to top
+          tbody.insertBefore(row, tbody.firstElementChild);
+        }
+        row.classList.add('is-row-action-highlight');
+      }
+    });
+  });
+
+  // On modal close, restore row to original position and remove highlight
+  var closeBtn = document.getElementById('closeNewPopupModal');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', function() {
+      if (movedRow && placeholderRow && placeholderRow.parentNode) {
+        placeholderRow.parentNode.insertBefore(movedRow, placeholderRow);
+        placeholderRow.parentNode.removeChild(placeholderRow);
+        movedRow.classList.remove('is-row-action-highlight');
+        movedRow = null;
+        placeholderRow = null;
+        originalRowIndex = null;
+      }
+      // Also remove highlight from any row just in case
+      document.querySelectorAll('tbody tr').forEach(function(row) {
+        row.classList.remove('is-row-action-highlight');
+        row.classList.remove('highlighted-tray-scan');
+      });
+    });
+  }
+});
+</script>
+
+
+
+<!-- Tray Scan child screen navigating via view.png -->
+
+<script nonce="{{ csp_nonce }}">
+document.addEventListener("DOMContentLoaded", function () {
+
+  document.querySelectorAll('img[alt="View"]').forEach(function(viewIcon) {
+    viewIcon.addEventListener('click', async function(e) {
+      e.preventDefault();
+
+      // Get modal elements
+      const modal = document.getElementById("newPopupModal");
+      const detailsDiv = modal.querySelector("#trayScanDetails");
+      const modalHeader = modal.querySelector("h5");
+      const userProfile = modal.querySelector(".user-profile h6");
+
+      // Get data attributes from the row
+      const row = viewIcon.closest('tr');
+      const batchId = row.getAttribute('data-batch-id');
+      const modelNo = row.querySelector('td:nth-child(3)')?.innerText?.trim() || '';
+      const noOfTrays = parseInt(row.querySelector('td:nth-child(9)')?.innerText) || 0;
+      const trayCapacity = row.querySelector('td:nth-child(8)')?.innerText?.split(' ').pop() || "";
+      let trayQtyList = [];
+      try {
+        trayQtyList = JSON.parse(row.getAttribute('data-tray-qty-list') || "[]");
+      } catch (e) {
+        trayQtyList = [];
+      }
+
+      // Set model number in modal header
+      if (userProfile && modelNo) {
+        userProfile.innerHTML = `${modelNo} / Accepted Tray Rescan`;
+      }
+
+                // Set modal title with redo icon, making it responsive and not absolutely positioned for better mobile support
+          if (modalHeader) {
+            modalHeader.innerHTML = `
+              <span style="display: inline-block;">Input Screening - Tray Scan</span>
+              <span style="float: right; display: inline-flex; align-items: center;">
+                <img id="redoTrayScanBtn"
+                     src="{% static 'assets/icons/redo2.png' %}"
+                     alt="Redo"
+                     title="Redo by Clear Tray ID"
+                     style="width: 26px; height: 26px; cursor: pointer; vertical-align: middle; margin-left: -50px;" />
+              </span>
+            `;
+          }
+
+
+                    // Tray Id - Clearing (REDO button)
+          setTimeout(function() {
+            const redoBtn = document.getElementById('redoTrayScanBtn');
+            if (redoBtn) {
+              redoBtn.onclick = function() {
+                const detailsDiv = document.getElementById('trayScanDetails');
+                if (!detailsDiv) return;
+                // Tray ID is the 2nd column: header is index 1, then every 4th after (skip header row)
+                Array.from(detailsDiv.children).forEach((div, idx) => {
+                  if (idx % 4 === 1 && idx > 3) {
+                    div.textContent = '';
+                  }
+                });
+              };
+            }
+          }, 100);
+
+   
+      // Fetch tray data (readonly)
+      let traysData = [];
+      try {
+        const resp = await fetch(`/inputscreening/tray_id_list/?batch_id=${encodeURIComponent(batchId)}`);
+        const result = await resp.json();
+        if (result.success && Array.isArray(result.trays) && result.trays.length > 0) {
+          traysData = result.trays;
+        }
+      } catch (e) {}
+
+      // Build modal content as a table-grid (4 columns, Tray Validation Status as 4th column)
+      let html = `
+        <div style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">S.no</div>
+        <div style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">Tray ID</div>
+        <div style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">Tray Qty</div>
+        <div style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">Tray Validation Status</div>
+      `;
+      
+            // ...inside your <script nonce="{{ csp_nonce }}"> for tray scan modal...
+      // Replace the for loop that builds the modal grid rows with this:
+      
+      let totalRows = Math.max(noOfTrays, traysData.length);
+      for (let i = 0; i < totalRows; i++) {
+        const tray = traysData[i] || {};
+        const trayId = tray.tray_id || `Tray${String(i + 1).padStart(3, '0')}`;
+        const trayQty = tray.tray_quantity || trayQtyList[i] || trayCapacity;
+        html += `
+          <div style="border: 1px solid #ccc; padding: 8px;">${i + 1}</div>
+          <div style="border: 1px solid #ccc; padding: 8px;">${trayId}</div>
+          <div style="border: 1px solid #ccc; padding: 8px;">
+            ${
+              i === 0
+                ? `<span>${trayQty}</span>
+                   <input type="checkbox" id="checkTrayQty1" style="width:20px; height:20px; vertical-align:middle; margin-left:8px;" />
+                   <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit" title="Edit" style="width:20px; height:20px; margin-left:6px; cursor:pointer; vertical-align:middle;" />`
+                : trayQty
+            }
+          </div>
+          <div style="border: 1px solid #ccc; padding: 8px;">
+            <img src="{% static 'assets/icons/fail.png' %}" alt="Fail" title="Fail" style="width:18px; height:18px; margin-right:6px; vertical-align:middle;" />
+            <img src="{% static 'assets/icons/pass.png' %}" alt="Pass" title="Pass" style="width:18px; height:18px; vertical-align:middle;" />
+          </div>
+        `;
+      }
+      detailsDiv.classList.add('table-grid');
+      detailsDiv.style.gridTemplateColumns = 'repeat(4, 1fr)';
+      detailsDiv.innerHTML = html;
+
+      // Show the modal and increase width/height
+      modal.style.display = "block";
+      modal.classList.add("open");
+      modal.style.width = "700px";
+      modal.style.height = "80vh";
+      modal.style.right = "0";
+      modal.style.top = "40px";
+      modal.style.maxHeight = "90vh";
+    });
+  });
+
+  // Close handler for the read-only modal
+  const closeBtn = document.getElementById("closeNewPopupModal");
+  if (closeBtn) {
+    closeBtn.addEventListener("click", function () {
+      const modal = document.getElementById("newPopupModal");
+      if (modal) {
+        modal.classList.remove("open");
+        modal.style.display = "none";
+        modal.style.width = "";
+        modal.style.height = "";
+        modal.style.right = "";
+        modal.style.top = "";
+        modal.style.maxHeight = "";
+      }
+    });
+  }
+
+  // Submit button handler (example: you can add your own logic)
+  document.addEventListener('click', function(e) {
+    if (e.target && e.target.id === 'trayScanSubmitBtn') {
+      // Example: get edited value and checked state
+      const qtyInput = document.getElementById('editTrayQty');
+      const checkInput = document.getElementById('checkTrayQty');
+      if (qtyInput && checkInput) {
+        const qty = qtyInput.value;
+        const checked = checkInput.checked;
+        // TODO: Add your submit logic here (AJAX, validation, etc)
+        alert('Submitted! Qty: ' + qty + ', Checked: ' + checked);
+      }
+      // Optionally close modal
+      // document.getElementById("newPopupModal").classList.remove("open");
+      // document.getElementById("newPopupModal").style.display = "none";
+    }
+  });
+
+  
+  // Tray Validate button (optional, if you want to show it)
+  // Add this button dynamically if not present
+  const modal = document.getElementById("newPopupModal");
+  if (modal && !modal.querySelector("#trayValidateBtn")) {
+    const btn = document.createElement("button");
+    btn.id = "trayValidateBtn";
+    btn.type = "button";
+    btn.innerHTML = `<img src="{% static 'assets/icons/validate.png' %}" alt="Validate" style="width: 20px; height: 20px; margin-right: 4px;" />Tray Validate`;
+    btn.style.cssText = "display: flex; align-items: center; gap: 6px; background: #f5faff; border: 1px solid #023E4DCC; color: #023E4DCC; border-radius: 20px; padding: 4px 14px; font-size: 13px; font-weight: 500; cursor: pointer; margin-bottom: 10px;";
+    const header = modal.querySelector(".modal-top-header");
+    if (header) header.appendChild(btn);
+  }
+});
+</script>
+
+
+<!-- Script for clearing "Tray ID" -->
+<script nonce="{{ csp_nonce }}">
+document.addEventListener("click", function(e) {
+  // Only act on the editable modal's redo button
+  if (e.target && e.target.id === "trayScanRedoBtn") {
+    // Find the editable tray scan modal grid
+    var detailsDiv = document.getElementById("trayScanDetails");
+    if (!detailsDiv) return;
+    // Find all text inputs (Tray ID) that are NOT readonly
+    var trayIdInputs = detailsDiv.querySelectorAll('input[type="text"]:not([readonly])');
+    trayIdInputs.forEach(function(input) {
+      input.value = "";
+    });
+  }
+});
+</script>
+
+{% endblock %} {% endblock content %}
+</div>

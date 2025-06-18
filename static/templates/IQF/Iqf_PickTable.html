@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 <style>
-  /* Base Styles for Popups */
-   .tray-scan-modal-IQF h5 {
+/* Center and style the tray scan table title */
+   .tray-scan-modal-BQ h5 {
    text-align: center !important;
    margin: 0 auto 8px auto !important;
    font-size: 1.15rem !important;
@@ -9,23 +9,23 @@
    width: 100%;
    display: block;
    }
-   #trayScanDetails_IQF.table-grid > div.tray-validation-status-header {
+   #trayScanDetails_BQ.table-grid > div.tray-validation-status-header {
    background-color: #e0f7fa !important;
    font-weight: bold !important;
-   color: #023E4DCC !important;
+   color: #028084 !important;
    }
-   #trayScanDetails_IQF.table-grid > div.tray-validation-status-cell {
+   #trayScanDetails_BQ.table-grid > div.tray-validation-status-cell {
    background-color: #f1fcff !important;
    font-weight: bold !important;
-   color: #023E4DCC !important;
+   color: #028084 !important;
    }
       /* When modal is active, dim the content */
-   .tray-scan-modal-IQF.active ~ .content-wrapper {
+   .tray-scan-modal-BQ.active ~ .content-wrapper {
    opacity: 0.3;
    pointer-events: none; /* Optional: disable interaction */
    }
-   /* trayScanDetails_IQF 3-column grid with scroll */
-   #trayScanDetails_IQF.table-grid {
+   /* trayScanDetails_BQ 3-column grid with scroll */
+   #trayScanDetails_BQ.table-grid {
    display: grid !important; /* override any existing grid or flex */
    grid-template-columns: repeat(4, 1fr) !important; /* Table column max limit */
    gap: 0px !important;
@@ -34,8 +34,8 @@
    padding-right: 10px; /* prevent scrollbar overlay */
    margin-top: 10px;
    }
-   /* Styling individual grid cells, only inside trayScanDetails_IQF */
-   #trayScanDetails_IQF.table-grid > div {
+   /* Styling individual grid cells, only inside trayScanDetails_BQ */
+   #trayScanDetails_BQ.table-grid > div {
    background: #f7f7f7;
    padding: 8px 12px;
    font-size: 12px;
@@ -43,8 +43,8 @@
    margin: 0; /* reset any margin from 
    <p> or others */
       }
-      /* Sticky header row: first 3 divs inside trayScanDetails_IQF */
-      #trayScanDetails_IQF.table-grid > div:nth-child(-n + 3) {
+      /* Sticky header row: first 3 divs inside trayScanDetails_BQ */
+      #trayScanDetails_BQ.table-grid > div:nth-child(-n + 3) {
       background-color: #e0e0e0;
       font-weight: 600;
       position: sticky;
@@ -53,21 +53,21 @@
       align-items: center;
       }
       /* Override only when modal is open */
-      .tray-scan-modal-IQF.open {
+      .tray-scan-modal-BQ.open {
       width: 600px; /* your desired expanded width */
       margin-right: 20px;
       }
       /* Keep it hidden with negative offset matching default width */
-      .tray-scan-modal-IQF {
+      .tray-scan-modal-BQ {
       right: -500px; /* must match the new width above to stay hidden properly */
       }
-      #trayScanModal_IQF {
+      #trayScanModal_BQ {
       border-radius: 12px;
       max-height: 90vh;
       top: 40px; /* Moves the entire modal down from the top of the viewport */
       height: calc(100% - 40px); /* Keeps height correct */
       }
-      #trayScanDetails_IQF {
+      #trayScanDetails_BQ {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
@@ -75,14 +75,14 @@
       }
       /* Make each 
    <p> act like a table cell */
-      #trayScanDetails_IQF p {
+      #trayScanDetails_BQ p {
       margin: 0;
       padding: 4px 8px;
       background: #f7f7f7;
       border-radius: 6px;
       font-size: 14px;
       }
-      .tray-scan-modal-IQF {
+      .tray-scan-modal-BQ {
       position: fixed;
       top: 0;
       right: -400px; /* Hidden by default */
@@ -96,10 +96,10 @@
       padding: 20px;
       font-family: Arial, sans-serif;
       }
-      .tray-scan-modal-IQF.open {
+      .tray-scan-modal-BQ.open {
       right: 0; /* Slide in */
       }
-      .tray-scan-modal-IQF-content {
+      .tray-scan-modal-BQ-content {
       position: relative;
       height: 100%;
       }
@@ -153,14 +153,14 @@
         }
  #order-listing thead th {
   height: 38px !important; /* Increase as needed */
-  background: #023E4DCC !important; /* existing bg */
+  background: #028084 !important; /* existing bg */
   color: #e5fcff !important;      /* existing color */
   vertical-align: middle !important;
   
 }
 thead th {
   height: 38px !important; /* Increase as needed */
-  background: #023E4DCC !important; /* existing bg */
+  background: #028084 !important; /* existing bg */
   color: #e5fcff !important;      /* existing color */
   vertical-align: middle !important;
   
@@ -250,7 +250,6 @@ thead th {
     z-index: 2;
     align-items: center;
   }
-    
   /* Override only when modal is open */
   .tray-scan-modal.open {
     width: 600px; /* your desired expanded width */
@@ -270,6 +269,7 @@ thead th {
     grid-template-columns: 1fr 1fr;
     gap: 12px;
   }
+
   .ms-2{
         margin-top: 8px;
   }
@@ -428,7 +428,7 @@ thead th {
   .image-slider-modal.open {
     display: block;
   }
-  .modal-close {
+  .modal-close-BQ {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -436,7 +436,7 @@ thead th {
     cursor: pointer;
     color: #666;
   }
-  .modal-close:hover {
+  .modal-close-BQ:hover {
     color: #333;
   }
   /* Slider styles */
@@ -489,129 +489,7 @@ thead th {
     .slider { height: 250px; }
     .slide img { height: 250px; }
   }
-  /* Base Styles for Popups */
-  .avatar-group {
-  display: flex;
-  align-items: center;
-    }
 
-    .avatar {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    color: white;
-    font-weight: bold;
-    font-family: Arial, sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: -3px;
-    z-index: 1;
-    box-shadow: 0 0 0 2px white;
-    }
-
-    .avatar:first-child {
-    margin-left: 0;
-    }
-
-    .blue   { background-color: #1e88e5; } /* D */
-    .green  { background-color: #43a047; } /* S */
-    .purple { background-color: #8e24aa; } /* T */
-    .orange { background-color: #fb8c00; } /* F */
-    .teal   { background-color: #4dd0e1; } /* A */
-    .gray   {
-        background-color: #d3d3d3;
-        color: #666;
-        font-size: 20px;
-        margin-left: 5px;
-        width: 10px;
-        height: 10px;
-    }
-
-    .arrow {
-        font-size: 10px;
-        line-height: 1;
-        align-items: center;
-        display: flex;
-        justify-content: center;
-        margin-top: -3px;
-    }
-
-        /* Add smooth transition for margin and scaling */
-                                .avatar {
-                                    transition: margin 0.3s ease, transform 0.3s ease;
-                                }
-                                /* When hovering over the avatar group, adjust the margin to show full circles */
-                                .avatar-group:hover .avatar:not(:first-child) {
-                                    margin-left: 5px;
-                                }
-                                /* Additionally, scale up individual avatar on hover */
-                                .avatar:hover {
-                                    transform: scale(1.1);
-                                }
-    /* Rejection Popup Modal Styling */
-    .new-popup-modal {
-        display: none;
-        position: fixed;
-        top: 50px;
-        right: 20px;
-        width: 400px;
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        padding: 20px;
-        z-index: 10000;
-        transition: right 0.3s ease, opacity 0.3s ease;
-    }
-    .new-popup-modal.open {
-        display: block;
-    }
-    .tray-scan-close {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        font-size: 24px;
-        font-weight: bold;
-        cursor: pointer;
-        color: #666;
-    }
-    .tray-scan-close:hover {
-        color: #333;
-    }
-    /* Modal Header */
-    .modal-title {
-        margin-top: 0;
-        margin-bottom: 15px;
-        padding-bottom: 8px;
-        border-bottom: 2px solid #117057;
-        color: #117057;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        font-size: 18px;
-    }
-    /* Rejection Content & Table Styles */
-    .rejection-content {
-        max-height: 300px;
-        overflow-y: auto;
-    }
-    .rejection-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    .rejection-table th,
-    .rejection-table td {
-        border: 1px solid #ddd;
-        padding: 10px;
-        text-align: center;
-        font-size: 14px;
-    }
-    .rejection-table thead {
-        background-color: #117057;
-        color: #fff;
-    }
-    .rejection-table tbody tr:nth-child(even) {
-        background-color: #f8f8f8;
-    } 
 </style>
 <style id="dp-row-action-highlight-style">
   .dp-row-action-highlight {
@@ -621,7 +499,7 @@ thead th {
   }
 </style>
 <div class="content-wrapper">
-  <h5 class="text-left mt-0 mb-3">IQF/ Pick Table</h5>
+  <h5 class="text-left mt-0 mb-3">IQF / Pick Table</h5>
   <div class="row">
     <div class="col-12 grid-margin stretch-card">
       <div class="card">
@@ -666,7 +544,7 @@ thead th {
                       No of Tray <i class="fa fa-filter" aria-hidden="true"></i>
                     </th>
                     <th>
-                      RW Quantity
+                      LOT Quantity
                       <i class="fa fa-filter" aria-hidden="true"></i>
                     </th>
                     <th>
@@ -698,89 +576,86 @@ thead th {
                     <th>
                       Remarks <i class="fa fa-filter" aria-hidden="true"></i>
                     </th>
-                    <th>
-                       Rejection Reason
-                      <i class="fa fa-filter" aria-hidden="true"></i>   
-                    </th>
+                   
                   </tr>
                 </thead>
                 <tbody>
                   <!-- Row 1 - Highlighted -->
-                  <tr class="highlighted-tray-scan">
-                    <td>1</td>
-                    <td>2025-05-22 10:00 AM</td>
-                    <!-- Model/Stock No - Image hover -->  
+                   {% for data in master_data %}
+
+                  <tr class="highlighted-tray-scan" 
+                      data-batch-id="{{data.batch_id}}" 
+                      data-available-qty="{{ data.available_qty }}" 
+                      data-brass-onhold-picking="{{ data.iqf_onhold_picking }}">
+
+                     <td>{{ forloop.counter }}</td>
+  <!-- <td>
+                      4 <i class="fa fa-info-circle" style="color: #028084; font-size:13px;" data-bs-toggle="tooltip" data-placement="right" data-bs-original-title="IQF"></i>
+                    </td>-->                  
+                    <td>{{ data.date_time }}</td>
                     <td style="position: relative;">
-                      <span class="model-hover-trigger" style="cursor: pointer;">1805
+                      <span class="model-hover-trigger" style="cursor: pointer;">
+                        {{ data.model_stock_no__model_no }}
                         <div class="model-image-tooltip" style="position: absolute; left: 50%; top: 110%; transform: translateX(-50%); background: #fff; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 12px 18px; z-index: 9999; display: flex; align-items: center; gap: 8px; opacity: 0; pointer-events: none; transition: opacity 0.2s;">
                           <button class="img-scroll-left" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8592;</button>
                           <div class="img-gallery" style="display: flex; gap: 6px; overflow: hidden; width: 180px;">
-                            <img src="/static/assets/images/imagePlaceholder.png" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
-                            <img src="/static/assets/images/imagePlaceholder.png" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
-                            <img src="/static/assets/images/imagePlaceholder.png" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
-                            <img src="/static/assets/images/dashboard.jpg" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
-
+                            {% for img_url in data.model_images %}
+                              <img src="{{ img_url }}" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
+                            {% endfor %}
                           </div>
-
-
                           <button class="img-scroll-right" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8594;</button>
                         </div>
                       </span>
                     </td>
-                    <td>ISP</td>
-                    <td>A - Buffed</td>
-                    <td>A</td>
-                    <td>Nil</td>
-                    <td>Normal 16</td>
-                    <td>10</td>
+                    <td>{{ data.plating_color }}</td>
+                    <td>{{data.polish_finish}}</td>
+                    <td>{{data.version__version_name}}</td>
+                    <td>{{data.vendor_internal}} {{data.location__location_name}}</td>
+                    <td>{{data.tray_type}} {{data.tray_capacity}}</td>
+                    <td>{{data.no_of_trays}}</td>
                     <td>
-                      <div style="display: flex; align-items: center; gap: 8px">
-                        <span style="min-width: 30px; text-align: right"
-                          >150</span
-                        >
-                        <input
-                          type="checkbox"
-                          style="width: 15px; height: 15px"
-                        />
-                        <input
-                          type="text"
-                          value="50"
-                          style="
-                            width: 60px;
-                            padding: 2px 4px;
-                            border: 1px solid #ccc;
-                            border-radius: 4px;
-                          "
-                        />
-                      </div>
+                      <span class="lot-qty" style="min-width: 30px; text-align: right">{{ data.brass_rejection_total_qty }}</span>
+                      <span style="display: inline-flex; align-items: center; gap: 4px;">
+                        <input type="checkbox"
+                                class="ip-checkbox"
+                                data-lot-id="{{ data.stock_lot_id }}"
+                                style="width: 15px; height: 15px"
+                                {% if data.iqf_accepted_qty_verified %}checked disabled{% endif %} />
+                        <input type="text"
+                                class="missing-qty-input"
+                                value="{{ data.iqf_missing_qty|default_if_none:'' }}"
+                                style="width: 36px; padding: 1px 3px; font-size: 13px; border: 1px solid #ccc; border-radius: 4px;"
+                                {% if data.iqf_accepted_qty_verified %}disabled{% endif %} />
+                      </span>
                     </td>
                     <td>
                       <input
                         type="text"
-                        value="50"
-                        style="
-                          width: 60px;
-                          padding: 2px 4px;
-                          border: 1px solid #ccc;
-                          border-radius: 4px;
-                        "
+                        class="physical-qty-input"
+                        value="{{ data.iqf_physical_qty }}"
+                        style="width: 36px; padding: 1px 3px; font-size: 13px; border: 1px solid #ccc; border-radius: 4px;
+                              {% if data.iqf_physical_qty_edited %}background-color: #fff3cd; border-color: #ffc107;{% endif %}"
+                        readonly
+                        {% if data.iqf_physical_qty_edited %}title="This quantity was edited"{% endif %}
                       />
                     </td>
                     <td>
-                        130
+                        {{data.iqf_accepted_qty|default:0}}
                     </td>
                     <td>
-                        20
+                        {{data.iqf_rejection_qty|default:0}}
                     </td>
+                    <!-- Process Status Column -->
                     <td>
                       <div class="d-flex">
+                        <!-- Q: Green if iqf_accepted_qty_verified, else gray -->
                         <div
                           title="Tray Scan"
                           class="d-flex align-items-center justify-content-center rounded-circle ms-1"
                           style="
                             width: 20px;
                             height: 20px;
-                            background-color: #0c8249;
+                            background-color: {% if data.iqf_accepted_qty_verified %}#0c8249{% else %}#bdbdbd{% endif %};
                             color: white;
                             font-weight: bold;
                             line-height: 20px;
@@ -791,14 +666,14 @@ thead th {
                         >
                           Q
                         </div>
+                        <!-- QC: Green if iqf_rejection or iqf_acceptance, else gray -->
                         <div
                           title="Tray Scan"
                           class="d-flex align-items-center justify-content-center rounded-circle ms-1"
                           style="
-                            font-size: 10px;
                             width: 20px;
                             height: 20px;
-                            background-color: #0c8249;
+                            background-color: {% if data.iqf_rejection or data.iqf_acceptance or data.iqf_few_cases_acceptance %}#0c8249{% else %}#bdbdbd{% endif %};
                             color: white;
                             font-weight: bold;
                             line-height: 20px;
@@ -807,46 +682,95 @@ thead th {
                             padding-right: 1px;
                           "
                         >
-                          IQF
+                          QC
                         </div>
-                       
                       </div>
                     </td>
                     <td>
-                      <a href="#" title="Edit">
-                        <img
-                          src="{% static 'assets/icons/edit1.png' %}"
-                          alt="Edit"
-                          style="width: 20px; margin-right: 8px; height: auto"
-                        />
+                      
+                      {% if not data.iqf_acceptance and not data.iqf_rejection and not data.iqf_rejection_tray_scan_status and not data.iqf_few_cases_acceptance and data.iqf_accepted_qty_verified%}
+                        <a href="#" class="edit-qty-btn" data-batch-id="{{ data.batch_id }}">
+                          <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit" style="width: 28px; margin-right: 8px; height: auto"/>
+                        </a>
+                      <a href="#" class="delete-batch-btn" title="Delete" data-batch-id="{{ data.batch_id }}" data-stock-lot-id="{{ data.stock_lot_id }}">
+                        <img src="{% static 'assets/icons/bin.png' %}" alt="Delete" style="width: 20px; margin-right: 8px; height: auto" />
                       </a>
-                      <a href="#" title="Delete">
-                        <img
-                          src="{% static 'assets/icons/bin.png' %}"
-                          alt="Delete"
-                          style="width: 20px; margin-right: 8px; height: auto"
-                        />
-                      </a>
-                      <button
-                        type="button"
-                        class="btn btn-social-icon-text btn-twitter"
-                        style="background-color: #66bb6a"
-                      >
-                        <i class="fa fa-check-circle"></i>Accepted
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-social-icon-text btn-youtube"
-                        style="background-color: #9e9e9e"
-                      >
-                        <i class="fa fa-close" style="background-color: #6b6a6a"></i>Reject
-                      </button>
-                        <!-- Eye icon to view submitted "Tray Scan Table" -->
+                      {% else %}
+                        <span title="Edit Disabled" style="opacity: 0.5; pointer-events: none;">
+                          <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit Disabled" style="width: 20px; margin-right: 8px; height: auto; filter: grayscale(1) opacity(0.5);" />
+                        </span>
+                        <span title="Delete Disabled" style="opacity: 0.5; pointer-events: none;">
+                          <img src="{% static 'assets/icons/bin.png' %}" alt="Delete Disabled" style="width: 20px; margin-right: 8px; height: auto; filter: grayscale(1) opacity(0.5);" />
+                        </span>
+                      {% endif %}
+                      
+                      {% if data.iqf_acceptance %}
+                        <!-- Fully Accepted state -->
+                        <span class="btn btn-social-icon-text btn-twitter"
+                              style="background-color: #66bb6a; pointer-events: none; opacity: 0.8; cursor: not-allowed;">
+                          <i class="fa fa-check-circle"></i>Accepted
+                        </span>
+                        <button type="button" class="btn btn-social-icon-text btn-youtube tray-scan-btn"
+                                style="background-color: #e57373; opacity: 0.6; cursor: not-allowed; pointer-events: none;"
+                                data-stock-lot-id="{{ data.stock_lot_id }}"
+                                data-batch-id="{{ data.batch_id }}"
+                                disabled>
+                          <i class="fa fa-times-circle"></i>Reject
+                        </button>
+
+                      {% elif data.iqf_onhold_picking %}
+                        <!-- On-Hold state - Show Accept (disabled) and Partial Reject (enabled) -->
+                        <button type="button" class="btn btn-social-icon-text btn-twitter"
+                                style="background-color: #66bb6a; opacity: 0.6; cursor: not-allowed; pointer-events: none;"
+                                data-lot-id="{{ data.stock_lot_id }}"
+                                disabled>
+                          <i class="fa fa-check-circle"></i>Accept
+                        </button>
+                        <button type="button" class="btn btn-social-icon-text btn-youtube tray-scan-btn"
+                                style="background-color: #e57373;"
+                                data-stock-lot-id="{{ data.stock_lot_id }}"
+                                data-batch-id="{{ data.batch_id }}">
+                          <i class="fa fa-times-circle"></i>Reject
+                        </button>
+
+                      {% elif data.iqf_rejection or data.iqf_few_cases_acceptance %}
+                        <!-- Rejected or Few Cases Accepted state (but not on-hold) -->
+                        {% if not data.iqf_onhold_picking %}
+                          <button type="button" class="btn btn-social-icon-text btn-twitter"
+                                  style="background-color: #66bb6a; pointer-events: none; opacity: 0.6; cursor: not-allowed;"
+                                  disabled>
+                            <i class="fa fa-check-circle"></i>Accept
+                          </button>
+                          <span class="btn btn-social-icon-text btn-youtube"
+                                style="background-color: #e57373; pointer-events: none; opacity: 0.8; cursor: not-allowed;">
+                            <i class="fa fa-times-circle"></i>Rejected
+                          </span>
+                        {% endif %}
+
+                      {% else %}
+                        <!-- Default state - Both buttons enabled -->
+                        <button type="button" class="btn btn-social-icon-text btn-twitter"
+                                style="background-color: #66bb6a"
+                                data-lot-id="{{ data.stock_lot_id }}"
+                                {% if not data.iqf_accepted_qty_verified %}disabled{% endif %}>
+                          <i class="fa fa-check-circle"></i>Accept
+                        </button>
+                        <button type="button" class="btn btn-social-icon-text btn-youtube tray-scan-btn"
+                                style="background-color: #e57373;"
+                                data-stock-lot-id="{{ data.stock_lot_id }}"
+                                data-batch-id="{{ data.batch_id }}"
+                                {% if not data.iqf_accepted_qty_verified %}disabled{% endif %}>
+                          <i class="fa fa-times-circle"></i>Reject
+                        </button>
+                      {% endif %}
+                      {% if data.iqf_acceptance or data.iqf_rejection or data.iqf_few_cases_acceptance %}                
+                      <!-- Eye icon to view submitted "Tray Scan Table" -->
                          <a
                               href="#"
                               title="View"
-                              class="text-primary tray-scan-btn-IQF"
+                              class="text-primary tray-scan-btn-BQ-view"
                               style="text-decoration: underline"
+                              data-stock-lot-id="{{ data.stock_lot_id }}"
                               data-batch-id="{{ data.batch_id }}"
                               data-model-no="{{ data.model_stock_no__model_no }}"
                               data-no-of-trays="{{ data.no_of_trays }}"
@@ -860,857 +784,82 @@ thead th {
                               style="width: 20px; margin-right: 8px; height: auto; cursor:pointer;"
                               />
                       </a>
+                      {% endif %}
                     </td>
                     <td>
-                      <div
-                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-                        style="
-                          border: 2px solid #0d5d17;
-                          background-color: #c5f9c2;
-                          color: #2f801b;
-                          font-size: clamp(0.3rem, 2vw, 0.875rem);
-                          white-space: nowrap;
-                          padding: 0.3rem;
-                        "
-                      >
-                        Released
-                      </div>
-                    </td>
-                    <td>
-                      <div
-                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-                        style="
-                          border: 2px solid #9adeed;
-                          background-color: #d1edf3;
-                          color: #033b5d;
-                          font-size: clamp(0.3rem, 2vw, 0.875rem);
-                          white-space: nowrap;
-                          padding: 0.3rem;
-                        "
-                      >
-                        IQF
-                      </div>
-                    </td>
-                    <td>
-                         <a href="#" title="Add Audio Remark" class="remark-tooltip-trigger" style="display: inline-flex; align-items: center; height: 28px; margin-left: 0; position: relative; cursor: pointer;">
-                          <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec" style="width: 20px; height: 20px"/>
-                          <div class="remark-tooltip" style="position: absolute; top: 110%; left: 50%; transform: translateX(-50%); width: 300px; background: #fff; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: 15px; z-index: 1000;">
-                            <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid #fff;"></div>
-                            <!-- Audio recording UI placeholder -->
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                              <button type="button" style="background: #28a745; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; display: flex; align-items: center; justify-content: center;">
-                                <i class="fa fa-microphone"></i>
-                              </button>
-                              <span style="font-size: 14px; color: #333;">Hold to record audio</span>
-                            </div>
-                            <div style="text-align: right; margin-top: 10px;">
-                              <button type="button" style="background-color: #007bff; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 14px;">
-                                <i class="fa fa-send"></i>
-                              </button>
-                            </div>
-                          </div>
-                        </a>
-                      <a
-                        href="#"
-                        title="Add Remark"
-                        class="remark-tooltip-trigger"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                          margin-left: 5px;
-                          position: relative;
-                          cursor: pointer;
-                        "
-                      >
-                        <img
-                          src="{% static 'assets/icons/chat1.png' %}"
-                          alt="Chat"
-                          style="width: 20px; height: 20px"
-                        />
+                      {% if data.iqf_onhold_picking  %}
                         <div
-                          class="remark-tooltip"
-                          style="
-                            position: absolute;
-                            top: 110%;
-                            left: 50%;
-                            transform: translateX(-50%);
-                            width: 300px;
-                            background: #fff;
-                            border: 1px solid #ccc;
-                            border-radius: 6px;
-                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                            opacity: 0;
-                            visibility: hidden;
-                            transition: opacity 0.3s ease, visibility 0.3s ease;
-                            padding: 15px;
-                            z-index: 1000;
-                          "
-                        >
-                          <div
-                            style="
-                              position: absolute;
-                              top: -10px;
-                              left: 50%;
-                              transform: translateX(-50%);
-                              width: 0;
-                              height: 0;
-                              border-left: 10px solid transparent;
-                              border-right: 10px solid transparent;
-                              border-bottom: 10px solid #fff;
-                            "
-                          ></div>
-                          <textarea
-                            placeholder="Type your remark..."
-                            style="
-                              width: 85%;
-                              height: 40px;
-                              resize: vertical;
-                              border: 1px solid #ccc;
-                              padding: 5px;
-                              border-radius: 4px;
-                              font-family: Arial, sans-serif;
-                              font-size: 14px;
-                            "
-                          ></textarea>
-                          <div style="text-align: right; margin-top: -35px">
-                            <button
-                              type="button"
-                              style="
-                                background-color: #007bff;
-                                color: #fff;
-                                border: none;
-                                padding: 6px 12px;
-                                border-radius: 4px;
-                                cursor: pointer;
-                                font-size: 14px;
-                              "
-                            >
-                              <i class="fa fa-send"></i>
-                            </button>
-                          </div>
-                        </div>
-                      </a>
-                    </td>
-                     <td>
-                        <div class="avatar-group rejection-popup-trigger" style="cursor:pointer;">
-                            <div class="avatar blue">D</div>
-                            <div class="avatar green">S</div>
-                            <div class="avatar purple">T</div>
-                            <div class="avatar orange">F</div>
-                            <div class="avatar teal">A</div>
-                            <div class="avatar gray">
-                                <span class="arrow">&rsaquo;</span>
-                            </div>
-                        </div>
-                    </td>
-                  </tr>
-                  <!-- Row 2 -->
-                  <tr>
-                    <td>2</td>
-                    <td>2025-05-22 10:00 AM</td>
-                    <td>2565</td>
-                    <td>ISP</td>
-                    <td>A - Buffed</td>
-                    <td>A</td>
-                    <td>Nil</td>
-                    <td>Jumbo 14</td>
-                    <td>10</td>
-                    <td>
-                      <div style="display: flex; align-items: center; gap: 8px">
-                        <span style="min-width: 30px; text-align: right"
-                          >50</span
-                        >
-                        <input
-                          type="checkbox"
-                          style="width: 15px; height: 15px"
-                          disabled
-                        />
-                        <input
-                          type="text"
-                          value="-"
-                          style="
-                            width: 60px;
-                            padding: 2px 4px;
-                            border: 1px solid #ccc;
-                            border-radius: 4px;
-                          "
-                          disabled
-                        />
-                      </div>
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value="-"
-                        style="
-                          width: 60px;
-                          padding: 2px 4px;
-                          border: 1px solid #ccc;
-                          border-radius: 4px;
-                        "
-                      />
-                    </td>
-                    <td>
-                    40
-                    </td>
-                    <td>
-                      10
-                    </td>
-                    <td>
-                      <div class="d-flex">
-                        <div
-                          title="Tray Scan"
-                          class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-                          style="
-                            width: 20px;
-                            height: 20px;
-                            background-color: #c3c2c2;
-                            color: white;
-                            font-weight: bold;
-                            line-height: 20px;
-                            text-align: center;
-                            padding-top: 1px;
-                            padding-right: 1px;
-                          "
-                        >
-                          Q
-                        </div>
-                        <div
-                          title="Tray Scan"
-                          class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-                          style="
-                            width: 20px;
-                            height: 20px;
-                            background-color: #c3c2c2;
-                            color: white;
-                            font-weight: bold;
-                            line-height: 20px;
-                            text-align: center;
-                            padding-top: 1px;
-                            padding-right: 1px;
-                          "
-                        >
-                          QC
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <a href="#" title="Edit">
-                        <img
-                          src="{% static 'assets/icons/edit1.png' %}"
-                          alt="Edit"
-                          style="width: 20px; margin-right: 8px; height: auto"
-                        />
-                      </a>
-                      <a href="#" title="Delete">
-                        <img
-                          src="{% static 'assets/icons/bin.png' %}"
-                          alt="Delete"
-                          style="width: 20px; margin-right: 8px; height: auto"
-                        />
-                      </a>
-                      <button
-                        type="button"
-                        class="btn btn-social-icon-text btn-twitter"
-                        style="background-color: #66bb6a"
-                      >
-                        <i class="fa fa-check-circle"></i>Accept
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-social-icon-text btn-youtube tray-scan-btn"
-                      >
-                        <i class="fa fa-close"></i>Reject
-                      </button>
-                                           <!-- Eye icon to view submitted "Tray Scan Table" -->
-                        <a href="#viewModal">
-                            <img
-                                src="{% static 'assets/icons/view.png' %}"
-                                alt="View"
-                                class="view-icon"
-                            />
-                        </a>
-                    </td>
-                    <td>
-                      <div
-                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-                        style="
-                          border: 2px solid #4997ac;
-                          background-color: #d1f2f3;
-                          color: #03425d;
-                          font-size: clamp(0.3rem, 2vw, 0.875rem);
-                          white-space: nowrap;
-                          padding: 0.3rem;
-                        "
-                      >
-                        On-Hold
-                      </div>
-                    </td>
-                    <td>
-                      <div
-                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-                        style="
-                          border: 2px solid #9adeed;
-                          background-color: #d1edf3;
-                          color: #033b5d;
-                          font-size: clamp(0.3rem, 2vw, 0.875rem);
-                          white-space: nowrap;
-                          padding: 0.3rem;
-                        "
-                      >
-                        IQF
-                      </div>
-                    </td>
-                    <td>
-                      <!-- VoiceRec with tooltip (audio remark) -->
-                        <a href="#" title="Add Audio Remark" class="remark-tooltip-trigger" style="display: inline-flex; align-items: center; height: 28px; margin-left: 0; position: relative; cursor: pointer;">
-                          <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec" style="width: 20px; height: 20px"/>
-                          <div class="remark-tooltip" style="position: absolute; top: 110%; left: 50%; transform: translateX(-50%); width: 300px; background: #fff; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: 15px; z-index: 1000;">
-                            <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid #fff;"></div>
-                            <!-- Audio recording UI placeholder -->
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                              <button type="button" style="background: #28a745; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; display: flex; align-items: center; justify-content: center;">
-                                <i class="fa fa-microphone"></i>
-                              </button>
-                              <span style="font-size: 14px; color: #333;">Hold to record audio</span>
-                            </div>
-                            <div style="text-align: right; margin-top: 10px;">
-                              <button type="button" style="background-color: #007bff; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 14px;">
-                                <i class="fa fa-send"></i>
-                              </button>
-                            </div>
-                          </div>
-                        </a>
-
-                      <a
-                        href="#"
-                        title="Add Remark"
-                        class="remark-tooltip-trigger"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                          margin-left: 5px;
-                          position: relative;
-                          cursor: pointer;
-                        "
-                      >
-                        <img
-                          src="{% static 'assets/icons/chat1.png' %}"
-                          alt="Chat"
-                          style="width: 20px; height: 20px"
-                        />
-                        <div
-                          class="remark-tooltip"
-                          style="
-                            position: absolute;
-                            top: 110%;
-                            left: 50%;
-                            transform: translateX(-50%);
-                            width: 300px;
-                            background: #fff;
-                            border: 1px solid #ccc;
-                            border-radius: 6px;
-                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                            opacity: 0;
-                            visibility: hidden;
-                            transition: opacity 0.3s ease, visibility 0.3s ease;
-                            padding: 15px;
-                            z-index: 1000;
-                          "
-                        >
-                          <div
-                            style="
-                              position: absolute;
-                              top: -10px;
-                              left: 50%;
-                              transform: translateX(-50%);
-                              width: 0;
-                              height: 0;
-                              border-left: 10px solid transparent;
-                              border-right: 10px solid transparent;
-                              border-bottom: 10px solid #fff;
-                            "
-                          ></div>
-                          <textarea
-                            placeholder="Type your remark..."
-                            style="
-                              width: 85%;
-                              height: 40px;
-                              resize: vertical;
-                              border: 1px solid #ccc;
-                              padding: 5px;
-                              border-radius: 4px;
-                              font-family: Arial, sans-serif;
-                              font-size: 14px;
-                            "
-                          ></textarea>
-                          <div style="text-align: right; margin-top: -35px">
-                            <button
-                              type="button"
-                              style="
-                                background-color: #007bff;
-                                color: #fff;
-                                border: none;
-                                padding: 6px 12px;
-                                border-radius: 4px;
-                                cursor: pointer;
-                                font-size: 14px;
-                              "
-                            >
-                              <i class="fa fa-send"></i>
-                            </button>
-                          </div>
-                        </div>
-                      </a>
-                    </td>
-                    <td>
-                      <div class="avatar-group rejection-popup-trigger" style="cursor:pointer;">
-                        <div class="avatar blue">D</div>
-                        <div class="avatar green">S</div>
-                        <div class="avatar purple">T</div>
-                        <div class="avatar orange">F</div>
-                        <div class="avatar teal">A</div>
-                        <div class="avatar gray">
-                          <span class="arrow">&rsaquo;</span>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <!-- Row 3 (new, same static data) -->
-                  <tr>
-                    <td>3</td>
-                    <td>2025-05-22 10:00 AM</td>
-                    <td>7346</td>
-                    <td>ISP</td>
-                    <td>A - Buffed</td>
-                    <td>A</td>
-                    <td>Nil</td>
-                    <td>Jumbo 14</td>
-                    <td>10</td>
-                    <td>
-                      <div style="display: flex; align-items: center; gap: 8px">
-                        <span style="min-width: 30px; text-align: right"
-                          >45</span
-                        >
-                        <input
-                          type="checkbox"
-                          style="width: 15px; height: 15px"
-                        />
-                        <input
-                          type="text"
-                          value="50"
-                          style="
-                            width: 60px;
-                            padding: 2px 4px;
-                            border: 1px solid #ccc;
-                            border-radius: 4px;
-                          "
-                        />
-                      </div>
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value="50"
-                        style="
-                          width: 60px;
-                          padding: 2px 4px;
-                          border: 1px solid #ccc;
-                          border-radius: 4px;
-                        "
-                      />
-                    </td>
-                    <td>
-                      35
-                    </td>
-                    <td>
-                      10
-                    </td>
-                     <td>
-                      <div class="d-flex">
-                        <div
-                          title="Tray Scan"
-                          class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-                          style="
-                            width: 20px;
-                            height: 20px;
-                            background-color: #0c8249;
-                            color: white;
-                            font-weight: bold;
-                            line-height: 20px;
-                            text-align: center;
-                            padding-top: 1px;
-                            padding-right: 1px;
-                          "
-                        >
-                          Q
-                        </div>
-                        <div
-                          title="Tray Scan"
-                          class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-                          style="
-                            width: 20px;
-                            height: 20px;
-                            background-color: #c3c2c2;
-                            color: white;
-                            font-weight: bold;
-                            line-height: 20px;
-                            text-align: center;
-                            padding-top: 1px;
-                            padding-right: 1px;
-                          "
-                        >
-                          QC
-                        </div>
-                        
-                      </div>
-                    </td>
-                    <td>
-                      <a href="#" title="Edit">
-                        <img
-                          src="{% static 'assets/icons/edit1.png' %}"
-                          alt="Edit"
-                          style="width: 20px; margin-right: 8px; height: auto"
-                        />
-                      </a>
-                      <a href="#" title="Delete">
-                        <img
-                          src="{% static 'assets/icons/bin.png' %}"
-                          alt="Delete"
-                          style="width: 20px; margin-right: 8px; height: auto"
-                        />
-                      </a>
-                      <button
-                        type="button"
-                        class="btn btn-social-icon-text btn-twitter"
-                        style="background-color: #9e9e9e"
-                      >
-                        <i
-                          class="fa fa-check-circle"
-                          style="background-color: #6b6a6a"
-                        ></i
-                        >Accept
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-social-icon-text btn-youtube"
-                      >
-                        <i class="fa fa-close"></i>Rejected
-                      </button>
-                                           <!-- Eye icon to view submitted "Tray Scan Table" -->
-                        <a href="#viewModal">
-                            <img
-                                src="{% static 'assets/icons/view.png' %}"
-                                alt="View"
-                                class="view-icon"
-                            />
-                        </a>
-                    </td>
-                    <td>
-                      <div
-                          class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-                         
-                          style="
-                          border: 2px solid #0d5d17;
-                            background-color: #c5f9c2;
-                            color: #2f801b;
-                          font-size: 12px;
-                          white-space: nowrap;
-                          padding: 6px;
-                        "
-                        >
-                          Yet To Release
-                        </div>
-                    </td>
-                    <td>
-                      <div
-                        class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-                        style="
-                          border: 2px solid #9adeed;
-                          background-color: #d1edf3;
-                          color: #033b5d;
-                          font-size: clamp(0.3rem, 2vw, 0.875rem);
-                          white-space: nowrap;
-                          padding: 0.3rem;
-                        "
-                      >
-                        IQF
-                      </div>
-                    </td>
-                    <td>
-                         <a href="#" title="Add Audio Remark" class="remark-tooltip-trigger" style="display: inline-flex; align-items: center; height: 28px; margin-left: 0; position: relative; cursor: pointer;">
-                          <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec" style="width: 20px; height: 20px"/>
-                          <div class="remark-tooltip" style="position: absolute; top: 110%; left: 50%; transform: translateX(-50%); width: 300px; background: #fff; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: 15px; z-index: 1000;">
-                            <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid #fff;"></div>
-                            <!-- Audio recording UI placeholder -->
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                              <button type="button" style="background: #28a745; color: #fff; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; display: flex; align-items: center; justify-content: center;">
-                                <i class="fa fa-microphone"></i>
-                              </button>
-                              <span style="font-size: 14px; color: #333;">Hold to record audio</span>
-                            </div>
-                            <div style="text-align: right; margin-top: 10px;">
-                              <button type="button" style="background-color: #007bff; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 14px;">
-                                <i class="fa fa-send"></i>
-                              </button>
-                            </div>
-                          </div>
-                        </a>
-                      <a
-                        href="#"
-                        title="Add Remark"
-                        class="remark-tooltip-trigger"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                          margin-left: 5px;
-                          position: relative;
-                          cursor: pointer;
-                        "
-                      >
-                        <img
-                          src="{% static 'assets/icons/chat1.png' %}"
-                          alt="Chat"
-                          style="width: 20px; height: 20px"
-                        />
-                        <div
-                          class="remark-tooltip"
-                          style="
-                            position: absolute;
-                            top: 110%;
-                            left: 50%;
-                            transform: translateX(-50%);
-                            width: 300px;
-                            background: #fff;
-                            border: 1px solid #ccc;
-                            border-radius: 6px;
-                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                            opacity: 0;
-                            visibility: hidden;
-                            transition: opacity 0.3s ease, visibility 0.3s ease;
-                            padding: 15px;
-                            z-index: 1000;
-                          "
-                        >
-                          <div
-                            style="
-                              position: absolute;
-                              top: -10px;
-                              left: 50%;
-                              transform: translateX(-50%);
-                              width: 0;
-                              height: 0;
-                              border-left: 10px solid transparent;
-                              border-right: 10px solid transparent;
-                              border-bottom: 10px solid #fff;
-                            "
-                          ></div>
-                          <textarea
-                            placeholder="Type your remark..."
-                            style="
-                              width: 85%;
-                              height: 40px;
-                              resize: vertical;
-                              border: 1px solid #ccc;
-                              padding: 5px;
-                              border-radius: 4px;
-                              font-family: Arial, sans-serif;
-                              font-size: 14px;
-                            "
-                          ></textarea>
-                          <div style="text-align: right; margin-top: -35px">
-                            <button
-                              type="button"
-                              style="
-                                background-color: #007bff;
-                                color: #fff;
-                                border: none;
-                                padding: 6px 12px;
-                                border-radius: 4px;
-                                cursor: pointer;
-                                font-size: 14px;
-                              "
-                            >
-                              <i class="fa fa-send"></i>
-                            </button>
-                          </div>
-                        </div>
-                      </a>
-                    </td>
-                    <td>
-                      <div class="avatar-group rejection-popup-trigger" style="cursor:pointer;">
-                        <div class="avatar blue">D</div>
-                        <div class="avatar green">S</div>
-                        <div class="avatar purple">T</div>
-                        <div class="avatar orange">F</div>
-                        <div class="avatar teal">A</div>
-                        <div class="avatar gray">
-                          <span class="arrow">&rsaquo;</span>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <!-- Row 4 -->
-                  <tr>
-                    <td>4</td>
-                    <td>2025-05-22 10:00 AM</td>
-                    <td>2565</td>
-                    <td>ISP</td>
-                    <td>A - Buffed</td>
-                    <td>A</td>
-                    <td>Nil</td>
-                    <td>Jumbo 14</td>
-                    <td>10</td>
-                    <td>
-                      <div style="display: flex; align-items: center; gap: 8px">
-                        <span style="min-width: 30px; text-align: right"
-                          >150</span
-                        >
-                        <input
-                          type="checkbox"
-                          style="width: 15px; height: 15px"
-                          disabled
-                        />
-                        <input
-                          type="text"
-                          value="-"
-                          style="
-                            width: 60px;
-                            padding: 2px 4px;
-                            border: 1px solid #ccc;
-                            border-radius: 4px;
-                          "
-                          disabled
-                        />
-                      </div>
-                    </td>
-                    <td>
-                      <input
-                        type="text"
-                        value="-"
-                        style="
-                          width: 60px;
-                          padding: 2px 4px;
-                          border: 1px solid #ccc;
-                          border-radius: 4px;
-                        "
-                      />
-                    </td>
-                    <td> 35 </td>
-                    <td>
-                     10
-                    </td>
-                    <td>
-                      <div class="d-flex">
-                        <div
-                          title="Tray Scan"
-                          class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-                          style="
-                            width: 20px;
-                            height: 20px;
-                            background-color: #0c8249;
-                            color: white;
-                            font-weight: bold;
-                            line-height: 20px;
-                            text-align: center;
-                            padding-top: 1px;
-                            padding-right: 1px;
-                          "
-                        >
-                          Q
-                        </div>
-                        <div
-                          title="Tray Scan"
-                          class="d-flex align-items-center justify-content-center rounded-circle ms-1"
-                          style="
-                            width: 20px;
-                            height: 20px;
-                            background-color: #0c8249;
-                            color: white;
-                            font-weight: bold;
-                            line-height: 20px;
-                            text-align: center;
-                            padding-top: 1px;
-                            padding-right: 1px;
-                          "
-                        >
-                          QC
-                        </div>
-                       
-                      </div>
-                    </td>
-                    <td>
-                      <a href="#" title="Edit">
-                        <img
-                          src="{% static 'assets/icons/edit1.png' %}"
-                          alt="Edit"
-                          style="width: 20px; margin-right: 8px; height: auto"
-                        />
-                      </a>
-                      <a href="#" title="Delete">
-                        <img
-                          src="{% static 'assets/icons/bin.png' %}"
-                          alt="Delete"
-                          style="width: 20px; margin-right: 8px; height: auto"
-                        />
-                      </a>
-                      <button
-                        type="button"
-                        class="btn btn-social-icon-text btn-twitter"
-                        style="background-color: #66bb6a"
-                      >
-                        <i class="fa fa-check-circle"></i>Accept
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-social-icon-text btn-youtube tray-scan-btn"
-                      >
-                        <i class="fa fa-close"></i>Reject
-                      </button>
-                                           <!-- Eye icon to view submitted "Tray Scan Table" -->
-                        <a href="#viewModal">
-                          <img
-                              src="{% static 'assets/icons/view.png' %}"
-                              alt="View"
-                              class="view-icon"
-                          />
-                      </a>
-                    </td>
-                    <td>
-                      <div
                           class="d-inline-block px-3 fw-semibold text-center rounded-pill"
                           style="
-                          border: 1px solid #a6a6a6;
-                          background-color: #dcdada;
-                          color: #505050;
-                          font-size: 12px;
-                          white-space: nowrap;
-                          padding: 6px;
-                          
-                        "
+                            border: 2px solid #4997ac;
+                            background-color: #d1f2f3;
+                            color: #03425d;
+                            font-size: clamp(0.75rem, 2vw, 0.875rem);
+                            white-space: nowrap;
+                            padding-top: 0.5rem;
+                            padding-bottom: 0.5rem;
+                          "
                         >
+                          On-Hold
+                        </div>
+                      {% elif data.iqf_rejection or data.iqf_few_cases_acceptance or data.iqf_acceptance %}
+                        <div class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                            style="border: 2px solid #0d5d17; background-color: #c5f9c2; color: #2f801b; font-size: clamp(0.3rem, 2vw, 0.875rem); white-space: nowrap; padding: 0.3rem;">
+                          Yet to Release
+                        </div>
+                      {% else %}
+                        <div class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                            style="border: 2px solid #f9a825; background-color: #fff8e1; color: #b26a00; font-size: clamp(0.3rem, 2vw, 0.875rem); white-space: nowrap; padding: 0.3rem;">
                           Yet to Start
-                      </div>
+                        </div>
+                      {% endif %}
                     </td>
                     <td>
                       <div
                         class="d-inline-block px-3 fw-semibold text-center rounded-pill"
                         style="
-                          border: 2px solid #9adeed;
-                          background-color: #d1edf3;
-                          color: #033b5d;
-                          font-size: clamp(0.3rem, 2vw, 0.875rem);
+                          border: 2px solid
+                            {% if data.last_process_module == 'Input screening' %}
+                              #0d5d17
+                            {% elif data.last_process_module == 'IQF' %}
+                              #f9a825
+                            {% elif data.last_process_module == 'DayPlanning' %}
+                              #1976d2
+                            {% else %}
+                              #9adeed
+                            {% endif %};
+                          background-color:
+                            {% if data.last_process_module == 'Input screening' %}
+                              #c5f9c2
+                            {% elif data.last_process_module == 'IQF' %}
+                              #fff8e1
+                            {% elif data.last_process_module == 'DayPlanning' %}
+                              #d1eaff
+                            {% else %}
+                              #d1edf3
+                            {% endif %};
+                          color:
+                            {% if data.last_process_module == 'Input screening' %}
+                              #2f801b
+                            {% elif data.last_process_module == 'IQF' %}
+                              #b26a00
+                            {% elif data.last_process_module == 'DayPlanning' %}
+                              #033b5d
+                            {% else %}
+                              #033b5d
+                            {% endif %};
+                          font-size: clamp(0.75rem, 2vw, 0.875rem);
                           white-space: nowrap;
-                          padding: 0.3rem;
+                          padding-top: 0.5rem;
+                          padding-bottom: 0.5rem;
                         "
                       >
-                        IQF
+                        {{ data.last_process_module|default:"N/A" }}
                       </div>
                     </td>
                     <td>
+                      {% if not data.iqf_acceptance and not data.iqf_rejection and not data.iqf_rejection_tray_scan_status and not data.iqf_few_cases_acceptance %}
+
                       <!-- VoiceRec with tooltip (audio remark) -->
                         <a href="#" title="Add Audio Remark" class="remark-tooltip-trigger" style="display: inline-flex; align-items: center; height: 28px; margin-left: 0; position: relative; cursor: pointer;">
                           <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec" style="width: 20px; height: 20px"/>
@@ -1731,18 +880,11 @@ thead th {
                           </div>
                         </a>
 
-                      <a
+                                            <a
                         href="#"
                         title="Add Remark"
                         class="remark-tooltip-trigger"
-                        style="
-                          display: inline-flex;
-                          align-items: center;
-                          height: 20px;
-                          margin-left: 5px;
-                          position: relative;
-                          cursor: pointer;
-                        "
+                        style="display: inline-flex; align-items: center; height: 20px; margin-left: 5px; position: relative; cursor: pointer;"
                       >
                         <img
                           src="{% static 'assets/icons/chat1.png' %}"
@@ -1751,198 +893,107 @@ thead th {
                         />
                         <div
                           class="remark-tooltip"
-                          style="
-                            position: absolute;
-                            top: 110%;
-                            left: 50%;
-                            transform: translateX(-50%);
-                            width: 300px;
-                            background: #fff;
-                            border: 1px solid #ccc;
-                            border-radius: 6px;
-                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                            opacity: 0;
-                            visibility: hidden;
-                            transition: opacity 0.3s ease, visibility 0.3s ease;
-                            padding: 15px;
-                            z-index: 1000;
-                          "
+                          style="position: absolute; top: 110%; left: 50%; transform: translateX(-50%); width: 300px; background: #fff; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: 15px; z-index: 1000;"
                         >
                           <div
-                            style="
-                              position: absolute;
-                              top: -10px;
-                              left: 50%;
-                              transform: translateX(-50%);
-                              width: 0;
-                              height: 0;
-                              border-left: 10px solid transparent;
-                              border-right: 10px solid transparent;
-                              border-bottom: 10px solid #fff;
-                            "
+                            style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid #fff;"
                           ></div>
                           <textarea
                             placeholder="Type your remark..."
-                            style="
-                              width: 85%;
-                              height: 40px;
-                              resize: vertical;
-                              border: 1px solid #ccc;
-                              padding: 5px;
-                              border-radius: 4px;
-                              font-family: Arial, sans-serif;
-                              font-size: 14px;
-                            "
-                          ></textarea>
+                            style="width: 85%; height: 40px; resize: vertical; border: 1px solid #ccc; padding: 5px; border-radius: 4px; font-family: Arial, sans-serif; font-size: 14px;"
+                            {% if data.IQF_pick_remarks %}readonly{% endif %}
+                          >{{ data.IQF_pick_remarks|default_if_none:"" }}</textarea>
                           <div style="text-align: right; margin-top: -35px">
+                            {% if not data.IQF_pick_remarks %}
                             <button
                               type="button"
-                              style="
-                                background-color: #007bff;
-                                color: #fff;
-                                border: none;
-                                padding: 6px 12px;
-                                border-radius: 4px;
-                                cursor: pointer;
-                                font-size: 14px;
-                              "
+                              style="background-color: #007bff; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 14px;"
                             >
                               <i class="fa fa-send"></i>
                             </button>
+                            {% else %}
+                            <div style="margin-top: 40px; color: #31708f; background: #d9edf7; border: 1px solid #bce8f1; border-radius: 4px; padding: 8px 12px; font-size: 10px; text-align: left;">
+                              <i class="fa fa-info-circle" style="margin-right: 6px;"></i>
+                              Remark already saved and cannot be edited.
+                            </div>
+                            {% endif %}
                           </div>
                         </div>
                       </a>
+                       {% else %}
+                      <!-- Audio Remark Icon (disabled) -->
+                      <span title="Disabled after moved" style="display: inline-flex; align-items: center; height: 28px; margin-left: 0; opacity: 0.5; pointer-events: none;">
+                        <img src="{% static 'assets/icons/rec.png' %}" alt="VoiceRec Disabled" style="width: 20px; height: 20px; filter: grayscale(1) opacity(0.5);" />
+                      </span>
+                      <!-- Chat Remark Icon (disabled) -->
+                      <span title="Disabled after moved" style="display: inline-flex; align-items: center; height: 20px; margin-left: 5px; opacity: 0.5; pointer-events: none;">
+                        <img src="{% static 'assets/icons/chat1.png' %}" alt="Chat Disabled" style="width: 20px; height: 20px; filter: grayscale(1) opacity(0.5);" />
+                      </span>
+                    {% endif %}
                     </td>
-                    <td>
-                      <div class="avatar-group rejection-popup-trigger" style="cursor:pointer;">
-                        <div class="avatar blue">D</div>
-                        <div class="avatar green">S</div>
-                        <div class="avatar purple">T</div>
-                        <div class="avatar orange">F</div>
-                        <div class="avatar teal">A</div>
-                        <div class="avatar gray">
-                          <span class="arrow">&rsaquo;</span>
-                        </div>
-                      </div>
-                    </td>
-
+                   
                   </tr>
+                  {% endfor%}
+              
                 </tbody>
               </table>
-               <!-- Modal Structure -->
-          <!-- Tray Scan (hyperlink) - Right side modal -->
-                  <div
-                     id="trayScanModal_IQF"
-                     class="tray-scan-modal-IQF active"
-                     id="trayScanModal_IQF"
-                     >
-                     <div class="tray-scan-modal-IQF-content">
-                        <span id="closetrayScanModal_IQF" class="tray-scan-close"
-                           >&times;</span
-                           >
-                        <!-- New top header container: title + user profile aligned left -->
-                        <div
-                           class="modal-top-header"
-                           style="
-                           display: flex;
-                           align-items: center;
-                           gap: 20px;
-                           padding-bottom: 10px;
-                           "
-                           >
-                           <div
-                              class="user-profile"
-                              style="display: flex; align-items: center; gap: 8px"
-                              >
-                              <img
-                                 src="/static/assets/images/imagePlaceholder.png"
-                                 alt="User Profile"
-                                 style="
-                                 border-radius: 50%;
-                                 width: 50px;
-                                 height: 50px;
-                                 object-fit: cover;
-                                 "
-                                 />
-                              <span>Model No:</span>
-                              <h6 id="modalModelNo">(Fetch Dynamically)</h6>
-                           </div>
+
+
+                                    <div
+                    id="trayScanModal_BQ_ReadOnly"
+                    class="tray-scan-modal-BQ"
+                    style="display:none;"
+                  >
+                    <div class="tray-scan-modal-BQ-content">
+                      <span id="closeTrayScanModal_BQ_ReadOnly" class="tray-scan-close"
+                        >&times;</span
+                      >
+
+                      <div class="modal-top-header" style="display: flex; align-items: center; gap: 20px; padding-bottom: 10px;">
+                        <div class="user-profile" style="display: flex; align-items: center; gap: 8px">
+                          <img
+                            src="/static/assets/images/imagePlaceholder.png"
+                            alt="User Profile"
+                            style="border-radius: 50%; width: 50px; height: 50px; object-fit: cover;"
+                          />
+                          <span>Model No:</span>
+                          <h6 id="modalModelNo_BQ_ReadOnly">(Fetch Dynamically)</h6>
                         </div>
-                        <!-- Redo icon for clearing "tray ID" -->
-                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-                           <h5 style="text-align: center; margin: 0; flex: 1; font-weight: 600; color:#595959">
-                              Brass QC - Tray Scan
-                           </h5>
-                           <!-- Tray Validate Button (NEW) -->
-                           <button id="trayValidateBtn" type="button" style="display: flex; align-items: center; gap: 6px; background: #f5faff; border: 1px solid #023E4DCC; color: #023E4DCC; border-radius: 20px; padding: 4px 14px; font-size: 13px; font-weight: 500; cursor: pointer;">
-                           <img src="{% static 'assets/icons/validate.png' %}" alt="Validate" style="width: 20px; height: 20px; margin-right: 4px;" />
-                           Tray Validate
-                           </button>
-                           <img
-                              src="{% static 'assets/icons/redo2.png' %}"
-                              alt="Redo"
-                              id="trayScanRedoBtn"
-                              style="width: 24px; height: 24px; cursor: pointer; margin-left: 8px;"
-                              title="Clear Tray IDs"
-                              />
-                        </div>
-                        <!-- trayScanDetails_IQF will be a scrollable 3-column grid with headers and unlimited rows -->
-                        <div id="trayScanDetails_IQF" class="table-grid">
-                           <!-- Headers -->
-                           <div>S.no</div>
-                           <div>Tray ID</div>
-                           <div>Tray Qty</div>
-                           <div class="tray-validation-status-header">Tray Validation Status</div>
-                           <!-- Example rows (replace with dynamic content) -->
-                        </div>
-                        <!-- ✅ NEW BUTTONS SECTION -->
-                        <div class="tray-scan-modal-IQF-buttons"
-                           style="
-                           display: flex;
-                           justify-content: center;
-                           gap: 10px;
-                           margin-top: 20px;
-                           "
-                           >
-                           <button
-                              id="trayScanDraftBtn"
-                              type="button"
-                              style="
-                              padding: 8px 16px;
-                              background: #007bff;
-                              color: white;
-                              border: none;
-                              border-radius: 30px;
-                              "
-                              >
-                           Draft
-                           </button>
-                           <button
-                              id="trayScanSubmitBtn"
-                              style="
-                              padding: 8px 16px;
-                              background: #28a745;
-                              color: white;
-                              border: none;
-                              border-radius: 30px;
-                              "
-                              >
-                           Submit
-                           </button>
-                           <button
-                              id="trayScanCancelBtn"
-                              style="
-                              padding: 8px 16px;
-                              background: #dc3545;
-                              color: white;
-                              border: none;
-                              border-radius: 30px;
-                              "
-                              >
-                           Cancel
-                           </button>
-                        </div>
-                     </div>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                        <h5 style="text-align: center; margin: 0; flex: 1; font-weight: 600; color:#595959">
+                          IQF - Tray Scan (Read Only)
+                        </h5>
+
+                        <button id="trayValidateBtn" type="button" style="display: flex; align-items: center; gap: 6px; background: #f5faff; border: 1px solid #023E4DCC; color: #023E4DCC; border-radius: 20px; padding: 4px 14px; font-size: 13px; font-weight: 500; cursor: pointer;">
+                      <img src="{% static 'assets/icons/validate.png' %}" alt="Validate" style="width: 20px; height: 20px; margin-right: 4px;" />
+                      Tray Validate
+                  </button>
+                  
+
+                  <!-- Hidden input field - completely invisible to users -->
+                  <input
+                    id="trayValidateInput"
+                    type="text"
+                    placeholder="Scan or enter Tray ID"
+                    style="position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none;"
+                  />                  <img
+                      src="{% static 'assets/icons/redo2.png' %}"
+                      alt="Redo"
+                      id="trayScanRedoBtn"
+                      style="width: 24px; height: 24px; cursor: pointer; margin-left: 8px;"
+                      title="Clear Tray IDs"
+                  />
+                  
+
+                      </div>
+                      <div id="trayErrorMessage" style="display: none; background-color: #ffebee; border: 1px solid #f44336; color: #c62828; padding: 8px 12px; border-radius: 4px; margin-bottom: 10px; font-size: 14px; text-align: center;">
+                        <span id="trayErrorText"></span>
+                      </div>
+                      <div id="trayScanDetails_BQ_ReadOnly" class="table-grid">
+                        <!-- Dynamic content will be loaded here -->
+                      </div>
+                    </div>
                   </div>
                </div>
               <!-- Tray Scan Details Modal (Left Popup) -->
@@ -1951,13 +1002,12 @@ thead th {
                   <span id="closeTrayScanModal" class="tray-scan-close"
                     >&times;</span
                   >
-                  <h3>Tray Scan Details:</h3><p>IQF/ Model No. / Rejection Window </p>
+                  <h3>Tray Scan Details:</h3><p>IQF / Model No. / Rejection Window </p>
                   <div id="trayScanDetails">
                     <!-- Dynamic content will be loaded here -->
                   </div>
                 </div>
               </div>
-              
               <!-- New Popup Modal (Right Popup) -->
               <div id="newPopupModal" class="new-popup-modal">
                 <div class="tray-scan-modal-content">
@@ -1989,14 +1039,14 @@ thead th {
                         "
                       />
                       <span>Model No:</span>
-                      <h6>(Fetch Dynamically) /Tray scan</h6>
+                      <h6>(Fetch Dynamically) / Accepted Tray Rescan</h6>
                     </div>
                   </div>
                   <!-- Existing centered h3 title -->
                   <!-- Redo icon for clearing "tray ID" -->
                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
                     <h5 style="text-align: center; margin: 0; flex: 1; font-weight: 600; color:#595959">
-                      IQF- Accepted case tray scan table
+                      IQF - Accepted case tray scan table
                     </h5>
                     <img
                       src="{% static 'assets/icons/redo2.png' %}"
@@ -2060,28 +1110,46 @@ thead th {
            
           </div>
           <!-- Pagination Section -->
-            <div class="pagination-wrapper">
-              <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-end mb-0">
-                  <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+<div class="pagination-wrapper">
+            <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-end mb-0">
+                {% if page_obj.has_previous %}
                   <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
                   </li>
-                </ul>
-              </nav>
-            </div>
+                {% else %}
+                  <li class="page-item disabled">
+                    <span class="page-link">Previous</span>
+                  </li>
+                {% endif %}
+          
+                {% for num in paginator.page_range %}
+                  {% if page_obj.number == num %}
+                    <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                  {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                  {% endif %}
+                {% endfor %}
+          
+                {% if page_obj.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <span class="page-link">Next</span>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
     </div>
   </div>
   <!-- Image Slider Modal (popup) -->
   <div id="imageSliderModal" class="image-slider-modal">
-    <span id="closeImageSliderModal" class="modal-close">&times;</span>
+    <span id="closeImageSliderModal" class="modal-close-BQ">&times;</span>
     <h3>Visual Aid</h3>
     <div class="slider" id="slider">
       <div class="slides" id="slidesContainer">
@@ -2101,181 +1169,1802 @@ thead th {
   </div>
   <!-- Image Slider Modal -->
   <div id="imageSliderModal" class="image-slider-modal">
-    <span id="closeImageSliderModal" class="modal-close">&times;</span>
+    <span id="closeImageSliderModal" class="modal-close-BQ">&times;</span>
     <div class="slider" id="slider">
       <button class="prev" id="prevBtn">&#8592;</button>
       <div class="slides"></div>
       <button class="next" id="nextBtn">&#8594;</button>
     </div>
   </div>
-                          <div id="rejectionPopupModal" class="new-popup-modal">
-                            <span class="tray-scan-close" id="closeRejectionPopup">&times;</span>
-                            <h3 class="modal-title">Rejection Details</h3>
-                            <div class="rejection-content">
-                              <table class="rejection-table">
-                                <thead>
-                                  <tr>
-                                    <th>Rejected Reason</th>
-                                    <th>Rejection Qty</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                    <td>Reason - A</td>
-                                    <td>50</td>
-                                  </tr>
-                                  <tr>
-                                    <td>Reason - B</td>
-                                    <td>50</td>
-                                  </tr>
-                                  <tr>
-                                    <td>Reason - C</td>
-                                    <td>50</td>
-                                  </tr>
-                                  <tr>
-                                    <td>Reason - D</td>
-                                    <td>50</td>
-                                  </tr>
-                                  <tr>
-                                    <td>Reason - E</td>
-                                    <td>50</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                        </div>
+
             
   {% block script %}
 
+    <script nonce="{{ csp_nonce }}">
+    document.querySelectorAll('.tray-scan-btn-BQ-view').forEach(function(link) {
+      link.addEventListener('click', async function (e) {
+        e.preventDefault();
+    
+        // Get modal elements
+        const modal = document.getElementById("trayScanModal_BQ_ReadOnly");
+        const detailsDiv = document.getElementById("trayScanDetails_BQ_ReadOnly");
+        const modalModelNo = document.getElementById("modalModelNo_BQ_ReadOnly");
+    
+        // Get data attributes
+        const lotId = link.getAttribute('data-stock-lot-id');
+        const modelNo = link.getAttribute('data-model-no');
+    
+        // Set model number in modal
+        if (modalModelNo && modelNo) {
+          modalModelNo.textContent = modelNo;
+        }
+    
+        // Fetch tray list from new API
+        let traysData = [];
+        try {
+          const resp = await fetch(`/iqf/iqf_view_tray_list/?lot_id=${encodeURIComponent(lotId)}`);
+          const result = await resp.json();
+          if (result.success && Array.isArray(result.trays)) {
+            traysData = result.trays;
+          }
+        } catch (e) {}
+    
+        // Build modal content as a table
+        let html = `
+          <table class="table table-bordered table-sm" style="width:100%; margin-bottom:0;">
+            <thead>
+              <tr>
+                <th style="width:50px;">S.no</th>
+                <th>Tray ID</th>
+                <th>Tray Qty</th>
+                <th>Tray Validation Status</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+        for (let i = 0; i < traysData.length; i++) {
+          const tray = traysData[i] || {};
+          html += `
+            <tr>
+              <td>${i === 0 ? '1 (Top Tray)' : (i + 1)}</td>
+              <td>
+                <input type="text" class="form-control" value="${tray.tray_id || ''}" readonly style="width: 100%;" />
+              </td>
+              <td>
+                <input type="number" class="form-control" value="${tray.tray_qty || ''}" readonly style="width: 100%;" />
+              </td>
+              <td>
+                <img src="{% static 'assets/icons/fail.png' %}" alt="Fail" title="Fail" style="width:18px; height:18px; margin-right:6px; vertical-align:middle;" />
+                <img src="{% static 'assets/icons/pass.png' %}" alt="Pass" title="Pass" style="width:18px; height:18px; vertical-align:middle;" />
+              </td>
+            </tr>
+          `;
+        }
+        html += `
+            </tbody>
+          </table>
+         
+        `;
+        detailsDiv.innerHTML = html;
+    
+        // Attach event listeners to the new buttons
+        const validateBtn = detailsDiv.querySelector("#trayValidateBtn");
+        const validateInput = detailsDiv.querySelector("#trayValidateInput");
+        const redoBtn = detailsDiv.querySelector("#trayScanRedoBtn");
+    
+        if (validateBtn && validateInput) {
+          validateBtn.addEventListener("click", function () {
+            validateInput.value = "";
+            validateBtn.style.background = "#e8f5e8";
+            validateBtn.style.borderColor = "#4caf50";
+            validateBtn.style.color = "#2e7d32";
+            validateInput.focus();
+          });
+        }
+        if (redoBtn && validateBtn && validateInput) {
+          redoBtn.addEventListener("click", function () {
+            validateInput.value = "";
+            validateInput.blur();
+            validateBtn.style.background = "#f5faff";
+            validateBtn.style.borderColor = "#023E4DCC";
+            validateBtn.style.color = "#023E4DCC";
+          });
+        }
+    
+        // Show the read-only modal
+        if (modal) modal.style.display = "block";
+        modal.classList.add("open");
+      });
+    });
+    </script>
   
+<script nonce="{{ csp_nonce }}">
+document.querySelectorAll('.tray-scan-btn-BQ-view').forEach(function(link) {
+  link.addEventListener('click', async function (e) {
+    e.preventDefault();
+
+    // Get modal elements
+    const modal = document.getElementById("trayScanModal_BQ_ReadOnly");
+    const detailsDiv = document.getElementById("trayScanDetails_BQ_ReadOnly");
+    const modalModelNo = document.getElementById("modalModelNo_BQ_ReadOnly");
+
+    // Get data attributes
+    const lotId = link.getAttribute('data-stock-lot-id');
+    const modelNo = link.getAttribute('data-model-no');
+
+    // Set model number in modal
+    if (modalModelNo && modelNo) {
+      modalModelNo.textContent = modelNo;
+    }
+
+    // Store lot_id in modal for later use
+    if (modal && lotId) {
+      modal.setAttribute('data-lot-id', lotId);
+    }
+
+    // Fetch tray list from new API
+    let traysData = [];
+    try {
+      const resp = await fetch(`/iqf/iqf_view_tray_list/?lot_id=${encodeURIComponent(lotId)}`);
+      const result = await resp.json();
+      if (result.success && Array.isArray(result.trays)) {
+        traysData = result.trays;
+      }
+    } catch (e) {
+      console.error('Error fetching tray data:', e);
+    }
+
+    // Build modal content as a table
+    let html = `
+      <table class="table table-bordered table-sm" style="width:100%; margin-bottom:0;">
+        <thead>
+          <tr>
+            <th style="width:50px;">S.no</th>
+            <th>Tray ID</th>
+            <th>Tray Qty</th>
+            <th>Tray Validation Status</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+    for (let i = 0; i < traysData.length; i++) {
+      const tray = traysData[i] || {};
+      html += `
+        <tr data-tray-index="${i}">
+          <td>${i === 0 ? '1 (Top Tray)' : (i + 1)}</td>
+          <td>
+            <input type="text" class="form-control" value="${tray.tray_id || ''}" readonly style="width: 100%;" />
+          </td>
+          <td>
+            <input type="number" class="form-control" value="${tray.tray_qty || ''}" readonly style="width: 100%;" />
+          </td>
+          <td class="validation-status-cell">
+            <img src="{% static 'assets/icons/fail.png' %}" alt="Fail" title="Fail" style="width:18px; height:18px; margin-right:6px; vertical-align:middle;" />
+            <img src="{% static 'assets/icons/pass.png' %}" alt="Pass" title="Pass" style="width:18px; height:18px; vertical-align:middle;" />
+          </td>
+        </tr>
+      `;
+    }
+    html += `
+        </tbody>
+      </table>
+    `;
+    detailsDiv.innerHTML = html;
+
+    // Setup event listeners for dynamically created elements
+    setupModalEventListeners(modal, detailsDiv, lotId, traysData);
+
+    // Show the read-only modal
+    if (modal) {
+      modal.style.display = "block";
+      modal.classList.add("open");
+    }
+  });
+});
+
+// Function to setup event listeners for modal elements
+function setupModalEventListeners(modal, detailsDiv, lotId, traysData) {
+  const validateBtn = document.getElementById("trayValidateBtn");
+  const validateInput = document.getElementById("trayValidateInput");
+  const redoBtn = document.getElementById("trayScanRedoBtn");
+  const errorMessage = document.getElementById("trayErrorMessage");
+  const errorText = document.getElementById("trayErrorText");
+
+  // Tray Validate button click
+  if (validateBtn && validateInput) {
+    // Remove previous event listeners
+    validateBtn.onclick = null;
+    validateBtn.addEventListener("click", function () {
+      validateInput.value = "";
+      validateBtn.style.background = "#e8f5e8";
+      validateBtn.style.borderColor = "#4caf50";
+      validateBtn.style.color = "#2e7d32";
+      validateInput.focus();
+    });
+  }
+
+  // Tray Validate Input keydown
+  if (validateInput) {
+    // Remove previous event listeners
+    validateInput.onkeydown = null;
+    validateInput.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const trayId = validateInput.value.trim();
+        
+        if (!trayId) {
+          showError("Please enter a Tray ID");
+          return;
+        }
+
+        if (!lotId) {
+          showError("Lot ID not found");
+          return;
+        }
+
+        // Make API call to validate tray
+        fetch("/iqf/iqf_tray_validate/", {  // Updated endpoint
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCookie('csrftoken')
+          },
+          body: JSON.stringify({
+            batch_id: lotId,  // Send as batch_id
+            lot_id: lotId,    // Also send as lot_id for compatibility
+            tray_id: trayId
+          })
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.success) {
+              if (data.exists) {
+                // Tray is valid - update UI to show success
+                updateTrayValidationStatus(trayId, true, traysData);
+                hideError(); // <-- Add this line to hide any previous error
+                // showSuccess(`Tray ${trayId} validated successfully!`); // No need to show success
+              } else {
+                showError(`Tray ${trayId} not found in the system`);
+              }
+            } else {
+              showError(data.error || 'Validation failed');
+            }
+          
+          // Clear input and refocus
+          validateInput.value = "";
+          validateInput.focus();
+        })
+        .catch(error => {
+          validateInput.value = "";
+          validateInput.focus();
+        });
+      }
+    });
+  }
+
+  // Redo button click
+  if (redoBtn) {
+    redoBtn.onclick = null;
+    redoBtn.addEventListener("click", function () {
+      resetValidationUI(validateBtn, validateInput, detailsDiv);
+      hideError();
+    });
+  }
+
+  // Helper functions
+  function showError(message) {
+    if (errorMessage && errorText) {
+      errorText.textContent = message;
+      errorMessage.style.display = "block";
+      setTimeout(() => {
+        errorMessage.style.display = "none";
+      }, 5000);
+    } else {
+      alert(message); // Fallback if error elements don't exist
+    }
+  }
+
+  function hideError() {
+    if (errorMessage) {
+      errorMessage.style.display = "none";
+    }
+  }
+
+  function updateTrayValidationStatus(trayId, isValid, traysData) {
+    // Find the tray row and update its validation status
+    const rows = detailsDiv.querySelectorAll("tbody tr");
+    rows.forEach(row => {
+      const trayInput = row.querySelector("td:nth-child(2) input");
+      if (trayInput && trayInput.value === trayId) {
+        const statusCell = row.querySelector(".validation-status-cell");
+        if (statusCell) {
+          if (isValid) {
+            statusCell.innerHTML = `
+              <img src="{% static 'assets/icons/pass.png' %}" alt="Pass" title="Pass" style="width:18px; height:18px; vertical-align:middle;" />
+              <span style="color: green; margin-left: 6px; font-weight: 500;">Validated</span>
+            `;
+          } else {
+            statusCell.innerHTML = `
+              <img src="{% static 'assets/icons/fail.png' %}" alt="Fail" title="Fail" style="width:18px; height:18px; vertical-align:middle;" />
+              <span style="color: red; margin-left: 6px; font-weight: 500;">Invalid</span>
+            `;
+          }
+        }
+      }
+    });
+  }
+
+  function resetValidationUI(validateBtn, validateInput, detailsDiv) {
+    // Clear input
+    if (validateInput) {
+      validateInput.value = "";
+      validateInput.blur();
+    }
+
+    // Reset validate button
+    if (validateBtn) {
+      validateBtn.style.background = "#f5faff";
+      validateBtn.style.borderColor = "#023E4DCC";
+      validateBtn.style.color = "#023E4DCC";
+    }
+
+    // Reset all validation status icons
+    const rows = detailsDiv.querySelectorAll("tbody tr");
+    rows.forEach(row => {
+      const statusCell = row.querySelector(".validation-status-cell");
+      if (statusCell) {
+        statusCell.innerHTML = `
+          <img src="{% static 'assets/icons/fail.png' %}" alt="Fail" title="Fail" style="width:18px; height:18px; margin-right:6px; vertical-align:middle;" />
+          <img src="{% static 'assets/icons/pass.png' %}" alt="Pass" title="Pass" style="width:18px; height:18px; vertical-align:middle;" />
+        `;
+      }
+    });
+  }
+}
+
+// Helper function for CSRF token
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+</script>
+
+<!-- Modal close functionality -->
+<script nonce="{{ csp_nonce }}">
+document.addEventListener("DOMContentLoaded", function () {
+  const closeBtn = document.getElementById("closeTrayScanModal_BQ_ReadOnly");
+  const modal = document.getElementById("trayScanModal_BQ_ReadOnly");
+
+  if (closeBtn && modal) {
+    closeBtn.addEventListener("click", function () {
+      modal.style.display = "none";
+      modal.classList.remove("open");
+    });
+  }
+
+  // Close modal on outside click
+  window.addEventListener("click", function (event) {
+    if (event.target === modal) {
+      modal.style.display = "none";
+      modal.classList.remove("open");
+    }
+  });
+});
+</script>
+
+
+
+    <!-- Tray Scan Modal & New Popup Script -->
+<script nonce="{{ csp_nonce }}">
+    document.addEventListener("DOMContentLoaded", () => {
+      const trayScanLinks = document.querySelectorAll(".tray-scan-btn");
+      const trayModal = document.getElementById("trayScanModal");
+      const closeTrayBtn = document.getElementById("closeTrayScanModal");
+      const detailsDiv = document.getElementById("trayScanDetails");
+      const newPopupModal = document.getElementById("newPopupModal");
+      const closeNewPopupBtn = document.getElementById("closeNewPopupModal");
+
+      trayScanLinks.forEach((link) => {
+        link.addEventListener("click", (event) => {
+          event.preventDefault();
+
+          const row = event.target.closest("tr");
+          const batchId = link.getAttribute('data-batch-id');
+          const stockLotId = link.getAttribute('data-stock-lot-id');
+          const isOnHold = row.getAttribute('data-brass-onhold-picking') === 'True'; // Check if iqf_onhold_picking is True
+   
+          trayModal.dataset.batchId = batchId;
+          trayModal.dataset.stockLotId = stockLotId;
+
+          const modelStockNo = row.querySelector('.model-hover-trigger').childNodes[0].textContent.trim();
+          const dateTime = row.cells[1].textContent.trim();
+          const totalQuantity = row.cells[9].textContent.trim();
+          const modalHeader = document.getElementById("trayScanModalHeader");
+          
+          if (modalHeader) {
+            modalHeader.innerHTML = `Input Screening / <span class="modal-model-no">${modelStockNo}</span> / ${isOnHold ? 'Rejection Details (Read Only)' : 'Rejection Window'}`;
+          }
+
+          // If iqf_onhold_picking is True, show read-only saved data
+          if (isOnHold) {
+            showReadOnlyRejectionData(stockLotId, detailsDiv);
+          } else {
+            // Show editable rejection form (existing code)
+            showEditableRejectionForm(stockLotId, batchId, detailsDiv, row);
+          }
+
+          trayModal.classList.add("open");
+        });
+      });
+
+      // Function to show read-only saved rejection data
+      function showReadOnlyRejectionData(lotId, detailsDiv) {
+        fetch(`/iqf/iqf_get_rejected_tray_scan_data/?lot_id=${encodeURIComponent(lotId)}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              let totalSavedQty = 0;
+              let tableRows = '';
+              
+              data.rows.forEach((row, index) => {
+                totalSavedQty += parseInt(row.qty) || 0;
+                tableRows += `
+                  <tr>
+                    <td>${index + 1}</td>
+                    <td style="color: #666;">${row.reason_id}</td>
+                    <td style="color: #666;">${row.reason}</td>
+                    <td>
+                      <input type="number" value="${row.qty}" class="form-control" style="width: 80px; background-color: #f5f5f5;" readonly />
+                    </td>
+                    <td>
+                      <input type="text" value="${row.tray_id}" class="form-control" style="width: 120px; background-color: #f5f5f5;" readonly />
+                    </td>
+                  </tr>
+                `;
+              });
+
+              detailsDiv.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center mb-2" style="padding: 10px 0;">
+                  <h4 class="mb-0">Saved Rejection Details (Read Only)</h4>
+                  <div class="alert alert-info" style="margin: 0; padding: 8px 12px; font-size: 14px;">
+                    <i class="fa fa-info-circle"></i> This data is already saved and cannot be modified
+                  </div>
+                </div>
+                
+                <div class="table-responsive" style="border: solid 1px black;">
+                  <table class="table table-bordered text-center" style="border: solid 2px black; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                    <thead style="border: solid 2px black; background-color: #6c757d; color: #fff;">
+                      <tr style="border: solid 1px black;">
+                        <th style="padding: 12px;">S.No</th>
+                        <th style="padding: 12px;">Reason ID</th>
+                        <th style="padding: 12px;">Rejection Reason</th>
+                        <th style="padding: 12px;">Quantity</th>
+                        <th style="padding: 12px;">Tray</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${tableRows}
+                      <tr style="background-color: #f8f9fa; font-weight: bold;">
+                        <td colspan="3" style="text-align: right; font-weight: bold;">Total Saved Qty</td>
+                        <td style="font-weight: bold; color: #dc3545;">${totalSavedQty}</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <br>
+                
+                <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+                  <button id="proceedReadOnlyButton" style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 30px;">
+                    Proceed
+                  </button>
+                  <button id="closeReadOnlyModal" style="padding: 8px 16px; background: #6c757d; color: white; border: none; border-radius: 30px;">
+                    Close
+                  </button>
+                </div>
+              `;
+
+              // Add close button event listener
+              const closeBtn = document.getElementById("closeReadOnlyModal");
+              if (closeBtn) {
+                closeBtn.addEventListener("click", () => {
+                  trayModal.classList.remove("open");
+                });
+              }
+
+              // Add proceed button event listener for read-only mode
+              const proceedBtn = document.getElementById("proceedReadOnlyButton");
+              if (proceedBtn) {
+                proceedBtn.addEventListener("click", () => {
+                  // First check if draft exists
+                  fetch(`/iqf/iqf_check_accepted_tray_draft/?lot_id=${encodeURIComponent(lotId)}`)
+                    .then(res => res.json())
+                    .then(draftData => {
+                      if (draftData.has_draft) {
+                        // Show draft data in editable mode
+                        showReadOnlyAcceptedTrayData(lotId, detailsDiv);
+                      } else {
+                        // Proceed with normal flow - fetch and show fresh accepted tray data
+                        fetchAndShowAcceptedTrayData(lotId);
+                      }
+                    })
+                    .catch(error => {
+                      console.error('Error checking draft:', error);
+                      // Fallback to normal flow
+                      fetchAndShowAcceptedTrayData(lotId);
+                    });
+                });
+              }
+            } else {
+              detailsDiv.innerHTML = `
+                <div class="alert alert-warning text-center">
+                  <i class="fa fa-exclamation-triangle"></i>
+                  No saved rejection data found for this lot.
+                </div>
+                <div style="display: flex; justify-content: center; margin-top: 20px;">
+                  <button id="closeEmptyModal" style="padding: 8px 16px; background: #6c757d; color: white; border: none; border-radius: 30px;">
+                    Close
+                  </button>
+                </div>
+              `;
+              
+              const closeBtn = document.getElementById("closeEmptyModal");
+              if (closeBtn) {
+                closeBtn.addEventListener("click", () => {
+                  trayModal.classList.remove("open");
+                });
+              }
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching rejection data:', error);
+            detailsDiv.innerHTML = `
+              <div class="alert alert-danger text-center">
+                <i class="fa fa-exclamation-circle"></i>
+                Error loading rejection data. Please try again.
+              </div>
+              <div style="display: flex; justify-content: center; margin-top: 20px;">
+                <button id="closeErrorModal" style="padding: 8px 16px; background: #dc3545; color: white; border: none; border-radius: 30px;">
+                  Close
+                </button>
+              </div>
+            `;
+            
+            const closeBtn = document.getElementById("closeErrorModal");
+            if (closeBtn) {
+              closeBtn.addEventListener("click", () => {
+                trayModal.classList.remove("open");
+              });
+            }
+          });
+      }
+
+      // Function to fetch and show normal accepted tray data
+      function fetchAndShowAcceptedTrayData(lotId) {
+        fetch(`/iqf/iqf_get_accepted_tray_scan_data/?lot_id=${encodeURIComponent(lotId)}`)
+          .then(res => res.json())
+          .then(rescanData => {
+            if (rescanData.success) {
+              showAcceptedTrayModal(rescanData, lotId, false);
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching accepted tray data:', error);
+            alert('Error loading accepted tray data. Please try again.');
+          });
+      }
+
+      // Function to show read-only accepted tray data (for draft mode)
+      function showReadOnlyAcceptedTrayData(lotId, detailsDiv) {
+        fetch(`/iqf/iqf_get_accepted_tray_scan_data/?lot_id=${encodeURIComponent(lotId)}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.success && data.has_draft) {
+              showAcceptedTrayModal(data, lotId, true);
+            } else {
+              // No draft exists, proceed with normal flow
+              fetchAndShowAcceptedTrayData(lotId);
+            }
+          })
+          .catch(error => {
+            console.error('Error checking draft data:', error);
+            // Fallback to normal flow
+            fetchAndShowAcceptedTrayData(lotId);
+          });
+      }
+
+      // Unified function to show accepted tray modal
+      function showAcceptedTrayModal(rescanData, lotId, isDraft) {
+        let rows = rescanData.rows || [];   
+        let modelNo = rescanData.model_no;
+        rows.sort((a, b) => parseInt(a.tray_qty) - parseInt(b.tray_qty));
+        // Reassign S.no after sorting
+        rows.forEach((row, idx) => {
+          row.sno = idx + 1;
+        });
+
+        let draftIndicator = isDraft ? ' (Draft)' : '';
+        let draftAlert = isDraft ? `
+          <div class="alert alert-info" style="margin: 10px 0; padding: 8px 12px; font-size: 14px;">
+            <i class="fa fa-info-circle"></i> This is draft data. You can edit and save changes.
+          </div>
+        ` : '';
+
+        let html = `
+          <div class="modal-top-header" style="display: flex; align-items: center; gap: 20px; padding-bottom: 10px;">
+            <div class="user-profile" style="display: flex; align-items: center; gap: 8px">
+              <img src="/static/assets/images/userProfile.png" alt="User Profile" style="border-radius: 50%; width: 50px; height: 50px; object-fit: cover;" />
+              <span>Model No:</span>
+              <h6>${modelNo} / Accepted Tray Rescan${draftIndicator}</h6>
+            </div>
+          </div>
+          ${draftAlert}
+          <h5 style="text-align: center">Input Screening - Accepted case tray scan table${isDraft ? ' (Draft Mode)' : ''}</h5>
+          <div id="trayScanDetails" class="table-grid">
+            <div style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">S.no</div>
+            <div style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">Tray ID</div>
+            <div style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">Tray Qty</div>
+        `;
+
+        rows.forEach(row => {
+          let inputStyle = isDraft ? 'width:90px; background-color: #f0f8ff;' : 'width:90px;';
+          html += `
+            <div style="border: 1px solid #ccc; padding: 8px;">${row.sno}</div>
+            <div style="border: 1px solid #ccc; padding: 8px;">
+              <input type="text" value="${row.tray_id}" style="${inputStyle}" class="accepted-tray-id-input" data-row="${row.sno}" />
+              <span class="tray-id-error" style="display:none; color:#d32f2f; font-size:12px; margin-left:4px;"></span>
+            </div>
+            <div style="border: 1px solid #ccc; padding: 8px;">
+              <input type="number" value="${row.tray_qty}" style="width:60px; background-color: #f5f5f5;" readonly />
+            </div>
+          `;
+        });
+
+        // Different buttons based on draft mode
+        if (isDraft) {
+          html += `
+            <div style="grid-column: 1 / -1; display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+              <button id="acceptedTrayUpdateDraftBtn" style="padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 30px;">Update Draft</button>
+              <button style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 30px;" id="acceptedTrayFinalSubmitBtn">Final Submit</button>
+              <button id="acceptedTrayCancelDraftBtn" style="padding: 8px 16px; background: #dc3545; color: white; border: none; border-radius: 30px;">
+                Cancel
+              </button>
+            </div>
+          `;
+        } else {
+          html += `
+            <div style="grid-column: 1 / -1; display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+              <button id="acceptedTrayDraftBtn" style="padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 30px;">Draft</button>
+              <button style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 30px;" id="acceptedTraySubmitBtn">Submit</button>
+              <button id="acceptedTrayCancelBtn" style="padding: 8px 16px; background: #dc3545; color: white; border: none; border-radius: 30px;">
+                Cancel
+              </button>
+            </div>
+          `;
+        }
+
+        html += `
+          <div id="acceptedTrayMsg" style="margin-top: 10px; text-align: center; font-weight: bold;"></div>
+        </div>`;
+        
+        document.querySelector("#newPopupModal .tray-scan-modal-content").innerHTML = html;
+        newPopupModal.classList.add("open");
+        
+        // Add event listeners based on mode
+        if (isDraft) {
+          addDraftModeEventListeners(lotId);
+        } else {
+          addNormalModeEventListeners(lotId);
+        }
+
+        // Add tray ID validation for all modes
+        addTrayIdValidation(lotId);
+      }
+
+      // Add event listeners for normal mode
+      function addNormalModeEventListeners(lotId) {
+        // Draft button
+        const draftBtn = document.getElementById("acceptedTrayDraftBtn");
+        if (draftBtn) {
+          draftBtn.addEventListener("click", function () {
+            saveTrayData(lotId, true, "Draft saved successfully!");
+          });
+        }
+
+        // Submit button
+        const submitBtn = document.getElementById("acceptedTraySubmitBtn");
+        if (submitBtn) {
+          submitBtn.addEventListener("click", function () {
+            saveTrayData(lotId, false, "Accepted tray scan saved!");
+          });
+        }
+
+        // Cancel button
+        const cancelBtn = document.getElementById("acceptedTrayCancelBtn");
+        if (cancelBtn) {
+          cancelBtn.addEventListener("click", function () {
+            document.getElementById("newPopupModal").classList.remove("open");
+            document.getElementById("trayScanModal").classList.remove("open");
+            window.location.reload(); // Reload to reset state
+          });
+        }
+      }
+
+      // Add event listeners for draft mode
+      function addDraftModeEventListeners(lotId) {
+        // Update Draft button
+        const updateDraftBtn = document.getElementById("acceptedTrayUpdateDraftBtn");
+        if (updateDraftBtn) {
+          updateDraftBtn.addEventListener("click", function () {
+            saveTrayData(lotId, true, "Draft updated successfully!");
+          });
+        }
+        
+        // Final Submit button
+        const finalSubmitBtn = document.getElementById("acceptedTrayFinalSubmitBtn");
+        if (finalSubmitBtn) {
+          finalSubmitBtn.addEventListener("click", function () {
+            saveTrayData(lotId, false, "Final submission successful!");
+          });
+        }
+        
+        // Cancel button
+        const cancelBtn = document.getElementById("acceptedTrayCancelDraftBtn");
+        if (cancelBtn) {
+          cancelBtn.addEventListener("click", function () {
+            document.getElementById("newPopupModal").classList.remove("open");
+            document.getElementById("trayScanModal").classList.remove("open");
+          });
+        }
+      }
+
+      // Add tray ID validation
+      function addTrayIdValidation(lotId) {
+        document.querySelectorAll('.accepted-tray-id-input').forEach(function(input, idx, allInputs) {
+          input.addEventListener('blur', function() {
+            const trayId = input.value.trim();
+            const errorSpan = input.parentElement.querySelector('.tray-id-error');
+            errorSpan.textContent = '';
+            errorSpan.style.display = 'none';
+            if (!trayId) return;
+
+            // Check for duplicate tray ID in other rows
+            let duplicateRow = null;
+            allInputs.forEach(function(otherInput, otherIdx) {
+              if (otherIdx !== idx && otherInput.value.trim() === trayId) {
+                duplicateRow = otherInput.dataset.row;
+              }
+            });
+            if (duplicateRow) {
+              errorSpan.textContent = `Duplicate Tray ID: "${trayId}" already in row ${duplicateRow}.`;
+              errorSpan.style.display = 'inline';
+              return;
+            }
+
+            // Server check for existence and lot match
+            fetch(`/iqf/iqf_check_tray_id/?tray_id=${encodeURIComponent(trayId)}&lot_id=${encodeURIComponent(lotId)}`)
+              .then(res => res.json())
+              .then(data => {
+                if (!data.exists) {
+                  if (data.not_in_same_lot) {
+                    errorSpan.textContent = `Tray ID "${trayId}" is not in the same lot (Row ${input.dataset.row}).`;
+                  } else if (data.already_rejected) {
+                    errorSpan.textContent = `Tray ID "${trayId}" is already rejected in IP screen (Row ${input.dataset.row}).`;
+                  } else {
+                    errorSpan.textContent = `Tray ID "${trayId}" is not existing (Row ${input.dataset.row}).`;
+                  }
+                  errorSpan.style.display = 'inline';
+                }
+              });
+          });
+        });
+      }
+
+// Helper function to save tray data - UPDATED to handle draft saving without visible reload
+function saveTrayData(lotId, isDraft, successMessage) {
+  const rows = [];
+  document.querySelectorAll('#newPopupModal .table-grid input[type="text"]').forEach((input, idx) => {
+    const tray_id = input.value;
+    const qtyInput = input.parentElement.nextElementSibling.querySelector('input[type="number"]');
+    const tray_qty = qtyInput ? qtyInput.value : '';
+    rows.push({ tray_id, tray_qty });
+  });
+
+  fetch('/iqf/iqf_save_accepted_tray_scan/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCookie('csrftoken')
+    },
+    body: JSON.stringify({ lot_id: lotId, rows: rows, draft_save: isDraft })
+  })
+  .then(res => res.json())
+  .then(data => {
+    const msgP = document.getElementById("acceptedTrayMsg");
+    if (data.success) {
+      if (msgP) {
+        msgP.style.color = "#388e3c";
+        msgP.textContent = successMessage;
+      }
+      // Reload the page after a short delay for user feedback
+      setTimeout(function() {
+        window.location.reload();
+      }, 800);
+    } else {
+      if (msgP) {
+        msgP.style.color = "#d32f2f";
+        msgP.textContent = data.error || "Failed to save";
+      }
+    }
+  })
+  .catch(error => {
+    console.error('Error saving data:', error);
+    const msgP = document.getElementById("acceptedTrayMsg");
+    if (msgP) {
+      msgP.style.color = "#d32f2f";
+      msgP.textContent = "Error saving data. Please try again.";
+    }
+  });
+}
+// Helper function to update UI after final submit (without page reload)
+// Fixed helper function to update UI after final submit (without page reload)
+function updateUIAfterFinalSubmit(lotId) {
+  // Find the correct row using lot_id (stock_lot_id)
+  const mainRow = document.querySelector(`tr[data-stock-lot-id="${lotId}"]`);
+  
+  if (!mainRow) {
+    console.error('Could not find row with lot_id:', lotId);
+    // Fallback: try to find by any data attribute that might match
+    const fallbackRow = document.querySelector(`tr[data-batch-id]`);
+    if (fallbackRow) {
+      console.log('Using fallback row selection');
+      updateRowUI(fallbackRow);
+    }
+    return;
+  }
+  
+  updateRowUI(mainRow);
+}
+
+// Helper function to update a specific row's UI
+function updateRowUI(row) {
+  try {
+    // 1. Update Action column buttons (column index 14)
+    const actionTd = row.cells[14];
+    if (actionTd) {
+      // Disable edit and delete buttons
+      const editBtn = actionTd.querySelector('.edit-qty-btn');
+      const deleteBtn = actionTd.querySelector('.delete-batch-btn');
+      
+      if (editBtn) {
+        const editImg = editBtn.querySelector('img');
+        editBtn.outerHTML = `<span title="Edit Disabled" style="opacity: 0.5; pointer-events: none;">
+          <img src="${editImg ? editImg.src : '/static/assets/icons/edit1.png'}" alt="Edit Disabled" 
+               style="width: 20px; margin-right: 8px; height: auto; filter: grayscale(1) opacity(0.5);" />
+        </span>`;
+      }
+      
+      if (deleteBtn) {
+        const deleteImg = deleteBtn.querySelector('img');
+        deleteBtn.outerHTML = `<span title="Delete Disabled" style="opacity: 0.5; pointer-events: none;">
+          <img src="${deleteImg ? deleteImg.src : '/static/assets/icons/bin.png'}" alt="Delete Disabled" 
+               style="width: 20px; margin-right: 8px; height: auto; filter: grayscale(1) opacity(0.5);" />
+        </span>`;
+      }
+      
+      // Update Accept/Reject buttons
+      const acceptBtn = actionTd.querySelector('.btn-twitter');
+      const rejectBtn = actionTd.querySelector('.btn-youtube');
+      
+      if (acceptBtn) {
+        acceptBtn.innerHTML = '<i class="fa fa-check-circle"></i>Accepted';
+        acceptBtn.style.backgroundColor = '#66bb6a';
+        acceptBtn.style.pointerEvents = 'none';
+        acceptBtn.style.opacity = '0.8';
+        acceptBtn.style.cursor = 'not-allowed';
+        acceptBtn.disabled = true;
+      }
+      
+      if (rejectBtn) {
+        rejectBtn.innerHTML = '<i class="fa fa-times-circle"></i>Rejected';
+        rejectBtn.style.backgroundColor = '#e57373';
+        rejectBtn.style.pointerEvents = 'none';
+        rejectBtn.style.opacity = '0.8';
+        rejectBtn.style.cursor = 'not-allowed';
+        rejectBtn.disabled = true;
+      }
+    }
+
+    // 2. Update Process Status icons (QC icon to green)
+    const processIcons = row.querySelectorAll('.d-flex > div');
+    if (processIcons.length > 1) {
+      processIcons[1].style.backgroundColor = '#0c8249'; // QC icon green
+    }
+
+    // 3. Update Batch Status (column index 15)
+    const batchStatusTd = row.cells[15];
+    if (batchStatusTd) {
+      batchStatusTd.innerHTML = `
+        <div class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+            style="border: 2px solid #0d5d17; background-color: #c5f9c2; color: #2f801b; 
+                   font-size: clamp(0.3rem, 2vw, 0.875rem); white-space: nowrap; padding: 0.3rem;">
+          Yet to Release
+        </div>
+      `;
+    }
+
+    // 4. Update Current Location (column index 16)
+    const currentLocationTd = row.cells[16];
+    if (currentLocationTd) {
+      currentLocationTd.innerHTML = `
+        <div class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+            style="border: 2px solid #0d5d17; background-color: #c5f9c2; color: #2f801b; 
+                   font-size: clamp(0.75rem, 2vw, 0.875rem); white-space: nowrap; 
+                   padding-top: 0.5rem; padding-bottom: 0.5rem;">
+          Input screening
+        </div>
+      `;
+    }
+
+    // 5. Disable audio and remark icons (column index 17)
+    const remarksCell = row.cells[17];
+    if (remarksCell) {
+      const audioIcon = remarksCell.querySelector('a[title="Add Audio Remark"]');
+      if (audioIcon) {
+        const span = document.createElement('span');
+        span.title = "Disabled after moved";
+        span.style = "display: inline-flex; align-items: center; height: 28px; margin-left: 0; opacity: 0.5; pointer-events: none;";
+        span.innerHTML = audioIcon.innerHTML;
+        audioIcon.replaceWith(span);
+      }
+      
+      const chatIcon = remarksCell.querySelector('a[title="Add Remark"]');
+      if (chatIcon) {
+        const span = document.createElement('span');
+        span.title = "Disabled after moved";
+        span.style = "display: inline-flex; align-items: center; height: 20px; margin-left: 5px; opacity: 0.5; pointer-events: none;";
+        span.innerHTML = chatIcon.innerHTML;
+        chatIcon.replaceWith(span);
+      }
+      
+      const textarea = remarksCell.querySelector('textarea');
+      if (textarea) textarea.setAttribute('readonly', true);
+      
+      const sendBtn = remarksCell.querySelector('.remark-tooltip button');
+      if (sendBtn) sendBtn.style.display = 'none';
+    }
+    
+    console.log('Successfully updated row UI');
+    
+  } catch (error) {
+    console.error('Error updating row UI:', error);
+  }
+}
+// Helper function to show success notification without page reload
+function showSuccessNotification(message) {
+  // Create or get existing notification element
+  let notification = document.getElementById('success-notification');
+  if (!notification) {
+    notification = document.createElement('div');
+    notification.id = 'success-notification';
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #28a745;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 10001;
+      font-weight: 500;
+      transform: translateX(400px);
+      transition: transform 0.3s ease;
+    `;
+    document.body.appendChild(notification);
+  }
+  
+  notification.textContent = message;
+  
+  // Show notification
+  setTimeout(() => {
+    notification.style.transform = 'translateX(0)';
+  }, 100);
+  
+  // Hide notification after 3 seconds
+  setTimeout(() => {
+    notification.style.transform = 'translateX(400px)';
+  }, 3000);
+}
+
+// Helper function to get CSRF token
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+      // Function to show editable rejection form (existing functionality)
+      function showEditableRejectionForm(stockLotId, batchId, detailsDiv, row) {
+        // Set the inner HTML with Proceed and Cancel buttons tagged with IDs
+        detailsDiv.innerHTML = `
+          <div class="d-flex justify-content-between align-items-center mb-2" style="padding: 10px 0;">
+            <h4 class="mb-0">Rejection Reason List</h4>
+            <div class="form-check d-flex align-items-center">
+                <input class="form-check-input" type="checkbox" id="batchRejection" />
+                <label class="form-check-label ms-2" for="batchRejection">Batch Rejection</label>
+            </div>
+          </div>
+         
+          <div class="table-responsive" style="border: solid 1px black;">
+            <table class="table table-bordered text-center" style="border: solid 2px black; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+              <thead style="border: solid 2px black; background-color: #007bff; color: #fff;">
+              <tr style="border: solid 1px black; background-color: #007bff; color: #fff;">
+                  <th style="padding: 12px;">S.No</th>
+                  <th style="padding: 12px;">Reason ID</th>
+                  <th style="padding: 12px;">Rejection Reason</th>
+                  <th style="padding: 12px;">Quantity</th>
+                  <th style="padding: 12px;">Tray</th>
+              </tr>
+              </thead>
+               <tbody id="rejection-table-body">
+                  {% for reason in iqf_rejection_reasons %}
+                   <tr data-batch-id="${batchId}" data-stock-lot-id="${stockLotId}">
+                     <td>{{ forloop.counter }}</td>
+                     <td style="color: {{ reason.row_color }};">{{ reason.rejection_reason_id }}</td>
+                     <td style="color: {{ reason.row_color }};">{{ reason.rejection_reason }}</td>
+                     <td>
+                       <input type="number" min="0" class="form-control rejection-qty-input" name="quantity_{{ forloop.counter }}" style="width: 80px;" />
+                     </td>
+                     <td>
+                       <input type="text" class="form-control tray-id-input" name="tray_{{ forloop.counter }}" placeholder="Scan Tray ID" style="width: 120px;" data-group="{{ reason.group.group_name|default:'' }}" />
+                       <span class="tray-id-error" style="color: #d32f2f; font-size: 12px; display: none; margin-left: 4px;"></span>
+                     </td>
+                   </tr>
+                 {% endfor %}
+                 <tr>
+                   <td colspan="3" style="text-align: right; font-weight: bold;">Total Qty</td>
+                   <td id="rejection-total-qty" style="font-weight: bold;">0</td>
+                   <td></td>
+                 </tr>
+               </tbody>
+            </table>
+          </div>
+           <br>
+           <div id="batchRejectionMsg" style="margin-bottom:10px; color: #d32f2f; font-weight: bold;"></div>
+         
+            <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+                     <button id="proceedButton" style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 30px;">
+                       Proceed
+                     </button>
+                     <button style="padding: 8px 16px; background: #dc3545; color: white; border: none; border-radius: 30px;">
+                       Cancel
+                     </button>
+                   </div>
+            
+          `;
+
+        // Add all the existing event listeners for the editable form
+        addEditableFormEventListeners(row, batchId, stockLotId);
+      }
+
+      // Function to add event listeners for editable form
+      function addEditableFormEventListeners(row, batchId, stockLotId) {
+        // Place the tray ID validation code here:
+        document.querySelectorAll('.tray-id-input').forEach(function(input, idx, allInputs) {
+          input.addEventListener('blur', function() {
+            const trayId = input.value.trim();
+            const group = input.getAttribute('data-group');
+            const errorSpan = input.parentElement.querySelector('.tray-id-error') || (() => {
+              const span = document.createElement('span');
+              span.className = 'tray-id-error';
+              span.style.color = 'red';
+              span.style.fontSize = '12px';
+              input.parentElement.appendChild(span);
+              return span;
+            })();
+            errorSpan.textContent = '';
+            errorSpan.style.display = 'none';
+        
+            if (!trayId) return;
+        
+            // Check for duplicate tray ID in other rows
+            let found = false;
+            allInputs.forEach(function(otherInput, otherIdx) {
+              if (otherIdx !== idx && otherInput.value.trim() === trayId) {
+                const otherGroup = otherInput.getAttribute('data-group');
+                if (otherGroup !== group) {
+                  errorSpan.textContent = `Tray ID "${trayId}" is not same group match.`;
+                  errorSpan.style.display = 'inline';
+                  found = true;
+                }
+              }
+            });
+            if (found) return;
+        
+            // Server check for existence (optional, if you want to keep it)
+            fetch(`/iqf/iqf_reject_check_tray_id/?tray_id=${encodeURIComponent(trayId)}`)
+              .then(res => res.json())
+              .then(data => {
+                if (!data.exists) {
+                  errorSpan.textContent = `Tray ID "${trayId}" is not existing.`;
+                  errorSpan.style.display = 'inline';
+                }
+              });
+          });
+        });
+        
+        // Set availableQty from Django context (set this variable in your view and template)
+        const availableQty = parseInt(row.getAttribute('data-available-qty'), 10) || 0;        
+        document.querySelectorAll('.rejection-qty-input').forEach(function(input, idx, allInputs) {
+          input.addEventListener('input', function() {
+            // Remove all previous qty errors
+            document.querySelectorAll('.qty-error').forEach(function(span) { span.remove(); });
+        
+            let total = 0;
+            let errorRow = null;
+            let errorInput = null;
+        
+            // Calculate running total and find the first row that exceeds
+            allInputs.forEach(function(qtyInput, i) {
+              const val = parseInt(qtyInput.value) || 0;
+              total += val;
+              if (!errorRow && total > availableQty) {
+                errorRow = i + 1;
+                errorInput = qtyInput;
+              }
+            });
+        
+            document.getElementById('rejection-total-qty').textContent = total;
+        
+            // Show error below the input if exceeded
+            if (errorInput) {
+              let errorSpan = document.createElement('span');
+              errorSpan.className = 'qty-error';
+              errorSpan.style.color = '#d32f2f';
+              errorSpan.style.fontSize = '12px';
+              errorSpan.style.display = 'block';
+              errorSpan.style.marginTop = '2px';
+              errorSpan.textContent = `Row ${errorRow}: Quantity exceeds available (${availableQty}).`;
+              errorInput.parentElement.appendChild(errorSpan);
+            }
+          });
+        });
+
+        // Batch rejection checkbox event listener
+        const batchRejectionCheckbox = document.getElementById("batchRejection");
+        const rejectionTableBody = document.getElementById("rejection-table-body");
+        
+        if (batchRejectionCheckbox && rejectionTableBody) {
+          batchRejectionCheckbox.addEventListener("change", function () {
+            const inputs = rejectionTableBody.querySelectorAll("input");
+            if (this.checked) {
+              inputs.forEach(input => {
+                input.disabled = true;
+                input.value = ""; // Optionally clear values
+              });
+              document.getElementById('rejection-total-qty').textContent = "0";
+            } else {
+              inputs.forEach(input => {
+                input.disabled = false;
+              });
+            }
+          });
+        }
+        // Attach event listener for Proceed to open new popup modal
+        const proceedButton = document.getElementById("proceedButton");
+        const cancelButton = document.getElementById("cancelRejection");
+
+        if (proceedButton) {
+  proceedButton.addEventListener("click", () => {
+    // If already saved, just open the modal if closed
+    if (window.trayRejectionSaved) {
+      if (!newPopupModal.classList.contains("open")) {
+        newPopupModal.classList.add("open");
+      }
+      return;
+    }
+    // Prevent multiple clicks during save
+    if (proceedButton.disabled) return;
+    proceedButton.disabled = true;
+    
+    const batchRejectionCheckbox = document.getElementById("batchRejection");
+    const msgDiv = document.getElementById("batchRejectionMsg");
+    if (msgDiv) msgDiv.textContent = ""; // Clear previous messages
+
+    if (batchRejectionCheckbox && batchRejectionCheckbox.checked) {
+      // Batch rejection logic
+      const batchId = trayModal.dataset.batchId;
+      const lotId = trayModal.dataset.stockLotId;
+      const totalQty = document.getElementById('rejection-total-qty').textContent || "0";
+      if (!batchId || !lotId) {
+        if (msgDiv) msgDiv.textContent = "Batch ID or Lot ID not found.";
+        proceedButton.disabled = false;
+        return;
+      }
+      fetch('/iqf/iqf_batch_rejection/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({
+          batch_id: batchId,
+          lot_id: lotId,
+          total_qty: totalQty
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          if (msgDiv) {
+            msgDiv.style.color = "#388e3c";
+            msgDiv.textContent = "Batch rejection saved!";
+          }
+          // Update UI for batch rejection
+          window.location.reload(); // Reload page after success
+          setTimeout(() => {
+            trayModal.classList.remove("open");
+            if (msgDiv) msgDiv.textContent = "";
+          }, 1200);
+        } else {
+          if (msgDiv) {
+            msgDiv.style.color = "#d32f2f";
+            msgDiv.textContent = data.error || "Failed to save batch rejection";
+          }
+          proceedButton.disabled = false;
+        }
+      })
+      .catch(() => {
+        if (msgDiv) {
+          msgDiv.style.color = "#d32f2f";
+          msgDiv.textContent = "Network error";
+        }
+        proceedButton.disabled = false;
+      });
+    } else {
+      // Tray-wise rejection save
+      const batchId = trayModal.dataset.batchId;
+      const lotId = trayModal.dataset.stockLotId;
+      const rows = document.querySelectorAll("#rejection-table-body tr");
+      let tray_rejections = [];
+      
+      rows.forEach(row => {
+        // Only process rows that have the input fields (skip summary row)
+        const qtyInput = row.querySelector('input.rejection-qty-input');
+        const trayInput = row.querySelector('input.tray-id-input');
+        if (qtyInput && trayInput) {
+          const reason_id = row.querySelectorAll("td")[1].textContent.trim();
+          const qty = qtyInput.value.trim();
+          const tray_id = trayInput.value.trim();
+          if (qty && parseInt(qty) > 0 && tray_id) {
+            tray_rejections.push({
+              reason_id: reason_id,
+              qty: qty,
+              tray_id: tray_id
+            });
+          }
+        }
+      });
+      
+      if (!tray_rejections.length) {
+        if (msgDiv) {
+          msgDiv.style.color = "#d32f2f";
+          msgDiv.textContent = "Enter at least one tray qty and tray id.";
+        }
+        proceedButton.disabled = false;
+        return;
+      }
+      
+      fetch('/iqf/iqf_tray_rejection/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({
+          lot_id: lotId,
+          batch_id: batchId,
+          tray_rejections: tray_rejections
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          // ONLY DISABLE FIELDS HERE ON SUCCESS:
+          rows.forEach(row => {
+            const qtyInput = row.querySelector('input.rejection-qty-input');
+            const trayInput = row.querySelector('input.tray-id-input');
+            if (qtyInput) qtyInput.disabled = true;
+            if (trayInput) trayInput.disabled = true;
+          });
+          window.trayRejectionSaved = true; // Set flag after first save
+          
+          if (msgDiv) {
+            msgDiv.style.color = "#388e3c";
+            msgDiv.textContent = "Tray rejection saved!";
+          }
+          
+          // Fetch and render Accepted Tray Rescan modal
+          fetch(`/iqf/iqf_get_accepted_tray_scan_data/?lot_id=${encodeURIComponent(lotId)}`)
+            .then(res => res.json())
+            .then(rescanData => {
+              if (rescanData.success) {
+                showAcceptedTrayModal(rescanData, lotId, rescanData.has_draft || false);
+              }
+            })
+            .catch(error => {
+              console.error('Error fetching accepted tray data:', error);
+              alert('Error loading accepted tray data. Please try again.');
+            });
+            
+        } else {
+          if (msgDiv) {
+            msgDiv.style.color = "#d32f2f";
+            msgDiv.textContent = data.error || "Failed to save tray rejection";
+          }
+          proceedButton.disabled = false;
+        }
+      })
+      .catch(() => {
+        if (msgDiv) {
+          msgDiv.style.color = "#d32f2f";
+          msgDiv.textContent = "Network error";
+        }
+        proceedButton.disabled = false;
+      });
+    }
+  });
+}
+
+if (cancelButton) {
+  cancelButton.addEventListener("click", () => {
+    trayModal.classList.remove("open");
+  });
+}
+    
+        if (cancelButton) {
+          cancelButton.addEventListener("click", () => {
+            trayModal.classList.remove("open");
+          });
+        }
+      }
+
+      // Existing modal close event listeners
+      closeTrayBtn.addEventListener("click", () => {
+        trayModal.classList.remove("open");
+      });
+      
+      trayModal.addEventListener("click", (event) => {
+        if (event.target === trayModal) {
+          trayModal.classList.remove("open");
+        }
+      });
+      
+      // New Popup Modal close events
+      closeNewPopupBtn.addEventListener("click", () => {
+        newPopupModal.classList.remove("open");
+      });
+     
+    });
+  </script>
+
+  <script nonce="{{ csp_nonce }}">
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll('.ip-checkbox').forEach(function (checkbox) {
+        const row = checkbox.closest('tr');
+        const lotQtySpan = row.querySelector('.lot-qty');
+        const totalQty = parseInt(lotQtySpan.textContent.trim(), 10);
+        const missingQtyInput = row.querySelector('.missing-qty-input');
+        const physicalQtyInput = row.querySelector('.physical-qty-input');
+    
+        // Enable input on page load if not checked/disabled
+        if (!checkbox.checked && !checkbox.disabled) {
+          missingQtyInput.disabled = false;
+        }
+    
+        // Live update physical qty as user types
+        missingQtyInput.addEventListener('input', function () {
+          let missingQty = parseInt(missingQtyInput.value, 10);
+          if (isNaN(missingQty) || missingQty < 0) {
+            physicalQtyInput.value = totalQty;
+            return;
+          }
+          if (missingQty > totalQty) {
+            missingQtyInput.value = totalQty;
+            missingQty = totalQty;
+          }
+          physicalQtyInput.value = totalQty - missingQty;
+        });
+    
+        checkbox.addEventListener('change', function () {
+          if (checkbox.checked && !checkbox.disabled) {
+            missingQtyInput.disabled = false;
+            missingQtyInput.focus();
+          } else {
+            missingQtyInput.value = '';
+            missingQtyInput.disabled = false;
+            if (physicalQtyInput) physicalQtyInput.value = totalQty;
+          }
+        });
+    
+        // Save on checkbox check
+        checkbox.addEventListener('change', function () {
+          if (!checkbox.checked || checkbox.disabled) return;
+          const lotId = checkbox.getAttribute('data-lot-id');
+          let missingQty = missingQtyInput.value.trim();
+          if (!lotId) {
+            Swal.fire('Error', 'Lot ID not found.', 'error');
+            checkbox.checked = false;
+            return;
+          }
+          if (!missingQty || isNaN(missingQty) || parseInt(missingQty) < 0) {
+            Swal.fire('Error', 'Enter a valid missing quantity.', 'error');
+            checkbox.checked = false;
+            return;
+          }
+          fetch('/iqf/iqf_save_ip_checkbox/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+              lot_id: lotId,
+              missing_qty: missingQty
+            })
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              checkbox.checked = true;
+              checkbox.disabled = true;
+              missingQtyInput.disabled = true;
+              // Update physical qty
+              if (physicalQtyInput) {
+                physicalQtyInput.value = totalQty - parseInt(missingQty);
+              }
+              // Update process status icon to green
+              const processIcons = row.querySelectorAll('.d-flex > div');
+              if (processIcons.length > 0) {
+                processIcons[0].style.backgroundColor = '#0c8249';
+              }
+             
+
+              
+
+              // Enable Accept and Reject buttons
+              const acceptBtn = row.querySelector('.btn-twitter');
+              const rejectBtn = row.querySelector('.btn-youtube');
+              if (acceptBtn) acceptBtn.disabled = false;
+              if (rejectBtn) rejectBtn.disabled = false;
+            } else {
+              Swal.fire('Error', data.error || 'Failed to save checkbox', 'error');
+              checkbox.checked = false;
+            }
+          })
+          .catch(() => {
+            Swal.fire('Error', 'Network error', 'error');
+            checkbox.checked = false;
+          });
+        });
+      });
+    });
+    </script>
+
+      <!--Accept functioanlity-->
+<!--Accept functionality - Updated to remove page reload-->
+<script nonce="{{csp_nonce}}">
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll('.btn-twitter').forEach(function (acceptBtn) {
+    acceptBtn.addEventListener('click', function () {
+      if (acceptBtn.disabled) return;
+      const row = acceptBtn.closest('tr');
+      const lotId = row.querySelector('.ip-checkbox').getAttribute('data-lot-id');
+      fetch('/iqf/iqf_accepted_form/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({ stock_lot_id: lotId })
+      })
+      .then(res => {
+        if (res.redirected) {
+          window.location.href = res.url; // handle Django redirect
+          return;
+        }
+        return res.json();
+      })
+      .then(data => {
+        if (data && data.success) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Accepted successfully!',
+            showConfirmButton: false,
+            timer: 1200
+          }).then(() => {
+
+            // Update UI elements silently instead of reloading page
+           window.location.reload(); // Reload page after success
+          });
+        } else if (data && data.error) {
+          Swal.fire('Error', data.error, 'error');
+        }
+      })
+      .catch(() => {
+        Swal.fire('Error', 'Network error', 'error');
+      });
+    });
+  });
+});
+
+
+
+</script>
    <script nonce="{{ csp_nonce }}">
       document.addEventListener("DOMContentLoaded", function () {
       
         const cancelBtn = document.getElementById("trayScanCancelBtn");
         if (cancelBtn) {
           cancelBtn.addEventListener("click", function () {
-            const modal = document.getElementById("trayScanModal_IQF");
+            const modal = document.getElementById("trayScanModal_BQ");
             if (modal) modal.classList.remove("open");
           });
         }
       
          // DELETE BUTTON HANDLER
-        document.querySelectorAll('a[title="Delete"]').forEach(function(btn) {
-          btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const row = btn.closest('tr');
-            if (!row) return;
-            const trayScanLink = row.querySelector('.tray-scan-btn-IQF');
-            if (!trayScanLink) return;
-            const batchId = trayScanLink.getAttribute('data-batch-id');
-            if (!batchId) {
-              Swal.fire('Error', 'Batch ID not found!', 'error');
-              return;
-            }
-            Swal.fire({
-              title: 'Are you sure?',
-              text: 'Do you really want to delete this batch?',
-              icon: 'warning',
-              showCancelButton: true,
-              confirmButtonColor: '#d33',
-              cancelButtonColor: '#3085d6',
-              confirmButtonText: 'Yes, delete it!',
-              cancelButtonText: 'Cancel'
-            }).then((result) => {
-              if (result.isConfirmed) {
-                fetch('/dayplanning/delete_batch/', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken')
-                  },
-                  body: JSON.stringify({ batch_id: batchId })
-                })
-                .then(res => res.json())
-                .then(data => {
-                  if (data.success) {
-                    row.remove();
-                    Swal.fire({
-                      icon: 'success',
-                      title: 'Deleted!',
-                      text: 'Batch has been deleted.',
-                      timer: 1200,
-                      showConfirmButton: false
-                    });                  
-                  } else {
-                    Swal.fire('Error', data.error || 'Delete failed', 'error');
-                  }
-                });
-              }
-            });
-          });
-        });
-      
-        document.querySelectorAll('.edit-qty-btn').forEach(function(btn) {
-          btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const row = btn.closest('tr');
-            if (!row) return;
-            const qtyCell = row.querySelector('td:nth-child(10)');
-            if (!qtyCell) return;
-            const batchId = btn.getAttribute('data-batch-id');
-            const oldValue = qtyCell.textContent.trim();
-            // Prevent multiple inputs
-            if (qtyCell.querySelector('input')) return;
-            qtyCell.innerHTML = `<input type="number" min="1" class="form-control" value="${oldValue}" style="width: 80px; display:inline-block;" />`;
-            const input = qtyCell.querySelector('input');
-            input.focus();
-            input.select();
-        
-            input.addEventListener('keydown', function(ev) {
-              if (ev.key === 'Enter') {
-                const newValue = input.value.trim();
-                if (!newValue || isNaN(newValue) || parseInt(newValue) <= 0) {
-                  Swal.fire('Error', 'Enter a valid quantity.', 'error');
-                  return;
+    document.querySelectorAll('.delete-batch-btn').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const row = btn.closest('tr');
+          if (!row) return;
+          const batchId = btn.getAttribute('data-batch-id');
+          const stockLotId = btn.getAttribute('data-stock-lot-id');
+          if (!batchId || !stockLotId) {
+            Swal.fire('Error', 'Batch ID or Stock Lot ID not found!', 'error');
+            return;
+          }
+          Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you really want to delete this batch?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              fetch('/iqf/iqf_delete_batch/', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ batch_id: batchId, stock_lot_id: stockLotId })
+              })
+              .then(res => res.json())
+              .then(data => {
+                if (data.success) {
+                  row.remove();
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: 'Batch has been deleted.',
+                    timer: 1200,
+                    showConfirmButton: false
+                  });                  
+                } else {
+                  Swal.fire('Error', data.error || 'Delete failed', 'error');
                 }
-                fetch('/dayplanning/update_batch_quantity/', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken')
-                  },
-                  body: JSON.stringify({ batch_id: batchId, total_batch_quantity: newValue })
-                })
-                .then(res => res.json())
-                .then(data => {
-                  if (data.success) {
-                    qtyCell.textContent = newValue;
-                    Swal.fire({
-                      icon: 'success',
-                      title: 'Quantity updated!',
-                      timer: 1200,
-                      showConfirmButton: false
-                    }).then(() => {
-                      location.reload();
-                    });
-                                 } else {
-                    Swal.fire('Error', data.error || 'Update failed', 'error');
-                    qtyCell.textContent = oldValue;
-                  }
-                })
-                .catch(() => {
-                  Swal.fire('Error', 'Network error', 'error');
-                  qtyCell.textContent = oldValue;
-                });
-              }
-              if (ev.key === 'Escape') {
-                qtyCell.textContent = oldValue;
-              }
-            });
-        
-            input.addEventListener('blur', function() {
-              qtyCell.textContent = oldValue;
-            });
+              });
+            }
           });
         });
+      });
       
-        const table = document.getElementById("order-listing");
+
+// Helper function to show success notification (same as main script)
+function showSuccessNotification(message) {
+  // Create or get existing notification element
+  let notification = document.getElementById('success-notification');
+  if (!notification) {
+    notification = document.createElement('div');
+    notification.id = 'success-notification';
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #28a745;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 10001;
+      font-weight: 500;
+      transform: translateX(400px);
+      transition: transform 0.3s ease;
+    `;
+    document.body.appendChild(notification);
+  }
+  
+  notification.textContent = message;
+  
+  // Show notification
+  setTimeout(() => {
+    notification.style.transform = 'translateX(0)';
+  }, 100);
+  
+  // Hide notification after 3 seconds
+  setTimeout(() => {
+    notification.style.transform = 'translateX(400px)';
+  }, 3000);
+}
+
+// Helper function to show error notification
+function showErrorNotification(message) {
+  // Create or get existing notification element
+  let notification = document.getElementById('error-notification');
+  if (!notification) {
+    notification = document.createElement('div');
+    notification.id = 'error-notification';
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #dc3545;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(220,53,69,0.15);
+      z-index: 10001;
+      font-weight: 500;
+      transform: translateX(400px);
+      transition: transform 0.3s ease;
+    `;
+    document.body.appendChild(notification);
+  }
+  
+  notification.textContent = message;
+  
+  // Show notification
+  setTimeout(() => {
+    notification.style.transform = 'translateX(0)';
+  }, 100);
+  
+  // Hide notification after 4 seconds (longer for errors)
+  setTimeout(() => {
+    notification.style.transform = 'translateX(400px)';
+  }, 4000);
+}
+
+// Updated quantity edit functionality - completely silent, no page reload
+document.querySelectorAll('.edit-qty-btn').forEach(function(btn) {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault(); // Prevent any default behavior
+    const row = btn.closest('tr');
+    if (!row) return;
+    const qtyCell = row.querySelector('.physical-qty-input');
+    if (!qtyCell) return;
+    const batchId = btn.getAttribute('data-batch-id');
+    const oldValue = qtyCell.value.trim();
+    
+    // Prevent multiple inputs
+    if (qtyCell.hasAttribute('data-editing')) return;
+    
+    qtyCell.setAttribute('data-editing', 'true');
+    qtyCell.readOnly = false;
+    qtyCell.focus();
+    qtyCell.select();
+
+    // Handle Enter key press
+    const handleKeyDown = function(ev) {
+      if (ev.key === 'Enter') {
+        ev.preventDefault(); // Prevent form submission
+        const newValue = qtyCell.value.trim();
+        
+        if (!newValue || isNaN(newValue) || parseInt(newValue) <= 0) {
+          showErrorNotification('Enter a valid quantity.');
+          resetInput();
+          return;
+        }
+        
+        // Make silent API call
+        fetch('/iqf/iqf_update_batch_quantity/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+          },
+          body: JSON.stringify({ batch_id: batchId, iqf_physical_qty: newValue })
+        })
+        .then(res => {
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+          }
+          return res.json();
+        })
+        .then(data => {
+          if (data.success) {
+            // Update UI silently
+            qtyCell.value = newValue;
+            qtyCell.style.backgroundColor = '#fff3cd';
+            qtyCell.style.borderColor = '#ffc107';
+            qtyCell.title = 'This quantity was edited';
+            finishEditing();
+            
+            // Show silent success notification
+            setTimeout(() => {
+              showSuccessNotification('Quantity updated successfully!');
+            }, 200);
+          } else {
+            throw new Error(data.error || 'Update failed');
+          }
+        })
+        .catch((error) => {
+          console.error('Error updating quantity:', error);
+          resetInput();
+          showErrorNotification('Failed to update quantity. Please try again.');
+        });
+      }
+      
+      if (ev.key === 'Escape') {
+        ev.preventDefault();
+        resetInput();
+      }
+    };
+
+    // Handle blur (clicking away)
+    const handleBlur = function() {
+      resetInput();
+    };
+
+    // Helper function to reset input
+    function resetInput() {
+      qtyCell.value = oldValue;
+      finishEditing();
+    }
+
+    // Helper function to finish editing
+    function finishEditing() {
+      qtyCell.readOnly = true;
+      qtyCell.removeAttribute('data-editing');
+      qtyCell.removeEventListener('keydown', handleKeyDown);
+      qtyCell.removeEventListener('blur', handleBlur);
+    }
+
+    // Add event listeners
+    qtyCell.addEventListener('keydown', handleKeyDown);
+    qtyCell.addEventListener('blur', handleBlur, { once: true });
+  });
+});
+
+
+const table = document.getElementById("order-listing");
         if (!table) {
           console.warn("Table with ID 'order-listing' not found.");
           return;
@@ -2330,10 +3019,10 @@ thead th {
       }
       
       document.addEventListener("DOMContentLoaded", () => {
-          const trayScanLinks = document.querySelectorAll(".tray-scan-btn-IQF");
-          const modal = document.getElementById("trayScanModal_IQF");
-          const closeBtn = document.getElementById("closetrayScanModal_IQF");
-          const detailsDiv = document.getElementById("trayScanDetails_IQF");
+          const trayScanLinks = document.querySelectorAll(".tray-scan-btn-BQ");
+          const modal = document.getElementById("trayScanModal_BQ");
+          const closeBtn = document.getElementById("closetrayScanModal_BQ");
+          const detailsDiv = document.getElementById("trayScanDetails_BQ");
           const modalModelNo = document.getElementById("modalModelNo");
       
           trayScanLinks.forEach((link) => {
@@ -2444,7 +3133,7 @@ thead th {
                   }
                   
                   // Hide buttons if Released
-                  const buttonSection = modal.querySelector('.tray-scan-modal-IQF-content > div[style*="justify-content: center"]');
+                  const buttonSection = modal.querySelector('.tray-scan-modal-BQ-content > div[style*="justify-content: center"]');
                   if (buttonSection) {
                       buttonSection.style.display = isReleased ? "none" : (showButtons ? "flex" : "none");
                   }
@@ -2631,7 +3320,7 @@ thead th {
                                               });
                                               modal.classList.remove("open");
                                               // Update the batch status cell in the row
-                                              const currentRow = document.querySelector(`.tray-scan-btn-IQF[data-batch-id="${batchId}"]`)?.closest('tr');
+                                              const currentRow = document.querySelector(`.tray-scan-btn-BQ[data-batch-id="${batchId}"]`)?.closest('tr');
                                               if (currentRow) {
                                                   const statusCell = currentRow.querySelector('td:nth-child(13)'); // 13th column is Batch Status
                                                   if (statusCell) {
@@ -2735,7 +3424,7 @@ thead th {
                                     showConfirmButton: false
                                   });
                                   modal.classList.remove("open");
-                                  const currentRow = document.querySelector(`.tray-scan-btn-IQF[data-batch-id="${batchId}"]`)?.closest('tr');
+                                  const currentRow = document.querySelector(`.tray-scan-btn-BQ[data-batch-id="${batchId}"]`)?.closest('tr');
                                   if (currentRow) {
                                       const statusCell = currentRow.querySelector('td:nth-child(13)');
                                       if (statusCell) {
@@ -2824,128 +3513,128 @@ thead th {
       
    </script>
    
-   <script nonce="{{ csp_nonce }}">
-      document.addEventListener("DOMContentLoaded", function () {
-        var triggers = document.querySelectorAll(".remark-tooltip-trigger");
-        triggers.forEach(function (trigger) {
-          var tooltip = trigger.querySelector(".remark-tooltip");
-          var sendButton = tooltip ? tooltip.querySelector("button") : null;
-          function showTooltip() {
-            tooltip.style.opacity = "1";
-            tooltip.style.visibility = "visible";
-            var rect = tooltip.getBoundingClientRect();
-            if (rect.right > window.innerWidth) {
-              tooltip.style.left = "auto";
-              tooltip.style.right = "0";
-              tooltip.style.transform = "none";
-            }
-            if (rect.left < 0) {
-              tooltip.style.left = "0";
-              tooltip.style.transform = "none";
-            }
-            var textarea = tooltip.querySelector("textarea");
-            if (textarea) {
-              textarea.focus();
-            }
+    <script nonce="{{ csp_nonce }}">
+    document.addEventListener("DOMContentLoaded", function () {
+      var triggers = document.querySelectorAll(".remark-tooltip-trigger");
+      triggers.forEach(function (trigger) {
+        var tooltip = trigger.querySelector(".remark-tooltip");
+        var sendButton = tooltip ? tooltip.querySelector("button") : null;
+        function showTooltip() {
+          tooltip.style.opacity = "1";
+          tooltip.style.visibility = "visible";
+          var rect = tooltip.getBoundingClientRect();
+          if (rect.right > window.innerWidth) {
+            tooltip.style.left = "auto";
+            tooltip.style.right = "0";
+            tooltip.style.transform = "none";
           }
-          function hideTooltip() {
-            tooltip.style.opacity = "0";
-            tooltip.style.visibility = "hidden";
+          if (rect.left < 0) {
+            tooltip.style.left = "0";
+            tooltip.style.transform = "none";
           }
-          trigger.addEventListener("mouseenter", showTooltip);
-          trigger.addEventListener("mouseleave", function () {
-            setTimeout(function () {
-              if (!trigger.matches(":hover") && !tooltip.matches(":hover")) {
-                hideTooltip();
-              }
-            }, 100);
-          });
-          tooltip.addEventListener("mouseleave", function () {
-            setTimeout(function () {
-              if (!tooltip.matches(":hover") && !trigger.matches(":hover")) {
-                hideTooltip();
-              }
-            }, 100);
-          });
-          trigger.addEventListener("click", function (e) {
-            e.preventDefault();
-          });
-          if (sendButton) {
-            sendButton.addEventListener("click", function (e) {
-              e.preventDefault();
-              // Find the textarea and get its value
-              var textarea = tooltip.querySelector("textarea");
-              var remark = textarea ? textarea.value.trim() : "";
-              if (!remark) {
-                Swal.fire('Error', 'Please enter a remark before sending.', 'error');
-                return;
-              }
-              // Find the batch_id from the row (tr) data attribute or from a hidden field
-              var row = trigger.closest("tr");
-              var trayScanLink = row ? row.querySelector('.tray-scan-btn-IQF') : null;
-              var batchId = trayScanLink ? trayScanLink.getAttribute('data-batch-id') : null;
-              if (!batchId) {
-                Swal.fire('Error', 'Batch ID not found.', 'error');
-                return;
-              }
-              fetch('/dayplanning/save_dp_pick_remark/', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'X-CSRFToken': getCookie('csrftoken')
-                },
-                body: JSON.stringify({
-                  batch_id: batchId,
-                  remark: remark
-                })
-              })
-              .then(res => res.json())
-              .then(data => {
-                if (data.success) {
-                  Swal.fire({
-                    icon: 'success',
-                    title: 'Remark saved!',
-                    timer: 1200,
-                    showConfirmButton: false
-                  }).then(() => {
-                    // Make the textarea readonly
-                    if (textarea) {
-                      textarea.setAttribute("readonly", true);
-                    }
-      
-                    // Replace send button with info message
-                    if (sendButton && tooltip) {
-                      const infoDiv = document.createElement("div");
-                      infoDiv.style.marginTop = "40px";
-                      infoDiv.style.color = "#31708f";
-                      infoDiv.style.background = "#d9edf7";
-                      infoDiv.style.border = "1px solid #bce8f1";
-                      infoDiv.style.borderRadius = "4px";
-                      infoDiv.style.padding = "8px 12px";
-                      infoDiv.style.fontSize = "10px";
-                      infoDiv.style.textAlign = "left";
-                      infoDiv.innerHTML = `
-                        <i class="fa fa-info-circle" style="margin-right: 6px;"></i>
-                        Remark already saved and cannot be edited.
-                      `;
-                      sendButton.parentNode.replaceChild(infoDiv, sendButton);
-                    }
-      
-                    hideTooltip(); // optional if you still want to hide the tooltip
-                  });
-      
-                } else {
-                  Swal.fire('Error', data.error || 'Failed to save remark', 'error');
-                }
-              })
-              .catch(() => {
-                Swal.fire('Error', 'Network error', 'error');
-              });
-            });
+          var textarea = tooltip.querySelector("textarea");
+          if (textarea) {
+            textarea.focus();
           }
+        }
+        function hideTooltip() {
+          tooltip.style.opacity = "0";
+          tooltip.style.visibility = "hidden";
+        }
+        trigger.addEventListener("mouseenter", showTooltip);
+        trigger.addEventListener("mouseleave", function () {
+          setTimeout(function () {
+            if (!trigger.matches(":hover") && !tooltip.matches(":hover")) {
+              hideTooltip();
+            }
+          }, 100);
         });
+        tooltip.addEventListener("mouseleave", function () {
+          setTimeout(function () {
+            if (!tooltip.matches(":hover") && !trigger.matches(":hover")) {
+              hideTooltip();
+            }
+          }, 100);
+        });
+        trigger.addEventListener("click", function (e) {
+          e.preventDefault();
+        });
+        if (sendButton) {
+          sendButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            // Find the textarea and get its value
+            var textarea = tooltip.querySelector("textarea");
+            var remark = textarea ? textarea.value.trim() : "";
+            if (!remark) {
+              Swal.fire('Error', 'Please enter a remark before sending.', 'error');
+              return;
+            }
+            // Find the batch_id from the row (tr) data attribute or from a hidden field
+            var row = trigger.closest("tr");
+            var trayScanLink = row ? row.querySelector('.tray-scan-btn') : null;
+            var batchId = row ? row.getAttribute('data-batch-id') : null;
+            if (!batchId) {
+              Swal.fire('Error', 'Batch ID not found.', 'error');
+              return;
+            }
+            fetch('/iqf/iqf_save_ip_pick_remark/', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+              },
+              body: JSON.stringify({
+                batch_id: batchId,
+                remark: remark
+              })
+            })
+            .then(res => res.json())
+            .then(data => {
+              if (data.success) {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Remark saved!',
+                  timer: 1200,
+                  showConfirmButton: false
+                }).then(() => {
+                  // Make the textarea readonly
+                  if (textarea) {
+                    textarea.setAttribute("readonly", true);
+                  }
+
+                  // Replace send button with info message
+                  if (sendButton && tooltip) {
+                    const infoDiv = document.createElement("div");
+                    infoDiv.style.marginTop = "40px";
+                    infoDiv.style.color = "#31708f";
+                    infoDiv.style.background = "#d9edf7";
+                    infoDiv.style.border = "1px solid #bce8f1";
+                    infoDiv.style.borderRadius = "4px";
+                    infoDiv.style.padding = "8px 12px";
+                    infoDiv.style.fontSize = "10px";
+                    infoDiv.style.textAlign = "left";
+                    infoDiv.innerHTML = `
+                      <i class="fa fa-info-circle" style="margin-right: 6px;"></i>
+                      Remark already saved and cannot be edited.
+                    `;
+                    sendButton.parentNode.replaceChild(infoDiv, sendButton);
+                  }
+
+                  hideTooltip(); // optional if you still want to hide the tooltip
+                });
+
+              } else {
+                Swal.fire('Error', data.error || 'Failed to save remark', 'error');
+              }
+            })
+            .catch(() => {
+              Swal.fire('Error', 'Network error', 'error');
+            });
+          });
+        }
       });
-   </script>
+    });
+  </script>
     <!-- Script for clearing "Tray ID" while hitting "Redo" icon -->
    <script nonce="{{ csp_nonce }}">
       document.addEventListener("DOMContentLoaded", function () {
@@ -2954,7 +3643,7 @@ thead th {
           redoBtn.title = "Redo"; // Set tooltip on mouse hover
         }
       
-        const detailsDiv = document.getElementById("trayScanDetails_IQF");
+        const detailsDiv = document.getElementById("trayScanDetails_BQ");
         const table = document.getElementById('order-listing');
         let msgBar = document.getElementById('dp-table-msg-bar');
       
@@ -2978,7 +3667,7 @@ thead th {
       
         // --- FIX: Show alert inside modal form, not on table ---
         let formMsgBar = document.getElementById('tray-id-clear-msg-bar');
-        const modal = document.getElementById('trayScanModal_IQF');
+        const modal = document.getElementById('trayScanModal_BQ');
         if (!formMsgBar && modal) {
           formMsgBar = document.createElement('div');
           formMsgBar.id = 'tray-id-clear-msg-bar';
@@ -2993,7 +3682,7 @@ thead th {
           formMsgBar.style.fontSize = '14px';      // 14px font
           formMsgBar.style.textAlign = 'center';
           formMsgBar.style.transition = 'opacity 0.3s, background 0.3s, color 0.3s';
-          const modalContent = modal.querySelector('.tray-scan-modal-IQF-content');
+          const modalContent = modal.querySelector('.tray-scan-modal-BQ-content');
           if (modalContent) {
             modalContent.insertBefore(formMsgBar, modalContent.firstChild);
           }
@@ -3025,7 +3714,7 @@ thead th {
    <script nonce="{{ csp_nonce }}">
       document.addEventListener("DOMContentLoaded", function () {
         const validateBtn = document.getElementById("trayValidateBtn");
-        const detailsDiv = document.getElementById("trayScanDetails_IQF");
+        const detailsDiv = document.getElementById("trayScanDetails_BQ");
         let validationEnabled = false;
       
         if (validateBtn && detailsDiv) {
@@ -3079,176 +3768,7 @@ thead th {
     });
   </script>
 
-  <!-- Tray Scan Modal & New Popup Script -->
-  <script nonce="{{ csp_nonce }}">
-    document.addEventListener("DOMContentLoaded", () => {
-      const trayScanLinks = document.querySelectorAll(".tray-scan-btn");
-      const trayModal = document.getElementById("trayScanModal");
-      const closeTrayBtn = document.getElementById("closeTrayScanModal");
-      const detailsDiv = document.getElementById("trayScanDetails");
-      const newPopupModal = document.getElementById("newPopupModal");
-      const closeNewPopupBtn = document.getElementById("closeNewPopupModal");
 
-      trayScanLinks.forEach((link) => {
-        link.addEventListener("click", (event) => {
-          event.preventDefault();
-          const row = event.target.closest("tr");
-          if (!row) return;
-          const modelStockNo = row.cells[2].textContent.trim();
-          const dateTime = row.cells[1].textContent.trim();
-          const totalQuantity = row.cells[9].textContent.trim();
-
-          // Set the inner HTML with Proceed and Cancel buttons tagged with IDs
-          detailsDiv.innerHTML = `
-
-         <div class="d-flex justify-content-between align-items-center mb-2">
-           <h4 class="mb-0">Rejection Reason List</h4>
-           <div class="form-check d-flex align-items-center">
-               <input class="form-check-input" type="checkbox" id="batchRejection" />
-               <label class="form-check-label ms-2" for="batchRejection">Batch Rejection</label>
-           </div>
-         </div>
-   
-         <div class="table-responsive" style="border: solid 1px black;">
-           <table class="table table-bordered text-center" style="border: solid 2px black; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-             <thead style="border: solid 2px black; background-color: #007bff; color: #fff;">
-             <tr style="border: solid 1px black; background-color: #007bff; color: #fff;">
-                 <th style="padding: 12px;">S.No</th>
-                 <th style="padding: 12px;">Reason ID</th>
-                 <th style="padding: 12px;">Rejection Reason</th>
-                 <th style="padding: 12px;">Quantity</th>
-                 <th style="padding: 12px;">Tray</th>
-             </tr>
-             </thead>
-             <tbody style="border: solid 1px black;">
-               <tr>
-             <td style="padding: 10px;">1</td>
-             <td style="padding: 10px;">001</td>
-             <td style="padding: 10px;"><a href="#" style="color:#007bff; text-decoration: none;">Model Mix up</a></td>
-             <td style="padding: 10px;">5</td>
-             <td style="padding: 10px;"><a href="#" style="color:#007bff; text-decoration: none;">NT0011</a></td>
-               </tr>
-               <tr>
-             <td style="padding: 10px;">2</td>
-             <td style="padding: 10px;">002</td>
-             <td style="padding: 10px;"><a href="#" style="color:#007bff; text-decoration: none;">Version Mix up</a></td>
-             <td style="padding: 10px;">2</td>
-             <td style="padding: 10px;"><a href="#" style="color:#007bff; text-decoration: none;">NT0011</a></td>
-               </tr>
-               <tr>
-             <td style="padding: 10px;">3</td>
-             <td style="padding: 10px;">003</td>
-             <td style="padding: 10px;">Rejection Reason - 3</td>
-             <td style="padding: 10px;">8</td>
-             <td style="padding: 10px;"><strong>NT001</strong></td>
-               </tr>
-               <tr>
-             <td style="padding: 10px;">4</td>
-             <td style="padding: 10px;">004</td>
-             <td style="padding: 10px;">Rejection Reason - 4</td>
-             <td style="padding: 10px;">1</td>
-             <td style="padding: 10px;"><strong>NT001</strong></td>
-               </tr>
-               <tr>
-             <td style="padding: 10px;">5</td>
-             <td style="padding: 10px;">005</td>
-             <td style="padding: 10px;">Rejection Reason - 5</td>
-             <td style="padding: 10px;">2</td>
-             <td style="padding: 10px;"><strong>NT001</strong></td>
-               </tr>
-               <tr>
-             <td style="padding: 10px;">6</td>
-             <td style="padding: 10px;">006</td>
-             <td style="padding: 10px; color: green;">Rejection Reason - 6</td>
-             <td style="padding: 10px;">6</td>
-             <td style="padding: 10px; color: green;"><strong>NT0021</strong></td>
-               </tr>
-               <tr>
-             <td style="padding: 10px;">7</td>
-             <td style="padding: 10px;">007</td>
-             <td style="padding: 10px; color: red;">Rejection Reason - 7</td>
-             <td style="padding: 10px;">4</td>
-             <td style="padding: 10px; color: red;"><strong>NT00211</strong></td>
-               </tr>
-               <tr style="background-color: #f0f0f0;">
-             <td colspan="3" style="padding: 12px; font-weight: bold; text-align: right;">Total Qty</td>
-             <td style="padding: 12px; font-weight: bold; background-color:#E0E0E0;">28</td>
-             <td style="padding: 12px;"></td>
-               </tr>
-             </tbody>
-           </table>
-         </div>
-          <br>
-           <div
-                      style="
-                        display: flex;
-                        justify-content: center;
-                        gap: 10px;
-                        margin-top: 20px;
-                      "
-                    >
-                    <button id="proceedButton" style="
-                          padding: 8px 16px;
-                          background: #28a745;
-                          color: white;
-                          border: none;
-                          border-radius: 30px;
-                        "
-                      >
-                        Proceed
-                      </button>
-                      <button style="
-                          padding: 8px 16px;
-                          background: #dc3545;
-                          color: white;
-                          border: none;
-                          border-radius: 30px;
-                        "
-                      >
-                        Cancel
-                      </button>
-                    </div>
-           
-         `;
-
-          trayModal.classList.add("open");
-
-          // Attach event listener for Proceed to open new popup modal
-          const proceedButton = document.getElementById("proceedButton");
-          const cancelButton = document.getElementById("cancelRejection");
-
-          if (proceedButton) {
-            proceedButton.addEventListener("click", () => {
-              newPopupModal.classList.add("open");
-            });
-          }
-          if (cancelButton) {
-            cancelButton.addEventListener("click", () => {
-              trayModal.classList.remove("open");
-            });
-          }
-        });
-      });
-
-      closeTrayBtn.addEventListener("click", () => {
-        trayModal.classList.remove("open");
-      });
-      trayModal.addEventListener("click", (event) => {
-        if (event.target === trayModal) {
-          trayModal.classList.remove("open");
-        }
-      });
-      // New Popup Modal close events
-      closeNewPopupBtn.addEventListener("click", () => {
-        newPopupModal.classList.remove("open");
-      });
-      newPopupModal.addEventListener("click", (event) => {
-        if (event.target === newPopupModal) {
-          newPopupModal.classList.remove("open");
-        }
-      });
-    });
-  </script>
 
   <!-- Script for Text Remarks (unchanged) -->
   <script nonce="{{ csp_nonce }}">
@@ -3306,7 +3826,6 @@ thead th {
 
   <!-- Image Slider Script -->
   <!-- Script for Model / Stock No - Image Mouse Hover -->
-
 <script nonce="{{ csp_nonce }}">
   document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.model-hover-trigger').forEach(function(trigger) {
@@ -3438,57 +3957,7 @@ thead th {
   });
 </script>
 
-<!-- Pagination Script -->
-  <script nonce="{{ csp_nonce }}">
-    document.addEventListener("DOMContentLoaded", function () {
-      const table = document.getElementById("order-listing");
-      if (!table) return;
-      const tbody = table.querySelector("tbody");
-      const rows = Array.from(tbody.querySelectorAll("tr"));
-      const rowsPerPage = 10;
-      let currentPage = 1;
-    
-      function renderTable(page) {
-        tbody.innerHTML = "";
-        const start = (page - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-        rows.slice(start, end).forEach(row => tbody.appendChild(row));
-        renderPagination(page);
-      }
-    
-      function renderPagination(page) {
-        let totalPages = Math.ceil(rows.length / rowsPerPage);
-        const pagination = document.querySelector(".pagination");
-        if (!pagination) return;
-        pagination.innerHTML = "";
-    
-        // Previous
-        const prev = document.createElement("li");
-        prev.className = "page-item" + (page === 1 ? " disabled" : "");
-        prev.innerHTML = `<a class="page-link" href="#">Previous</a>`;
-        prev.onclick = function(e) { e.preventDefault(); if(page > 1) renderTable(page - 1); };
-        pagination.appendChild(prev);
-    
-        // Page numbers
-        for (let i = 1; i <= totalPages; i++) {
-          const li = document.createElement("li");
-          li.className = "page-item" + (i === page ? " active" : "");
-          li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
-          li.onclick = function(e) { e.preventDefault(); renderTable(i); };
-          pagination.appendChild(li);
-        }
-    
-        // Next
-        const next = document.createElement("li");
-        next.className = "page-item" + (page === totalPages ? " disabled" : "");
-        next.innerHTML = `<a class="page-link" href="#">Next</a>`;
-        next.onclick = function(e) { e.preventDefault(); if(page < totalPages) renderTable(page + 1); };
-        pagination.appendChild(next);
-      }
-    
-      renderTable(currentPage);
-    });
-  </script>
+
 <!-- Show alert and highlight row -->
 <script nonce="{{ csp_nonce }}">
   // filepath: a:\Workspace\Track_and_Trace_v2\static\templates\Day_Planning\DP_PickTable.html
@@ -3631,25 +4100,4 @@ thead th {
     });
   });
 </script>
-
-                      <!-- Rejection Popup Script -->
-                        <script nonce="{{ csp_nonce }}">
-                          document.addEventListener("DOMContentLoaded", function() {
-                            var rejectionTrigger = document.querySelector('.rejection-popup-trigger');
-                            var rejectionModal = document.getElementById('rejectionPopupModal');
-                            var closeRejection = document.getElementById('closeRejectionPopup');
-
-                            if (rejectionTrigger) {
-                              rejectionTrigger.addEventListener('click', function() {
-                                rejectionModal.classList.add("open");
-                              });
-                            }
-
-                            if (closeRejection) {
-                              closeRejection.addEventListener('click', function() {
-                                rejectionModal.classList.remove("open");
-                              });
-                            }
-                          });
-                        </script>
 {% endblock %} {% endblock content %}

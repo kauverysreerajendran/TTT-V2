@@ -1,263 +1,7 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 <style>
- #order-listing thead th {
-  height: 38px !important; /* Increase as needed */
-  background: #023E4DCC !important; /* existing bg */
-  color: #e5fcff !important;      /* existing color */
-  vertical-align: middle !important;
-  
-}
-    /* --- DP_PickTable: Match DP_Completed_Table style --- */
-  #order-listing {
-    border-collapse: collapse;
-  }
-  #order-listing th,
-  #order-listing td {
-    border-right: 1px solid #d1d1d1;
-    border-bottom: 1px solid #e0e0e0;
-    font-size: 14px;
-  }
-  #order-listing th:last-child,
-  #order-listing td:last-child {
-    border-right: none;
-  }
-  #order-listing tr,
-  #order-listing td,
-  #order-listing th {
-    height: 20px !important;
-    padding: 4px 8px !important;
-  }
-
-  .pagination-wrapper {
-    background: #fff;
-    padding: 8px 0 0 0;
-    position: relative;
-    z-index: 2;
-  }
-  /* Tooltip for model images */
-.model-image-tooltip {
-  position: absolute;
-  z-index: 99999;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
-  padding: 10px;
-  min-width: 220px;
-  max-width: 350px;
-  max-height: 220px;
-  display: none;
-  overflow: hidden;
-}
-.model-image-tooltip .image-slider {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.model-image-tooltip img {
-  max-width: 180px;
-  max-height: 180px;
-  object-fit: contain;
-  border-radius: 4px;
-}
-.model-image-tooltip .slider-btn {
-  background: #eee;
-  border: none;
-  border-radius: 50%;
-  width: 28px;
-  height: 28px;
-  font-size: 18px;
-  cursor: pointer;
-}
-.model-image-tooltip.static {
-  display: block !important;
-  position: fixed !important;
-  top: 80px !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  z-index: 100000;
-}
-.model-image-tooltip .close-btn {
-  position: absolute;
-  top: 4px;
-  right: 8px;
-  font-size: 18px;
-  color: #888;
-  cursor: pointer;
-}
-
-    /* Reduce row height for .row class */
-  .row {
-    --bs-gutter-x: 30px;
-    --bs-gutter-y: 0;
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: calc(-1 * var(--bs-gutter-y));
-    margin-right: calc(-0.5 * var(--bs-gutter-x));
-    margin-left: calc(-0.5 * var(--bs-gutter-x));
-    min-height: 10px;         /* Add this line to reduce minimum row height */
-    padding-top: 2px;         /* Optional: reduce vertical padding */
-    padding-bottom: 2px;      /* Optional: reduce vertical padding */
-    overflow-y: auto !important;
-    overflow-x: auto !important;
-    scrollbar-width: thin; /* For Firefox */
-    -ms-overflow-style: auto; /* For IE/Edge */
-  }
-  .table-responsive::-webkit-scrollbar {
-  display: none;              /* Chrome, Safari, Opera */
-}
-/* Move the main title a little up and make it responsive */
-.content-wrapper > h5 {
-  margin-top: -35px !important;
-  margin-bottom: 5px !important;
-  font-size: 18px;
-  font-weight: 700;
-}
-
-@media (max-width: 600px) {
-  .content-wrapper > h5 {
-    font-size: 1.05rem;
-    margin-top: 0.2rem !important;
-    margin-bottom: 0.7rem !important;
-  }
-}
-/* Move the modalModelNo element a little down in the modal header */
-#modalModelNo {
-  margin-top: 12px;
-  display: inline-block;
-  vertical-align: middle;
-  font-weight: 600;
-  color: #023E4DCC;
-}
-
-.dp-row-action-highlight {
-  background-color: #b3e6ff !important; /* Light blue, or pick your color */
-  transition: background 0.3s;
-}
-
-
-/* Floating alert style */
-.dp-float-alert {
-  position: fixed;
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #222;
-  color: #fff;
-  padding: 8px 8px;
-  border-radius: 30px;
-  font-size: 1rem;
-  z-index: 99999;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-.dp-float-alert.show {
-  opacity: 1;
-  pointer-events: auto;
-}
-  .disabled-remark {
-  cursor: not-allowed !important;
-  opacity: 0.5 !important;
-  pointer-events: none !important; /* <-- Add this line to fully disable hover/click */
-
-}
-/* Center all action icons in their cell */
-#order-listing td {
-  vertical-align: middle !important;
-}
-#order-listing td a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 28px; /* or match your row height */
-  vertical-align: middle;
-}
-#order-listing td a img {
-  display: block;
-  height: 22px;
-  width: 22px;
-  object-fit: contain;
-  margin: 0 2px;
-}
-
-.image-slider-modal {
-  display: none;
-  position: fixed;
-  top: 40px;
-  right: 20px;
-  width: 600px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  padding: 20px;
-  z-index: 10000;
-  transition: right 0.3s ease;
-}
-.image-slider-modal.open { display: block; }
-.modal-close {
-  position: absolute; top: 10px; right: 10px; font-size: 24px; cursor: pointer; color: #666;
-}
-.slider { position: relative; overflow: hidden; height: 350px; }
-.slides { display: flex; transition: transform 0.5s ease; width: 100%; }
-.slide { flex: 0 0 100%; box-sizing: border-box; display: none; }
-.slide.active { display: block; }
-.slide img { width: 100%; height: 350px; object-fit: cover; display: block; }
-.prev, .next {
-  position: absolute; top: 50%; transform: translateY(-50%);
-  background: rgba(0,0,0,0.5); border: none; color: #fff; padding: 8px;
-  cursor: pointer; border-radius: 50%; user-select: none;
-}
-.prev { left: 10px; }
-.next { right: 10px; }
-@media (max-width: 767px) {
-  .image-slider-modal { width: 100%; right: 0; top: 0; border-radius: 0; padding: 10px; }
-  .slider { height: 250px; }
-  .slide img { height: 250px; }
-}
-
-/* Make sure borders are continuous for the whole table */
-#order-listing {
-  border-collapse: collapse;
-}
-
-#order-listing th,
-#order-listing td {
-  border-right: 1px solid #d1d1d1;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-#order-listing th:last-child,
-#order-listing td:last-child {
-  border-right: none;
-}
-  /* Overall Table Shrink */
-    #order-listing tr,
-  #order-listing td,
-  #order-listing th {
-    height: 20px !important;
-    padding-top: 2px !important;
-    padding-bottom: 2px !important;
-    padding-left: 6px !important;
-    padding-right: 6px !important;
-    
-  }
-    /* Table heading font size */
-  #order-listing th {
-    font-size: 14px !important;
-    font-weight: 600;
-  }
-  
-  /* Table data font size */
-  #order-listing td {
-    font-size: 12px !important;
-    font-weight: 400;
-  }
   .content-wrapper {
     transition: opacity 0.3s ease;
-      padding-bottom: 70px !important; /* Reduce space above footer */
-
   }
 
   /* When modal is active, dim the content */
@@ -266,7 +10,6 @@
     pointer-events: none; /* Optional: disable interaction */
   }
   span {
-    font-weight: bold;
     color: #2a2a2a;
   }
 
@@ -289,8 +32,8 @@
   /* TrayScanDetails 3-column grid with scroll */
   #trayScanDetails.table-grid {
     display: grid !important; /* override any existing grid or flex */
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 0px !important;
+    grid-template-columns: 90px 1fr 1fr !important; /* S.no column is now fixed width */
+    gap: 10px !important;
     max-height: 300px !important;
     overflow-y: auto !important;
     padding-right: 10px; /* prevent scrollbar overlay */
@@ -301,7 +44,7 @@
   #trayScanDetails.table-grid > div {
     background: #f7f7f7;
     padding: 8px 12px;
-    
+    border-radius: 30px;
     font-size: 12px;
     border: 1px solid #ddd;
     margin: 0; /* reset any margin from <p> or others */
@@ -351,9 +94,8 @@
     font-size: 14px;
   }
 
-    .highlighted-tray-scan {
-    background: #e6f7ff !important;
-    transition: background 0.3s;
+  .highlighted-tray-scan {
+    background-color: #88c4e3 !important;
   }
   .tray-scan-modal {
     position: fixed;
@@ -388,21 +130,44 @@
     cursor: pointer;
   }
 
+  .highlighted-tray-scan {
+    background-color: #cceeff !important;
+  }
+  .pagination-wrapper {
+    position: fixed;
 
-    /* Ensure table is scrollable if data exceeds visible area */
+    top: 530px;
+    right: 20px;
+    background: transparent;
+    z-index: 999;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .table-responsive {
+      max-height: 800px;
+    }
+  }
+
   .table-responsive {
     max-height: 250px;
-    overflow-y: auto !important;
-    overflow-x: auto !important;
-    scrollbar-width: thin;
-    -ms-overflow-style: auto;
-    margin-bottom: 4px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    margin-bottom: 20px;
   }
-  
+
   .table-responsive::-webkit-scrollbar {
-    display: block;
-    height: 8px;
-    width: 8px;
+    display: none;
+  }
+
+  thead th {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 10;
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
   }
 
   html,
@@ -422,7 +187,7 @@
   .content-wrapper {
     flex: 1;
     overflow-y: auto; /* enable scroll only for content section */
-    padding-bottom: 20px;
+    padding-bottom: 70px;
   }
 
   footer {
@@ -454,20 +219,25 @@
     box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* optional shadow for better separation */
   }
 
+  .table-responsive {
+    margin-bottom: 60px; /* add some free space below table */
+    max-height: 300px; /* or any fixed height you want */
+    overflow-y: auto; /* vertical scroll only */
+  }
   .card-body {
     width: 100%;
     overflow-x: auto;
-    max-height: none !important; /* Remove unnecessary vertical space */
+    max-height: 2000px;
   }
 </style>
 
 <div class="content-wrapper">
-  <h5 class="text-left mt-0 mb-6">Recovery Pick Table</h5>
+  <h5 class="text-left mt-0 mb-3">Day Planning / Day Planning Pick Table</h5>
   <div class="row">
     <div class="col-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
-          
+          <div class="table-responsive">
             <!-- Table Section -->
             <div class="table-responsive">
               <table id="order-listing" class="table">
@@ -532,13 +302,22 @@
                 </thead>
                 <tbody>
                   {% for data in master_data %}
-                  <tr>
+                  <tr {% if forloop.first %}class="highlighted-tray-scan"{% endif %}>
                     <td>{{ forloop.counter }}</td>
                     <td>{{ data.date_time|date:"Y-m-d H:i A"|default:"N/A" }}</td>
-                    <!-- <td>{{ data.model_stock_no__model_no|default:"N/A" }}</td> -->
-                    <!-- Model/Stock No - Mouse Hover to show images -->
-                    <td class="model-stock-no-cell" data-images="{{ data.model_images|default:'[]'|safe }}">
-                      <span class="model-stock-no-text" style="cursor:pointer;">{{ data.model_stock_no__model_no|default:"N/A" }}</span>
+                    <td style="position: relative;">
+                      <span class="model-hover-trigger" style="cursor: pointer;">
+                        {{ data.model_stock_no__model_no }}
+                        <div class="model-image-tooltip" style="position: absolute; left: 50%; top: 110%; transform: translateX(-50%); background: #fff; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 12px 18px; z-index: 9999; display: flex; align-items: center; gap: 8px; opacity: 0; pointer-events: none; transition: opacity 0.2s;">
+                          <button class="img-scroll-left" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8592;</button>
+                          <div class="img-gallery" style="display: flex; gap: 6px; overflow: hidden; width: 180px;">
+                            {% for img_url in data.model_images %}
+                              <img src="{{ img_url }}" style="width: 55px; height: 55px; object-fit: cover; border-radius: 6px;" />
+                            {% endfor %}
+                          </div>
+                          <button class="img-scroll-right" style="background: none; border: none; font-size: 20px; cursor: pointer;">&#8594;</button>
+                        </div>
+                      </span>
                     </td>
                     <td>{{ data.plating_color|default:"N/A" }}</td>
                     <td>{{ data.polish_finish|default:"N/A" }}</td>
@@ -549,20 +328,16 @@
                     <td>{{ data.total_batch_quantity|default:"0" }}</td>
                     <td>
                       <!-- Dynamic Process Status based on conditions -->
-                      {% if data.Moved_to_D_Picker %}
+                      {% if data.Moved_to_R_Picker %}
                         <div
                           title="Tray Scan"
                           class="d-flex align-items-center justify-content-center rounded-circle ms-1"
                           style="
-                            width: 20px;
-                            height: 20px;
+                            width: 28px;
+                            height: 28px;
                             background-color: #0c8249;
                             color: white;
                             font-weight: bold;
-                            line-height: 20px;
-                          text-align: center;
-                          padding-top: 1px;
-                          padding-right: 1px;
                           "
                         >
                           T
@@ -572,15 +347,11 @@
                           title="Tray Scan"
                           class="d-flex align-items-center justify-content-center rounded-circle ms-1"
                           style="
-                            width: 20px;
-                            height: 20px;
+                            width: 28px;
+                            height: 28px;
                             background-color: #c3c2c2;
                             color: white;
                             font-weight: bold;
-                            line-height: 20px;
-                          text-align: center;
-                          padding-top: 1px;
-                          padding-right: 1px;
                           "
                         >
                           T
@@ -590,8 +361,8 @@
                           title="Tray Scan"
                           class="d-flex align-items-center justify-content-center rounded-circle ms-1"
                           style="
-                            width: 20px;
-                            height: 20px;
+                            width: 28px;
+                            height: 28px;
                             background: linear-gradient(
                               to right,
                               green 50%,
@@ -599,10 +370,6 @@
                             );
                             color: white;
                             font-weight: bold;
-                            line-height: 20px;
-                          text-align: center;
-                          padding-top: 1px;
-                          padding-right: 1px;
                           "
                         >
                           T
@@ -612,15 +379,11 @@
                           title="Tray Scan"
                           class="d-flex align-items-center justify-content-center rounded-circle ms-1"
                           style="
-                            width: 20px;
-                            height: 20px;
+                            width: 28px;
+                            height: 28px;
                             background-color: #d3d2d2;
                             color: white;
                             font-weight: bold;
-                            line-height: 20px;
-                          text-align: center;
-                          padding-top: 1px;
-                          padding-right: 1px;
                           "
                         >
                           T
@@ -628,21 +391,21 @@
                       {% endif %}
                     </td>
                     <td>
-                      {% if not data.Moved_to_D_Picker %}
+                      {% if not data.Moved_to_R_Picker %}
                         <a href="#" class="edit-qty-btn" data-batch-id="{{ data.batch_id }}">
-                          <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit" style="width: 20px; margin-right: 8px; height: auto"/>
+                          <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit" style="width: 28px; margin-right: 8px; height: auto"/>
                         </a>
                       {% else %}
                         <span style="opacity:0.5; pointer-events:none; display:inline-block;">
-                          <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit Disabled" style="width: 20px; margin-right: 8px; height: auto; filter: grayscale(1) opacity(0.5);"/>
+                          <img src="{% static 'assets/icons/edit1.png' %}" alt="Edit Disabled" style="width: 28px; margin-right: 8px; height: auto; filter: grayscale(1) opacity(0.5);"/>
                         </span>
                       {% endif %}
-                      {% if not data.Moved_to_D_Picker %}
+                      {% if not data.Moved_to_R_Picker %}
                         <a href="#" title="Delete">
                           <img
                             src="{% static 'assets/icons/bin.png' %}"
                             alt="Delete"
-                            style="width: 20px; margin-right: 8px; height: auto; cursor:pointer;"
+                            style="width: 28px; margin-right: 8px; height: auto; cursor:pointer;"
                           />
                         </a>
                       {% else %}
@@ -650,7 +413,7 @@
                           <img
                             src="{% static 'assets/icons/bin.png' %}"
                             alt="Delete Disabled"
-                            style="width: 20px; margin-right: 8px; height: auto; filter: grayscale(1) opacity(0.5); cursor:not-allowed;"
+                            style="width: 28px; margin-right: 8px; height: auto; filter: grayscale(1) opacity(0.5); cursor:not-allowed;"
                           />
                         </span>
                       {% endif %}
@@ -662,55 +425,55 @@
                         data-model-no="{{ data.model_stock_no__model_no }}"
                         data-no-of-trays="{{ data.no_of_trays }}"
                         data-tray-capacity="{{ data.tray_capacity|default:'0' }}"
-                        data-moved-to-d-picker="{{ data.Moved_to_D_Picker }}"
+                        data-moved-to-d-picker="{{ data.Moved_to_R_Picker }}"
                         data-tray-qty-list="{{ data.tray_qty_list|default:'[]'|safe }}"
                         >Tray Scan</a
                       >
                     </td>
                     <td>
                       <!-- Dynamic Batch Status based on conditions -->
-                      {% if data.Moved_to_D_Picker %}
+                      {% if data.Moved_to_R_Picker %}
                         <div
                           class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-                         
                           style="
-                          border: 2px solid #0d5d17;
+                            border: 2px solid #0d5d17;
                             background-color: #c5f9c2;
                             color: #2f801b;
-                          font-size: 12px;
-                          white-space: nowrap;
-                          padding: 6px;
-                        "
+                            font-size: clamp(0.75rem, 2vw, 0.875rem);
+                            white-space: nowrap;
+                            padding-top: 0.5rem;
+                            padding-bottom: 0.5rem;
+                          "
                         >
                           Yet To Release
                         </div>
-                      {% elif data.Draft_Saved %}
+                      {% elif data.R_Draft_Saved %}
                         <div
                           class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-                          
                           style="
-                          border: 1px solid #4997ac;
-                          background-color: #d1f2f3;
-                          color: #03425d;
-                          font-size: 12px;
-                          white-space: nowrap;
-                          padding: 6px;
-                        "
+                            border: 2px solid #4997ac;
+                            background-color: #d1f2f3;
+                            color: #03425d;
+                            font-size: clamp(0.75rem, 2vw, 0.875rem);
+                            white-space: nowrap;
+                            padding-top: 0.5rem;
+                            padding-bottom: 0.5rem;
+                          "
                         >
                           On-Hold
                         </div>
                       {% elif data.last_process_module and data.next_process_module %}
                         <div
                           class="d-inline-block px-3 fw-semibold text-center rounded-pill"
-                         
                           style="
-                          border: 1px solid #0d5d17;
-                          background-color: #c5f9c2;
-                          color: #2f801b;
-                          font-size: 12px;
-                          white-space: nowrap;
-                          padding: 6px;
-                        "
+                            border: 2px solid #d2d454;
+                            background-color: #f0f5b7;
+                            color: #4d5204;
+                            font-size: clamp(0.75rem, 2vw, 0.875rem);
+                            white-space: nowrap;
+                            padding-top: 0.5rem;
+                            padding-bottom: 0.5rem;
+                          "
                         >
                           Released
                         </div>
@@ -718,40 +481,37 @@
                         <div
                           class="d-inline-block px-3 fw-semibold text-center rounded-pill"
                           style="
-                          border: 1px solid #a6a6a6;
-                          background-color: #dcdada;
-                          color: #505050;
-                          font-size: 12px;
-                          white-space: nowrap;
-                          padding: 6px;
-                          
-                        "
+                            border: 2px solid #a6a6a6;
+                            background-color: #dcdada;
+                            color: #505050;
+                            font-size: clamp(0.75rem, 2vw, 0.875rem);
+                            white-space: nowrap;
+                            padding-top: 0.5rem;
+                            padding-bottom: 0.5rem;
+                          "
                         >
                           Yet to Start
                         </div>
                       {% endif %}
                     </td>
-                    <td>
+                                        <td>
                       <div
                         class="d-inline-block px-3 fw-semibold text-center rounded-pill"
                         style="
-                          border: 1px solid #9adeed;
+                          border: 2px solid #9adeed;
                           background-color: #d1edf3;
                           color: #033b5d;
-                          font-size: 12px;
+                          font-size: clamp(0.75rem, 2vw, 0.875rem);
                           white-space: nowrap;
-                          padding: 6px;
+                          padding-top: 0.5rem;
+                          padding-bottom: 0.5rem;
                         "
                       >
-                        {% if data.last_procees_module == "DayPlanning" %}
-                          {{ data.last_procees_module }}
-                        {% else %}
-                          Day Planning
-                        {% endif %}
+                        {{ data.last_process_module|default:"N/A" }}
                       </div>
                     </td>
                     <td>
-                        {% if not data.Moved_to_D_Picker %}
+                        {% if not data.Moved_to_R_Picker %}
 
                       <!-- VoiceRec with tooltip (audio remark) -->
                         <a href="#" title="Add Audio Remark" class="remark-tooltip-trigger" style="display: inline-flex; align-items: center; height: 28px; margin-left: 0; position: relative; cursor: pointer;">
@@ -794,10 +554,10 @@
                           <textarea
                             placeholder="Type your remark..."
                             style="width: 85%; height: 40px; resize: vertical; border: 1px solid #ccc; padding: 5px; border-radius: 4px; font-family: Arial, sans-serif; font-size: 14px;"
-                            {% if data.dp_pick_remarks %}readonly{% endif %}
-                          >{{ data.dp_pick_remarks|default_if_none:"" }}</textarea>
+                            {% if data.rec_pick_remarks %}readonly{% endif %}
+                          >{{ data.rec_pick_remarks|default_if_none:"" }}</textarea>
                           <div style="text-align: right; margin-top: -35px">
-                            {% if not data.dp_pick_remarks %}
+                            {% if not data.rec_pick_remarks %}
                             <button
                               type="button"
                               style="background-color: #007bff; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 14px;"
@@ -889,7 +649,7 @@
                     <!-- Example rows (replace with dynamic content) -->
                   </div>
                   <!-- ✅ NEW BUTTONS SECTION -->
-                  <div class="tray-scan-modal-buttons"
+                  <div
                     style="
                       display: flex;
                       justify-content: center;
@@ -973,7 +733,7 @@
                 </ul>
               </nav>
             </div>
-         
+          </div>
         </div>
       </div>
     </div>
@@ -981,6 +741,192 @@
 
   <!-- Script for Sorting the Table for each rows -->
   {% block script %}
+
+    <!-- Script for Model / Stock No - Image Mouse Hover -->
+  <script nonce="{{ csp_nonce }}">
+    document.addEventListener("DOMContentLoaded", function () {
+      document
+        .querySelectorAll(".model-hover-trigger")
+        .forEach(function (trigger) {
+          const tooltip = trigger.querySelector(".model-image-tooltip");
+          let currentIndex = 0;
+          let tooltipPinned = false;
+          const images = Array.from(
+            tooltip.querySelectorAll(".img-gallery img")
+          );
+
+          function showImages(start) {
+            images.forEach((img, i) => {
+              img.style.display =
+                i >= start && i < start + 3 ? "block" : "none";
+            });
+          }
+          showImages(currentIndex);
+
+          function adjustTooltipPosition() {
+            // Reset to default
+            tooltip.style.left = "50%";
+            tooltip.style.top = "110%";
+            tooltip.style.right = "";
+            tooltip.style.bottom = "";
+            tooltip.style.transform = "translateX(-50%)";
+            tooltip.style.maxWidth = "350px";
+            tooltip.style.maxHeight = "300px";
+            tooltip.style.overflow = "auto";
+
+            // Get bounding rectangles
+            const tooltipRect = tooltip.getBoundingClientRect();
+            const triggerRect = trigger.getBoundingClientRect();
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+
+            // Horizontal adjustment
+            if (tooltipRect.right > viewportWidth) {
+              tooltip.style.left = "auto";
+              tooltip.style.right = "0";
+              tooltip.style.transform = "none";
+            } else if (tooltipRect.left < 0) {
+              tooltip.style.left = "0";
+              tooltip.style.transform = "none";
+            }
+
+            // Vertical adjustment
+            if (tooltipRect.bottom > viewportHeight) {
+              tooltip.style.top = "auto";
+              tooltip.style.bottom = "110%";
+            } else if (tooltipRect.top < 0) {
+              tooltip.style.top = "0";
+              tooltip.style.bottom = "auto";
+            }
+          }
+
+          trigger.addEventListener("mouseenter", function () {
+            if (!tooltipPinned) {
+              tooltip.style.opacity = "1";
+              tooltip.style.pointerEvents = "auto";
+              setTimeout(adjustTooltipPosition, 10);
+            }
+          });
+          trigger.addEventListener("mousemove", function () {
+            if (!tooltipPinned) adjustTooltipPosition();
+          });
+          trigger.addEventListener("mouseleave", function () {
+            if (!tooltipPinned) {
+              tooltip.style.opacity = "0";
+              tooltip.style.pointerEvents = "none";
+            }
+          });
+          tooltip.addEventListener("mouseenter", function () {
+            if (!tooltipPinned) {
+              tooltip.style.opacity = "1";
+              tooltip.style.pointerEvents = "auto";
+            }
+          });
+          tooltip.addEventListener("mouseleave", function () {
+            if (!tooltipPinned) {
+              tooltip.style.opacity = "0";
+              tooltip.style.pointerEvents = "none";
+            }
+          });
+
+          // Pin tooltip on click
+          trigger.addEventListener("click", function (e) {
+            e.preventDefault();
+            tooltipPinned = true;
+            tooltip.style.opacity = "1";
+            tooltip.style.pointerEvents = "auto";
+            adjustTooltipPosition();
+          });
+
+          // Unpin tooltip if user clicks outside
+          document.addEventListener("mousedown", function (e) {
+            if (!trigger.contains(e.target) && !tooltip.contains(e.target)) {
+              tooltipPinned = false;
+              tooltip.style.opacity = "0";
+              tooltip.style.pointerEvents = "none";
+            }
+          });
+
+          tooltip
+            .querySelector(".img-scroll-left")
+            .addEventListener("click", function (e) {
+              e.stopPropagation();
+              if (currentIndex > 0) {
+                currentIndex--;
+                showImages(currentIndex);
+              }
+            });
+          tooltip
+            .querySelector(".img-scroll-right")
+            .addEventListener("click", function (e) {
+              e.stopPropagation();
+              if (currentIndex < images.length - 3) {
+                currentIndex++;
+                showImages(currentIndex);
+              }
+            });
+
+          // Add click event to images for modal slider
+          images.forEach(function (img, idx) {
+            img.style.cursor = "pointer";
+            img.addEventListener("click", function (e) {
+              e.stopPropagation();
+              openImageSlider(
+                images.map((i) => i.src),
+                idx
+              );
+            });
+          });
+        });
+
+      // Modal slider functions (unchanged)
+      const modal = document.getElementById("imageSliderModal");
+      const closeModal = document.getElementById("closeImageSliderModal");
+      const slidesContainer = modal.querySelector(".slides");
+      let sliderImages = [];
+      let currentSlide = 0;
+
+      function openImageSlider(srcArray, startIdx) {
+        sliderImages = srcArray;
+        slidesContainer.innerHTML = "";
+        sliderImages.forEach((src) => {
+          const slide = document.createElement("div");
+          slide.className = "slide";
+          const img = document.createElement("img");
+          img.src = src;
+          slide.appendChild(img);
+          slidesContainer.appendChild(slide);
+        });
+        currentSlide = startIdx;
+        showSlide(currentSlide);
+        modal.classList.add("open");
+      }
+
+      function showSlide(n) {
+        const slides = slidesContainer.querySelectorAll(".slide");
+        if (!slides.length) return;
+        currentSlide = (n + slides.length) % slides.length;
+        slides.forEach((slide, idx) => {
+          slide.classList.toggle("active", idx === currentSlide);
+        });
+      }
+
+      modal.querySelector("#prevBtn").addEventListener("click", function (e) {
+        e.stopPropagation();
+        showSlide(currentSlide - 1);
+      });
+      modal.querySelector("#nextBtn").addEventListener("click", function (e) {
+        e.stopPropagation();
+        showSlide(currentSlide + 1);
+      });
+      closeModal.addEventListener("click", function () {
+        modal.classList.remove("open");
+      });
+      modal.addEventListener("click", function (e) {
+        if (e.target === modal) modal.classList.remove("open");
+      });
+    });
+  </script>
   <script nonce="{{ csp_nonce }}">
     document.addEventListener("DOMContentLoaded", function () {
 
@@ -1016,7 +962,7 @@
             cancelButtonText: 'Cancel'
           }).then((result) => {
             if (result.isConfirmed) {
-              fetch('/dayplanning/delete_batch/', {
+              fetch('/recovery_dp/rec_delete_batch/', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -1067,7 +1013,7 @@
                 Swal.fire('Error', 'Enter a valid quantity.', 'error');
                 return;
               }
-              fetch('/dayplanning/update_batch_quantity/', {
+              fetch('/recovery_dp/rec_update_batch_quantity/', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -1201,14 +1147,14 @@
               let traysData = [];
               let isDraft = false;
               try {
-                  const draftResp = await fetch(`/dayplanning/draft_tray_id_list/?batch_id=${encodeURIComponent(batchId)}`);
+                  const draftResp = await fetch(`/recovery_dp/draft_tray_id_list/?batch_id=${encodeURIComponent(batchId)}`);
                   const draftResult = await draftResp.json();
                   if (draftResult.success && Array.isArray(draftResult.trays) && draftResult.trays.length > 0) {
                       traysData = draftResult.trays;
                       isDraft = true;
                   } else {
                       // Fallback to TrayId (readonly)
-                      const resp = await fetch(`/dayplanning/tray_id_list/?batch_id=${encodeURIComponent(batchId)}`);
+                      const resp = await fetch(`/recovery_dp/rec_tray_id_list/?batch_id=${encodeURIComponent(batchId)}`);
                       const result = await resp.json();
                       if (result.success && Array.isArray(result.trays) && result.trays.length > 0) {
                           traysData = result.trays;
@@ -1338,7 +1284,7 @@
     
                         // 2. Check with backend if tray_id exists in DB
                         try {
-                            const resp = await fetch(`/dayplanning/tray_id_unique_check/?tray_id=${encodeURIComponent(trayId)}`);
+                            const resp = await fetch(`/recovery_dp/rec_tray_id_unique_check/?tray_id=${encodeURIComponent(trayId)}`);
                             const result = await resp.json();
                             if (result.exists) {
                                 const errorDiv = document.createElement('div');
@@ -1404,7 +1350,7 @@
                       }
                       const batchId = window.currentTrayScanBatchId || '';
               
-                      fetch('/dayplanning/draft_tray/', {
+                      fetch('/recovery_dp/rec_draft_tray/', {
                           method: 'POST',
                           headers: {
                               'Content-Type': 'application/json',
@@ -1423,7 +1369,7 @@
                               const params = new URLSearchParams();
                               params.append('batch_id', batchId);
                               ids.forEach(id => params.append('ids[]', id));
-                              fetch(`/dayplanning/draft_tray_id_list/?${params.toString()}`)
+                              fetch(`/recovery_dp/draft_tray_id_list/?${params.toString()}`)
                                   .then(res => res.json())
                                   .then(data2 => {
                                       if (data2.success && Array.isArray(data2.trays)) {
@@ -1539,7 +1485,7 @@
                       }
                       const batchId = window.currentTrayScanBatchId || '';
               
-                      fetch('/dayplanning/tray_scan/', {
+                      fetch('/recovery_dp/rec_tray_scan/', {
                           method: 'POST',
                           headers: {
                               'Content-Type': 'application/json',
@@ -1583,6 +1529,9 @@
                                       `;
                                   }
                               }
+
+                              
+
                             // Disable audio icon
                             const audioIcon = currentRow.querySelector('a[title="Add Audio Remark"]');
                             if (audioIcon) {
@@ -1592,6 +1541,27 @@
                                 span.innerHTML = audioIcon.innerHTML;
                                 audioIcon.replaceWith(span);
                             }
+                            //Current location as "Input Screening"
+                            const locationCell = currentRow.querySelector('td:nth-child(14)');
+                            if (locationCell) {
+                                locationCell.innerHTML = `
+                                  <div
+                                    class="d-inline-block px-3 fw-semibold text-center rounded-pill"
+                                    style="
+                                      border: 2px solid #9adeed;
+                                      background-color: #d1edf3;
+                                      color: #033b5d;
+                                      font-size: clamp(0.75rem, 2vw, 0.875rem);
+                                      white-space: nowrap;
+                                      padding-top: 0.5rem;
+                                      padding-bottom: 0.5rem;
+                                    "
+                                  >
+                                    Day Planning
+                                  </div>
+                                `;
+                            }
+
                             // Disable chat icon and textarea
                             const chatIcon = currentRow.querySelector('a[title="Add Remark"]');
                             if (chatIcon) {
@@ -1601,6 +1571,7 @@
                                 span.innerHTML = chatIcon.innerHTML;
                                 chatIcon.replaceWith(span);
                             }
+
                             // Make textarea readonly if present
                             const textarea = currentRow.querySelector('textarea');
                             if (textarea) textarea.setAttribute('readonly', true);
@@ -1714,7 +1685,7 @@
               Swal.fire('Error', 'Batch ID not found.', 'error');
               return;
             }
-            fetch('/dayplanning/save_dp_pick_remark/', {
+            fetch('/recovery_dp/rec_save_dp_pick_remark/', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -1772,305 +1743,6 @@
       });
     });
   </script>
-
-    <!-- Script for Model/Stoc No Mouser Hover Tooltip to Show Images -->
-   <script nonce="{{ csp_nonce }}">
-  document.addEventListener("DOMContentLoaded", function () {
-    console.log("Model/Stock No hover tooltip script loaded");
-  
-    // Helper to create tooltip
-    function createImageTooltip(images, staticMode = false, modelNo = "") {
-      let idx = 0;
-      const tooltip = document.createElement('div');
-      tooltip.className = 'model-image-tooltip' + (staticMode ? ' static' : '');
-      if (!images.length) {
-        tooltip.innerHTML = `
-          <div style="padding: 20px; text-align: center; color: #888; font-size: 15px; min-width:220px; min-height:80px;">
-            <b>No image exists for model number:</b><br>
-            <span style="color:#023E4DCC">${modelNo || "N/A"}</span>
-          </div>
-          <span class="close-btn" style="display:${staticMode ? 'block' : 'none'};position:absolute;top:4px;right:8px;font-size:18px;cursor:pointer;">&times;</span>
-        `;
-        if (staticMode) {
-          tooltip.querySelector('.close-btn').onclick = function() {
-            tooltip.remove();
-          };
-        }
-        return tooltip;
-      }
-      tooltip.innerHTML = `
-        <span class="close-btn" style="display:${staticMode ? 'block' : 'none'};">&times;</span>
-        <div class="image-slider">
-          <button class="slider-btn prev-btn" ${images.length <= 1 ? 'disabled' : ''}>&lt;</button>
-          <img src="${images[0] || ''}" alt="Model Image" />
-          <button class="slider-btn next-btn" ${images.length <= 1 ? 'disabled' : ''}>&gt;</button>
-        </div>
-        <div style="text-align:center; font-size:12px; margin-top:4px;">
-          <span class="slider-index">1</span> / ${images.length}
-        </div>
-      `;
-      // Slider logic
-      const img = tooltip.querySelector('img');
-      const prevBtn = tooltip.querySelector('.prev-btn');
-      const nextBtn = tooltip.querySelector('.next-btn');
-      const idxSpan = tooltip.querySelector('.slider-index');
-      function updateImg() {
-        img.src = images[idx];
-        idxSpan.textContent = (idx + 1);
-        prevBtn.disabled = (idx === 0);
-        nextBtn.disabled = (idx === images.length - 1);
-      }
-      prevBtn && prevBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        if (idx > 0) { idx--; updateImg(); }
-      });
-      nextBtn && nextBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        if (idx < images.length - 1) { idx++; updateImg(); }
-      });
-      // Close button for static mode
-      if (staticMode) {
-        tooltip.querySelector('.close-btn').onclick = function() {
-          tooltip.remove();
-        };
-      }
-      return tooltip;
-    }
-  
-    // Mouse hover for tooltip
-    document.querySelectorAll('.model-stock-no-cell').forEach(function(cell, i) {
-      const textSpan = cell.querySelector('.model-stock-no-text');
-      if (!textSpan) {
-        console.warn("No .model-stock-no-text found in cell", cell);
-        return;
-      }
-      let tooltip = null;
-      let hideTimeout = null;
-      let staticTooltip = null;
-      let images = [];
-      let modelNo = textSpan.textContent.trim();
-      try {
-        images = JSON.parse(cell.getAttribute('data-images') || '[]');
-        if (!Array.isArray(images)) images = [];
-      } catch (err) {
-        images = [];
-        console.error("Error parsing data-images for cell", i, cell, err);
-      }
-      console.log(`Row ${i + 1} Model No: ${modelNo}, Images:`, images);
-  
-      // Hover logic
-      textSpan.addEventListener('mouseenter', function(e) {
-        if (staticTooltip) return; // Don't show hover if static is open
-        if (tooltip) tooltip.remove();
-        tooltip = createImageTooltip(images, false, modelNo);
-        document.body.appendChild(tooltip);
-        tooltip.style.display = 'block';
-        // Position tooltip near cell
-        const rect = textSpan.getBoundingClientRect();
-        tooltip.style.top = (window.scrollY + rect.bottom + 6) + 'px';
-        tooltip.style.left = (window.scrollX + rect.left) + 'px';
-        console.log(`Tooltip shown for model: ${modelNo}`);
-      });
-      textSpan.addEventListener('mouseleave', function() {
-        if (staticTooltip) return;
-        hideTimeout = setTimeout(() => { if (tooltip) { tooltip.remove(); tooltip = null; } }, 150);
-      });
-      // Keep tooltip visible if hovered
-      document.body.addEventListener('mousemove', function(e) {
-        if (!tooltip) return;
-        if (e.target === tooltip || tooltip.contains(e.target)) {
-          clearTimeout(hideTimeout);
-        } else if (e.target !== textSpan) {
-          hideTimeout = setTimeout(() => { if (tooltip) { tooltip.remove(); tooltip = null; } }, 150);
-        }
-      });
-      // Click to show static tooltip
-      textSpan.addEventListener('click', function(e) {
-        e.stopPropagation();
-        if (staticTooltip) staticTooltip.remove();
-        staticTooltip = createImageTooltip(images, true, modelNo);
-        document.body.appendChild(staticTooltip);
-        // Remove hover tooltip if present
-        if (tooltip) { tooltip.remove(); tooltip = null; }
-        console.log(`Static tooltip pinned for model: ${modelNo}`);
-      });
-      // Remove static tooltip on outside click
-      document.addEventListener('click', function(e) {
-        if (staticTooltip && !staticTooltip.contains(e.target) && e.target !== textSpan) {
-          staticTooltip.remove();
-          staticTooltip = null;
-          console.log(`Static tooltip closed for model: ${modelNo}`);
-        }
-      });
-    });
-  });
-  </script>
-
-<!-- script for buttons in form & highlight -->
-<script nonce="{{ csp_nonce }}">
-// filepath: a:\Workspace\Track_and_Trace_v2\static\templates\Day_Planning\DP_PickTable.html
-document.addEventListener("DOMContentLoaded", function() {
-  const table = document.getElementById('order-listing');
-  const modal = document.getElementById('trayScanModal');
-  const msgBarId = 'dp-table-msg-bar';
-  let msgBar = document.getElementById(msgBarId);
-
-  // Create message bar if not present
-  if (!msgBar && table) {
-    msgBar = document.createElement('div');
-    msgBar.id = msgBarId;
-    msgBar.style.display = 'none';
-    msgBar.style.width = '100%';
-    msgBar.style.margin = '0 0 8px 0';
-    msgBar.style.padding = '10px 24px';
-    msgBar.style.background = '#d1eaff';
-    msgBar.style.color = '#0056b3';
-    msgBar.style.fontWeight = 'bold';
-    msgBar.style.borderRadius = '8px';
-    msgBar.style.fontSize = '1.1rem';
-    msgBar.style.textAlign = 'center';
-    msgBar.style.transition = 'opacity 0.3s, background 0.3s, color 0.3s';
-    table.parentNode.insertBefore(msgBar, table);
-  }
-
-  // Highlight style (if not present)
-  if (!document.getElementById('dp-row-action-highlight-style')) {
-    var style = document.createElement('style');
-    style.id = 'dp-row-action-highlight-style';
-    style.innerHTML = `
-      .dp-row-action-highlight {
-        box-shadow: 0 0 0 3px #007bff, 0 0 10px #007bff55 !important;
-        transition: box-shadow 9.3s;
-        background-color: #f0f8ff !important;
-        animation: highlightAnimation 2s ease-in-out;
-      }
-    `;
-    document.head.appendChild(style);
-  }
-
-  const btnMsg = {
-    "Draft": "Drafted successfully",
-    "Submit": "Submitted successfully",
-    "Cancel": "Cancelled successfully"
-  };
-  const btnBg = {
-    "Draft": "#d1eaff",    // blue
-    "Submit": "#d4f7d4",   // green
-    "Cancel": "#ffd6d6"    // red
-  };
-  const btnColor = {
-    "Draft": "#0056b3",
-    "Submit": "#218838",
-    "Cancel": "#b30000"
-  };
-
-  document.querySelectorAll('.tray-scan-modal-buttons button').forEach(function(btn) {
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-
-      // 1. Close the modal immediately
-      if (modal) modal.classList.remove('open');
-
-      // 2. Show alert and highlight row
-      let btnText = btn.textContent.trim();
-      let msg = btnMsg[btnText] || "Action successful";
-      let bg = btnBg[btnText] || "#d1eaff";
-      let color = btnColor[btnText] || "#0056b3";
-      if (msgBar) {
-        msgBar.textContent = msg;
-        msgBar.style.display = 'block';
-        msgBar.style.opacity = '1';
-        msgBar.style.background = bg;
-        msgBar.style.color = color;
-      }
-      document.querySelectorAll('tr.highlighted-tray-scan').forEach(function(row) {
-        row.classList.add('dp-row-action-highlight');
-        setTimeout(function() {
-          row.classList.remove('dp-row-action-highlight');
-        }, 2000);
-      });
-
-      // 3. Hide alert after 2s (and redirect if needed)
-      setTimeout(function() {
-        if (msgBar) {
-          msgBar.style.opacity = '0';
-          setTimeout(function() { msgBar.style.display = 'none'; }, 300);
-        }
-        // Uncomment below if you want to redirect after alert
-        // window.location.href = "{% url 'dp_pick_table' %}";
-      }, 3000);
-    });
-  });
-});
-</script>
-
-
-<!-- Script for Tray Scan - Row Highlight -->
-  <script nonce="{{ csp_nonce }}">
-    document.addEventListener("DOMContentLoaded", () => {
-      const trayScanLinks = document.querySelectorAll(".tray-scan-btn");
-      const modal = document.getElementById("trayScanModal");
-      const closeBtn = document.getElementById("closeTrayScanModal");
-      const detailsDiv = document.getElementById("trayScanDetails");
-
-      trayScanLinks.forEach((link) => {
-        link.addEventListener("click", (event) => {
-          event.preventDefault();
-
-          const row = event.target.closest("tr");
-          if (!row) return;
-
-          // ✅ Highlight the clicked row
-          document.querySelectorAll("tbody tr").forEach((row) => {
-            row.classList.remove("highlighted-tray-scan");
-          });
-          row.classList.add("highlighted-tray-scan");
-
-          // Clear previous content and insert only the table header and sample rows
-          detailsDiv.innerHTML = `
-  <div>S.no</div>
-  <div>Tray ID</div>
-  <div>Tray Qty</div>
-
-  <div>1 (Top Tray)</div>
-<div>Tray001</div>
-<div style="display: flex; align-items: center; gap: 12px;">
-                        <span>10</span>
-                        <div style="display: flex; gap: 12px;">
-                          <input type="checkbox" style="width: 20px; height: 20px; cursor: pointer;" />
-                          <img src="/static/assets/icons/edit2.png" alt="Edit" style="width: 20px; height: 20px; cursor: pointer;" />
-                        </div>
-                      </div>
- 
-
-
-  <div>2</div>
-  <div>Tray002</div>
-  <div>20</div>
-
-  <div>3</div>
-  <div>Tray003</div>
-  <div>15</div>
-
-   <div>4</div>
-  <div>Tray004</div>
-  <div>15</div>
-`;
-
-          modal.classList.add("open");
-        });
-      });
-
-     highlighted-tray-scan
-
-      modal.addEventListener("click", (event) => {
-        if (event.target === modal) {
-          modal.classList.remove("open");
-        }
-      });
-    });
-  </script>
-  
 
   {% endblock %} {% endblock content %}
 </div>

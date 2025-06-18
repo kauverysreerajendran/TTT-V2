@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-
     <!-- Style -->
     <style>
       .brand-logo {
@@ -27,8 +26,8 @@
         border: 1px solid rgba(255, 255, 255, 0.24);
       }
       body {
-        background: url("{% static 'assets/images/tealMetallic11.jpg' %}") no-repeat
-          center center fixed !important;
+        background: url("{% static 'assets/images/tealMetallic11.jpg' %}")
+          no-repeat center center fixed !important;
         background-size: cover !important;
       }
       .container-scroller,
@@ -42,6 +41,51 @@
         border-radius: 30px !important;
         box-shadow: 0 6px 32px rgba(0, 0, 0, 0.1);
         background: rgba(255, 255, 255, 0.97);
+      }
+      /* Responsive fix for login page layout */
+      @media (max-width: 991px) {
+        .col-lg-4 {
+          margin-right: 0 !important;
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+        .content-wrapper.d-flex.align-items-center.justify-content-end.auth.px-0 {
+          justify-content: center !important;
+          padding: 0 8px !important;
+        }
+        .row.w-100.mx-0 {
+          margin: 0 !important;
+          width: 100% !important;
+          justify-content: center !important;
+        }
+        .brand-logo {
+          margin-top: -60px !important;
+          margin-bottom: 10px !important;
+        }
+
+        .mt-3 {
+          display: flex;
+          justify-content: center;
+        }
+        .auth-form-btn {
+          width: auto !important;
+          min-width: 120px;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .auth-form-light.text-left.py-5.px-4.px-sm-5 {
+          padding: 18px 6px !important;
+          border-radius: 50px !important;
+        }
+        .brand-logo img {
+          max-width: 120px !important;
+          max-height: 80px !important;
+        }
+        h4,
+        h6 {
+          text-align: center !important;
+        }
       }
     </style>
 
@@ -74,17 +118,22 @@
       href="{% static 'assets/css/vertical-layout-light/style.css' %}"
     />
 
-   
     <!-- endinject -->
     <link rel="shortcut icon" href="{% static 'assets/images/favicon.png' %}" />
   </head>
 
   <body>
-        <div class="container-scroller">
+    <div class="container-scroller">
       <div class="container-fluid page-body-wrapper full-page-wrapper">
-        <div class="content-wrapper d-flex align-items-center justify-content-end auth px-0" style="min-height: 100vh;">
-          <div class="row w-100 mx-0" style="width: 100%; display: flex; justify-content: flex-end;">
-            <div class="col-lg-4" style="margin-right: 180px;">
+        <div
+          class="content-wrapper d-flex align-items-center justify-content-end auth px-0"
+          style="min-height: 100vh"
+        >
+          <div
+            class="row w-100 mx-0"
+            style="width: 100%; display: flex; justify-content: flex-end"
+          >
+            <div class="col-lg-4" style="margin-right: 180px">
               <div class="auth-form-light text-left py-5 px-4 px-sm-5">
                 <div class="brand-logo">
                   <img

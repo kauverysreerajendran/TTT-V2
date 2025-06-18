@@ -41,7 +41,7 @@ admin.site.register(IQF_Rejection_Table)
 
 #jig loading
 admin.site.register(JigLoadingMaster)
-admin.site.register(BathNumber)
+admin.site.register(BathNumbers)
 admin.site.register(JigDetails)
 
 #Inspection Inprocess

@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     'InputScreening',
     'User_Management',
     'Nickel_Inspection',
+    'Recovery_DP',
+    'IQF',
     
     
     

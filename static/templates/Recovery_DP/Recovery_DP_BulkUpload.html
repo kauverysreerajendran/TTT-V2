@@ -360,7 +360,7 @@
   
   <div class="header-content" style="position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between;">
     <h1 class="heading-title">
-      Recovery Bulk Upload
+      Day Planning / Bulk Upload
     </h1>
   </div>
   
@@ -491,7 +491,7 @@
       const formData = new FormData();
       formData.append('file', file);
     
-      fetch('/dayplanning/bulk_upload/preview/', {
+      fetch('/recovery_dp/rec_bulk_upload/preview/', {
         method: 'POST',
         headers: {
           'X-CSRFToken': getCookie('csrftoken')
@@ -810,7 +810,7 @@ submitButton.addEventListener('click', () => {
   });
 
   // Send data to the bulk upload endpoint
-  fetch('/dayplanning/bulk_upload/', {
+  fetch('/recovery_dp/rec_bulk_upload/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -914,8 +914,7 @@ submitButton.addEventListener('click', () => {
         title: alertTitle,
         html: alertContent,
         width: '600px',
-        showConfirmButton: false,
-        timer: 1800
+        showConfirmButton: true
       });
     } else {
       // Handle error response
